@@ -1,0 +1,10 @@
+[oasys.addons]
+wavepy = orangecontrib.wavepy
+
+[oasys.menus]
+wavepymenu = orangecontrib.wavepy.menu
+
+[oasys.widgets]
+WavepPy = orangecontrib.wavepy.widgets.wavepy
+WavepPy Tools = orangecontrib.wavepy.widgets.tools
+
