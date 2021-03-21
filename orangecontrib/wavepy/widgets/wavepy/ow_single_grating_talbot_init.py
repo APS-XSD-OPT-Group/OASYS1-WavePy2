@@ -63,8 +63,8 @@ class OWSingleGratingTalbotInit(WavePyWidget):
 
     def execute(self):
         output = WavePyData()
-        output.set_parameter("input_parameters", self.__init_widget.get_accepted_output())
-        output.set_parameter("single_grating_talbot_manager", self.__single_grating_talbot_manager)
+        output.set_parameter("initialization_parameters", self.__init_widget.get_accepted_output())
+        output.set_parameter("process_manager",           self.__single_grating_talbot_manager)
 
         self.send("SGT Initialization", output)
 

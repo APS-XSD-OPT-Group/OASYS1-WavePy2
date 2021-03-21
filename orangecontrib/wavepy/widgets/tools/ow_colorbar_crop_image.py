@@ -10,8 +10,7 @@ from wavepy2.util.log.logger import LoggerMode
 from wavepy2.util.plot.plot_tools import PlottingProperties, DefaultContextWidget
 
 from wavepy2.tools.common.wavepy_data import WavePyData
-
-from wavepy2.tools.imaging.single_grating.bl.single_grating_talbot import create_single_grating_talbot_manager
+from wavepy2.tools.common.bl import crop_image
 
 class OWColorbarCropImage(WavePyWidget):
     name = "Colorbar Crop Image"
@@ -40,29 +39,44 @@ class OWColorbarCropImage(WavePyWidget):
 
         self.setFixedWidth(self.MAX_WIDTH_NO_MAIN)
 
-        # ADD BUTTON
-
+        gui.button(self.button_box, self, "Reset", callback=self.cancel, height=45)
 
     def set_input(self, data):
-        self.__single_grating_talbot_manager = data.get_parameter("single_grating_talbot_manager")
+        self.__initialization_parameters = data.get_parameter("initialization_parameters")
+        self.__process_manager           = data.get_parameter("process_manager")
 
-        self.__init_widget = self.__single_grating_talbot_manager.draw_initialization_parameters_widget(plotting_properties=PlottingProperties(context_widget=DefaultContextWidget(self.controlArea),
-                                                                                                                                               show_runtime_options=False,
-                                                                                                                                               add_context_label=False,
-                                                                                                                                               use_unique_id=True))[0]
+        img             = self.__initialization_parameters.get_parameter("img")
+        pixelsize       = self.__initialization_parameters.get_parameter("pixelsize")
 
-        self.controlArea.setFixedHeight(self.__init_widget.height()+145)
+        self.__crop_widget = crop_image.draw_colorbar_crop_image(initialization_parameters=self.__initialization_parameters,
+                                                                 plotting_properties=PlottingProperties(context_widget=DefaultContextWidget(self.controlArea),
+                                                                                                        add_context_label=False,
+                                                                                                        use_unique_id=True),
+                                                                 img=img, pixelsize=pixelsize)[0]
+
+        self.controlArea.setFixedHeight(self.__crop_widget.height() + 145)
 
         gui.rubber(self.controlArea)
 
-    def execute(self):
+    def __send_result(self, img, idx4crop, img_size_o):
         output = WavePyData()
 
-        img, idx4crop, _, _ = self.__init_widget.get_accepted_output()
+        crop_parameters = WavePyData(img=img,
+                                     idx4crop=idx4crop,
+                                     img_size_o=img_size_o)
 
-        output.set_parameter("input_parameters", self.__init_widget.get_accepted_output())
-        output.set_parameter("single_grating_talbot_manager", self.__single_grating_talbot_manager)
+        output.set_parameter("input_parameters", self.__initialization_parameters)
+        output.set_parameter("process_manager",  self.__process_manager)
+        output.set_parameter("crop_parameters",  crop_parameters)
 
-        self.send("SGT Initialization", output)
+        self.send("WavePy Data", output)
 
+    def execute(self):
+        img, idx4crop, img_size_o, _, _ = self.__crop_widget.get_accepted_output()
 
+        self.__send_result(img, idx4crop, img_size_o)
+
+    def cancel(self):
+        img, idx4crop, img_size_o, _, _ = self.__crop_widget.get_rejected_result()
+
+        self.__send_result(img, idx4crop, img_size_o)

@@ -43,13 +43,15 @@ class WavePyWidget(widget.OWWidget):
 
         self.controlArea.setFixedWidth(self.CONTROL_AREA_WIDTH)
 
-        gui.button(self.controlArea, self, "Execute", callback=self.execute, height=45)
-
         self.general_options_box = gui.widgetBox(self.controlArea, "General Options", addSpace=True, orientation="horizontal")
         self.general_options_box.setVisible(show_general_option_box)
 
         if show_automatic_box :
             gui.checkBox(self.general_options_box, self, 'is_automatic_run', 'Automatic Execution')
+
+        self.button_box = gui.widgetBox(self.controlArea, "", addSpace=True, orientation="horizontal")
+
+        gui.button(self.button_box, self, "Execute", callback=self.execute, height=45)
 
     def execute(self):
         raise NotImplementedError("This method is abstract")
