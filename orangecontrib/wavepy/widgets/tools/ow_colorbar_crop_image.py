@@ -30,14 +30,16 @@ class OWColorbarCropImage(WavePyWidget):
 
     want_main_area = 0
 
-    CONTROL_AREA_WIDTH = 855
+    CONTROL_AREA_WIDTH = 955
 
     MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
+    MAX_HEIGHT = 850
 
     def __init__(self):
         super(OWColorbarCropImage, self).__init__(show_general_option_box=True, show_automatic_box=True)
 
         self.setFixedWidth(self.MAX_WIDTH_NO_MAIN)
+        self.setFixedHeight(self.MAX_HEIGHT)
 
         gui.button(self.button_box, self, "Reset", callback=self.cancel, height=45)
 
@@ -53,8 +55,7 @@ class OWColorbarCropImage(WavePyWidget):
                                                                                                         add_context_label=False,
                                                                                                         use_unique_id=True),
                                                                  img=img, pixelsize=pixelsize)[0]
-
-        self.controlArea.setFixedHeight(self.__crop_widget.height() + 145)
+        self.controlArea.setFixedHeight(840)
 
         gui.rubber(self.controlArea)
 
