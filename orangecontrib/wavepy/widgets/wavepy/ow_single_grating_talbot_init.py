@@ -45,13 +45,16 @@ class OWSingleGratingTalbotInit(WavePyWidget):
         try: register_ini_instance(IniMode.LOCAL_FILE, ini_file_name=".single_grating_talbot.ini")
         except AlreadyInitializedError: pass
 
+        self.setFixedWidth(self.MAX_WIDTH_NO_MAIN)
+
         self.__single_grating_talbot_manager = create_single_grating_talbot_manager()
 
         self.__init_widget = self.__single_grating_talbot_manager.draw_initialization_parameters_widget(plotting_properties=PlottingProperties(context_widget=DefaultContextWidget(self.controlArea),
-                                                                                                                                               show_runtime_options=False))[0]
+                                                                                                                                               show_runtime_options=False,
+                                                                                                                                               add_context_label=False,
+                                                                                                                                               use_unique_id=True))[0]
 
-        #self.__init_widget.setFixedHeight(200)
-        #self.__init_widget.setFixedWidth(200)
+        self.controlArea.setFixedHeight(self.__init_widget.height()+145)
 
         gui.rubber(self.controlArea)
 
