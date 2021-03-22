@@ -2,6 +2,7 @@ import os
 
 from oasys.widgets.widget import OWWidget
 from orangewidget import gui
+from oasys.widgets import gui as oasysgui
 from orangewidget.widget import OWAction
 from orangewidget.settings import Setting
 
@@ -48,18 +49,33 @@ class WavePyWidget(OWWidget):
 
         self.controlArea.setFixedWidth(self.CONTROL_AREA_WIDTH)
 
-        self.general_options_box = gui.widgetBox(self.controlArea, "General Options", addSpace=True, orientation="horizontal")
+        self.general_options_box = oasysgui.widgetBox(self.controlArea, "General Options", addSpace=True, orientation="horizontal")
         self.general_options_box.setVisible(show_general_option_box)
 
         if show_automatic_box :
             gui.checkBox(self.general_options_box, self, 'is_automatic_run', 'Automatic Execution')
 
-        self.button_box = gui.widgetBox(self.controlArea, "", addSpace=True, orientation="horizontal")
+        self.button_box = oasysgui.widgetBox(self.controlArea, "", addSpace=True, orientation="horizontal")
 
         gui.button(self.button_box, self, self._get_execute_button_label(), callback=self._execute, height=45)
+
+        self._wavepy_widget_area = oasysgui.widgetBox(self.controlArea, "", addSpace=False, orientation="vertical", width=self.CONTROL_AREA_WIDTH)
 
     def _execute(self):
         raise NotImplementedError("This method is abstract")
 
     def _get_execute_button_label(self):
         return "Execute"
+
+    def _clear_wavepy_layout(self):
+        layout = self._wavepy_widget_area.layout()
+
+        for i in reversed(range(layout.count())):
+            layoutItem = layout.itemAt(i)
+            if layoutItem.widget() is not None:
+                widgetToRemove = layoutItem.widget()
+                widgetToRemove.setParent(None)
+                layout.removeWidget(widgetToRemove)
+            else:
+                layoutToRemove = layout.itemAt(i)
+                clearLayout(layoutToRemove)

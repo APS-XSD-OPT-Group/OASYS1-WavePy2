@@ -15,10 +15,10 @@ from wavepy2.tools.common.wavepy_data import WavePyData
 
 from wavepy2.tools.imaging.single_grating.bl.single_grating_talbot import create_single_grating_talbot_manager
 
-class OWSingleGratingTalbotInit(WavePyWidget):
-    name = "Single Grating Talbot Initialization"
+class OWSGTInit(WavePyWidget):
+    name = "S.G.T. - Initialization"
     id = "sgt_init"
-    description = "Single Grating Talbot Initialization"
+    description = "S.G.T. - Initialization"
     icon = "icons/sgt_init.png"
     priority = 1
     category = ""
@@ -33,10 +33,11 @@ class OWSingleGratingTalbotInit(WavePyWidget):
 
     CONTROL_AREA_WIDTH = 855
 
-    MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
+    MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 5
+    MAX_HEIGHT = 490
 
     def __init__(self):
-        super(OWSingleGratingTalbotInit, self).__init__(show_general_option_box=False, show_automatic_box=False)
+        super(OWSGTInit, self).__init__(show_general_option_box=False, show_automatic_box=False)
         try: register_logger_single_instance(logger_mode=QSettings().value("wavepy/logger_mode", LoggerMode.FULL, type=int))
         except AlreadyInitializedError: pass
         try: register_plotter_instance(plotter_mode=QSettings().value("wavepy/plotter_mode", PlotterMode.FULL, type=int))
@@ -45,20 +46,19 @@ class OWSingleGratingTalbotInit(WavePyWidget):
         except AlreadyInitializedError: pass
 
         self.setFixedWidth(self.MAX_WIDTH_NO_MAIN)
+        self.setFixedHeight(self.MAX_HEIGHT)
 
         self.__single_grating_talbot_manager = create_single_grating_talbot_manager()
 
-        self.__init_widget = self.__single_grating_talbot_manager.draw_initialization_parameters_widget(plotting_properties=PlottingProperties(context_widget=DefaultContextWidget(self.controlArea),
+        self.__init_widget = self.__single_grating_talbot_manager.draw_initialization_parameters_widget(plotting_properties=PlottingProperties(context_widget=DefaultContextWidget(self._wavepy_widget_area),
                                                                                                                                                show_runtime_options=False,
                                                                                                                                                add_context_label=False,
-                                                                                                                                               use_unique_id=True))[0]
+                                                                                                                                               use_unique_id=True),
+                                                                                                        widget_height=330)[0]
 
-        self.controlArea.setFixedHeight(self.__init_widget.height()+145)
+        self.controlArea.setFixedHeight(self.__init_widget.height() + 145)
 
         gui.rubber(self.controlArea)
-
-    def set_input(self, data):
-        pass
 
     def _execute(self):
         output = WavePyData()

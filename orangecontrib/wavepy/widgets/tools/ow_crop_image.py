@@ -42,41 +42,44 @@ class OWCropImage(WavePyWidget):
         self.setFixedWidth(self.MAX_WIDTH_NO_MAIN)
         self.setFixedHeight(self.MAX_HEIGHT)
 
-        gui.button(self.button_box, self, "Initial Crop", callback=self.cancel, height=45)
+        gui.button(self.button_box, self, "Initial Crop", callback=self._cancel, height=45)
 
         gui.rubber(self.controlArea)
 
     def set_input(self, data):
-        self.__initialization_parameters = data.get_parameter("initialization_parameters")
-        self.__calculation_parameters    = data.get_parameter("calculation_parameters")
-        self.__process_manager           = data.get_parameter("process_manager")
+        if not data is None:
+            self._initialization_parameters = data.get_parameter("initialization_parameters")
+            self._calculation_parameters    = data.get_parameter("calculation_parameters")
+            self._process_manager           = data.get_parameter("process_manager")
 
-        img = None
-        if not self.__calculation_parameters is None: img = self.__calculation_parameters.get_parameter("img")
-        if img is None:                               img = self.__initialization_parameters.get_parameter("img")
+            img = None
+            if not self._calculation_parameters is None: img = self._calculation_parameters.get_parameter("img")
+            if img is None:                               img = self._initialization_parameters.get_parameter("img")
 
-        if not img is None:
-            self.__crop_widget = crop_image.draw_crop_image(initialization_parameters=self.__initialization_parameters,
-                                                            plotting_properties=PlottingProperties(context_widget=DefaultContextWidget(self.controlArea),
-                                                                                                   add_context_label=False,
-                                                                                                   use_unique_id=True),
-                                                            img=img, tab_widget_height=660)[0]
+            if not img is None:
+                self._clear_wavepy_layout()
 
-        self.controlArea.setFixedWidth(self.CONTROL_AREA_WIDTH)
-        self.controlArea.setFixedHeight(self.CONTROL_AREA_HEIGTH)
+                self.__crop_widget = crop_image.draw_crop_image(initialization_parameters=self._initialization_parameters,
+                                                                plotting_properties=PlottingProperties(context_widget=DefaultContextWidget(self._wavepy_widget_area),
+                                                                                                       add_context_label=False,
+                                                                                                       use_unique_id=True),
+                                                                img=img, tab_widget_height=660)[0]
 
-        gui.rubber(self.controlArea)
+            self.controlArea.setFixedWidth(self.CONTROL_AREA_WIDTH)
+            self.controlArea.setFixedHeight(self.CONTROL_AREA_HEIGTH)
 
-        if self.is_automatic_run: self.cancel()
+            gui.rubber(self.controlArea)
+
+            if self.is_automatic_run: self._cancel()
 
     def __send_result(self, img, idx4crop, img_size_o):
         output = WavePyData()
 
-        output.set_parameter("input_parameters", self.__initialization_parameters)
-        output.set_parameter("process_manager",  self.__process_manager)
-        output.set_parameter("calculation_parameters",  WavePyData(img=img,
-                                                                   idx4crop=idx4crop,
-                                                                   img_size_o=img_size_o))
+        output.set_parameter("process_manager",           self._process_manager)
+        output.set_parameter("initialization_parameters", self._initialization_parameters)
+        output.set_parameter("calculation_parameters",    WavePyData(img=img,
+                                                                     idx4crop=idx4crop,
+                                                                     img_size_o=img_size_o))
 
         self.send("WavePy Data", output)
 
@@ -88,7 +91,7 @@ class OWCropImage(WavePyWidget):
 
         self.__send_result(img, idx4crop, img_size_o)
 
-    def cancel(self):
+    def _cancel(self):
         img, idx4crop, img_size_o = self.__crop_widget.get_rejected_output()
 
         self.__send_result(img, idx4crop, img_size_o)
