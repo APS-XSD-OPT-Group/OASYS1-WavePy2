@@ -17,7 +17,7 @@ class WavePyWidget(OWWidget):
 
     want_main_area=1
 
-    is_automatic_run = Setting(True)
+    is_automatic_run = Setting(False)
 
     error_id = 0
     warning_id = 0
@@ -30,7 +30,7 @@ class WavePyWidget(OWWidget):
     MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
     MAX_HEIGHT = 700
 
-    def __init__(self, show_general_option_box=True, show_automatic_box=True):
+    def __init__(self, show_general_option_box=False, show_automatic_box=False):
         super().__init__()
 
         runaction = OWAction(self._get_execute_button_label(), self)

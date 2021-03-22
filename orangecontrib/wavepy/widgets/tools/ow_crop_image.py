@@ -12,12 +12,12 @@ from wavepy2.util.plot.plot_tools import PlottingProperties, DefaultContextWidge
 from wavepy2.tools.common.wavepy_data import WavePyData
 from wavepy2.tools.common.bl import crop_image
 
-class OWColorbarCropImage(WavePyWidget):
-    name = "Colorbar Crop Image"
-    id = "colorbar_crop_image"
-    description = "Colorbar Crop Image"
-    icon = "icons/colorbar_crop_image.png"
-    priority = 2
+class OWCropImage(WavePyWidget):
+    name = "Crop Image"
+    id = "crop_image"
+    description = "Crop Image"
+    icon = "icons/crop_image.png"
+    priority = 1
     category = ""
     keywords = ["wavepy", "tools", "crop"]
 
@@ -36,7 +36,7 @@ class OWColorbarCropImage(WavePyWidget):
     MAX_HEIGHT = 850
 
     def __init__(self):
-        super(OWColorbarCropImage, self).__init__(show_general_option_box=True, show_automatic_box=True)
+        super(OWCropImage, self).__init__(show_general_option_box=True, show_automatic_box=True)
 
         self.setFixedWidth(self.MAX_WIDTH_NO_MAIN)
         self.setFixedHeight(self.MAX_HEIGHT)
@@ -50,23 +50,16 @@ class OWColorbarCropImage(WavePyWidget):
         self.__calculation_parameters    = data.get_parameter("calculation_parameters")
         self.__process_manager           = data.get_parameter("process_manager")
 
-        img       = None
-        pixelsize = None
+        img = None
+        if not self.__calculation_parameters is None: img = self.__calculation_parameters.get_parameter("img")
+        if img is None:                               img = self.__initialization_parameters.get_parameter("img")
 
-        if not self.__calculation_parameters is None:
-            img       = self.__calculation_parameters.get_parameter("img")
-            pixelsize = self.__calculation_parameters.get_parameter("pixelsize")
-
-        if (img is None or pixelsize is None):
-            img             = self.__initialization_parameters.get_parameter("img")
-            pixelsize       = self.__initialization_parameters.get_parameter("pixelsize")
-
-        if not (img is None or pixelsize is None):
-            self.__crop_widget = crop_image.draw_colorbar_crop_image(initialization_parameters=self.__initialization_parameters,
-                                                                     plotting_properties=PlottingProperties(context_widget=DefaultContextWidget(self.controlArea),
-                                                                                                            add_context_label=False,
-                                                                                                            use_unique_id=True),
-                                                                     img=img, pixelsize=pixelsize)[0]
+        if not img is None:
+            self.__crop_widget = crop_image.draw_crop_image(initialization_parameters=self.__initialization_parameters,
+                                                            plotting_properties=PlottingProperties(context_widget=DefaultContextWidget(self.controlArea),
+                                                                                                   add_context_label=False,
+                                                                                                   use_unique_id=True),
+                                                            img=img)[0]
         self.controlArea.setFixedHeight(840)
 
         gui.rubber(self.controlArea)
@@ -86,11 +79,11 @@ class OWColorbarCropImage(WavePyWidget):
         return "Crop Image"
 
     def _execute(self):
-        img, idx4crop, img_size_o, _, _ = self.__crop_widget.get_accepted_output()
+        img, idx4crop, img_size_o = self.__crop_widget.get_accepted_output()
 
         self.__send_result(img, idx4crop, img_size_o)
 
     def cancel(self):
-        img, idx4crop, img_size_o, _, _ = self.__crop_widget.get_rejected_output()
+        img, idx4crop, img_size_o = self.__crop_widget.get_rejected_output()
 
         self.__send_result(img, idx4crop, img_size_o)
