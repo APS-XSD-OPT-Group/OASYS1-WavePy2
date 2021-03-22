@@ -30,10 +30,11 @@ class OWCropImage(WavePyWidget):
 
     want_main_area = 0
 
-    CONTROL_AREA_WIDTH = 955
+    CONTROL_AREA_HEIGTH = 840
+    CONTROL_AREA_WIDTH = 860
 
     MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
-    MAX_HEIGHT = 850
+    MAX_HEIGHT = CONTROL_AREA_HEIGTH + 10
 
     def __init__(self):
         super(OWCropImage, self).__init__(show_general_option_box=True, show_automatic_box=True)
@@ -59,10 +60,14 @@ class OWCropImage(WavePyWidget):
                                                             plotting_properties=PlottingProperties(context_widget=DefaultContextWidget(self.controlArea),
                                                                                                    add_context_label=False,
                                                                                                    use_unique_id=True),
-                                                            img=img)[0]
-        self.controlArea.setFixedHeight(840)
+                                                            img=img, tab_widget_height=660)[0]
+
+        self.controlArea.setFixedWidth(self.CONTROL_AREA_WIDTH)
+        self.controlArea.setFixedHeight(self.CONTROL_AREA_HEIGTH)
 
         gui.rubber(self.controlArea)
+
+        if self.is_automatic_run: self.cancel()
 
     def __send_result(self, img, idx4crop, img_size_o):
         output = WavePyData()
