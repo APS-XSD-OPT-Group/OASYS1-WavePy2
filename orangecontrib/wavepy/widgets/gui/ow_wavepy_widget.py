@@ -1,16 +1,19 @@
 import os
 
-from oasys.widgets import widget
-
+from oasys.widgets.widget import OWWidget
 from orangewidget import gui
+from orangewidget.widget import OWAction
 from orangewidget.settings import Setting
 
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import QRect
 
-from oasys.widgets.gui import ConfirmDialog
+INITIALIZATION_PARAMETERS = "initialization_parameters"
+CALCULATION_PARAMETERS    = "calculation_parameters"
+PROCESS_MANAGER           = "process_manager"
 
-class WavePyWidget(widget.OWWidget):
+
+class WavePyWidget(OWWidget):
 
     want_main_area=1
 
@@ -27,10 +30,12 @@ class WavePyWidget(widget.OWWidget):
     MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
     MAX_HEIGHT = 700
 
-    srw_live_propagation_mode = "Unknown"
-
     def __init__(self, show_general_option_box=True, show_automatic_box=True):
         super().__init__()
+
+        runaction = OWAction(self._get_execute_button_label(), self)
+        runaction.triggered.connect(self._execute)
+        self.addAction(runaction)
 
         geom = QApplication.desktop().availableGeometry()
         self.setGeometry(QRect(round(geom.width()*0.05),
@@ -51,14 +56,10 @@ class WavePyWidget(widget.OWWidget):
 
         self.button_box = gui.widgetBox(self.controlArea, "", addSpace=True, orientation="horizontal")
 
-        gui.button(self.button_box, self, "Execute", callback=self.execute, height=45)
+        gui.button(self.button_box, self, self._get_execute_button_label(), callback=self._execute, height=45)
 
-    def execute(self):
+    def _execute(self):
         raise NotImplementedError("This method is abstract")
 
-    def callResetSettings(self):
-        if ConfirmDialog.confirmed(parent=self, message="Confirm Reset of the Fields?"):
-            try:
-                self.resetSettings()
-            except:
-                pass
+    def _get_execute_button_label(self):
+        return "Execute"

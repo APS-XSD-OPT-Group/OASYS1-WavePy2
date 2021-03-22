@@ -1,3 +1,5 @@
+from PyQt5.QtCore import QSettings
+
 from orangewidget import gui
 
 from orangecontrib.wavepy.widgets.gui.ow_wavepy_widget import WavePyWidget
@@ -22,11 +24,9 @@ class OWSingleGratingTalbotInit(WavePyWidget):
     category = ""
     keywords = ["wavepy", "sgt", "init"]
 
-    inputs = [("WavePy Initialization", WavePyData, "set_input"),]
-
-    outputs = [{"name": "SGT Initialization",
+    outputs = [{"name": "S.G.T. Initialization",
                 "type": WavePyData,
-                "doc": "SGT Initialization",
+                "doc": "S.G.T. Initialization",
                 "id": "SGT_Initialization"}]
 
     want_main_area = 0
@@ -36,11 +36,10 @@ class OWSingleGratingTalbotInit(WavePyWidget):
     MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
 
     def __init__(self):
-        super(OWSingleGratingTalbotInit, self).__init__(show_general_option_box=True, show_automatic_box=True)
-
-        try: register_logger_single_instance(logger_mode=LoggerMode.FULL)
+        super(OWSingleGratingTalbotInit, self).__init__(show_general_option_box=False, show_automatic_box=False)
+        try: register_logger_single_instance(logger_mode=QSettings().value("wavepy/logger_mode", LoggerMode.FULL, type=int))
         except AlreadyInitializedError: pass
-        try: register_plotter_instance(plotter_mode=PlotterMode.FULL)
+        try: register_plotter_instance(plotter_mode=QSettings().value("wavepy/plotter_mode", PlotterMode.FULL, type=int))
         except AlreadyInitializedError: pass
         try: register_ini_instance(IniMode.LOCAL_FILE, ini_file_name=".single_grating_talbot.ini")
         except AlreadyInitializedError: pass
@@ -61,11 +60,11 @@ class OWSingleGratingTalbotInit(WavePyWidget):
     def set_input(self, data):
         pass
 
-    def execute(self):
+    def _execute(self):
         output = WavePyData()
         output.set_parameter("initialization_parameters", self.__init_widget.get_accepted_output())
         output.set_parameter("process_manager",           self.__single_grating_talbot_manager)
 
-        self.send("SGT Initialization", output)
+        self.send("S.G.T. Initialization", output)
 
 
