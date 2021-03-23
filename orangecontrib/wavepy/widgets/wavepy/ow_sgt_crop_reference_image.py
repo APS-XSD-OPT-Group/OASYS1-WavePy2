@@ -13,9 +13,9 @@ from wavepy2.tools.common.wavepy_data import WavePyData
 from wavepy2.tools.common.bl import crop_image
 
 class OWSGTCropReferenceImage(WavePyWidget):
-    name = "SGT - Crop Reference Image"
+    name = "S.G.T. - Crop Reference Image"
     id = "sgt_crop_reference_image"
-    description = "SGT - Crop Reference Image"
+    description = "S.G.T. - Crop Reference Image"
     icon = "icons/sgt_crop_reference_image.png"
     priority = 3
     category = ""
