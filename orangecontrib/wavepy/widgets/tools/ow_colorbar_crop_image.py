@@ -1,6 +1,7 @@
 from orangewidget import gui
 
 from orangecontrib.wavepy.widgets.gui.ow_wavepy_widget import WavePyWidget
+from orangecontrib.wavepy.util.wavepy_objects import OasysWavePyData
 
 from wavepy2.util.common.common_tools import AlreadyInitializedError
 from wavepy2.util.log.logger import register_logger_single_instance, LoggerMode
@@ -13,18 +14,18 @@ from wavepy2.tools.common.wavepy_data import WavePyData
 from wavepy2.tools.common.bl import crop_image
 
 class OWColorbarCropImage(WavePyWidget):
-    name = "Colorbar Crop Image"
+    name = "Crop Image & Store Params"
     id = "colorbar_crop_image"
-    description = "Colorbar Crop Image"
+    description = "Crop Image & Store Params"
     icon = "icons/colorbar_crop_image.png"
     priority = 2
     category = ""
     keywords = ["wavepy", "tools", "crop"]
 
-    inputs = [("WavePy Data", WavePyData, "set_input"),]
+    inputs = [("WavePy Data", OasysWavePyData, "set_input"),]
 
     outputs = [{"name": "WavePy Data",
-                "type": WavePyData,
+                "type": OasysWavePyData,
                 "doc": "WavePy Data",
                 "id": "WavePy_Data"}]
 
@@ -48,9 +49,11 @@ class OWColorbarCropImage(WavePyWidget):
 
     def set_input(self, data):
         if not data is None:
-            self._initialization_parameters = data.get_parameter("initialization_parameters")
-            self._calculation_parameters    = data.get_parameter("calculation_parameters")
-            self._process_manager           = data.get_parameter("process_manager")
+            data = data.duplicate()
+
+            self._initialization_parameters = data.get_initialization_parameters()
+            self._calculation_parameters    = data.get_calculation_parameters()
+            self._process_manager           = data.get_process_manager()
 
             img       = None
             pixelsize = None
@@ -80,13 +83,13 @@ class OWColorbarCropImage(WavePyWidget):
             if self.is_automatic_run: self._cancel()
 
     def __send_result(self, img, idx4crop, img_size_o):
-        output = WavePyData()
+        output = OasysWavePyData()
 
-        output.set_parameter("process_manager",           self._process_manager)
-        output.set_parameter("initialization_parameters", self._initialization_parameters)
-        output.set_parameter("calculation_parameters",    WavePyData(img=img,
-                                                                     idx4crop=idx4crop,
-                                                                     img_size_o=img_size_o))
+        output.set_process_manager(self._process_manager)
+        output.set_initialization_parameters(self._initialization_parameters)
+        output.set_calculation_parameters(WavePyData(img=img,
+                                                     idx4crop=idx4crop,
+                                                     img_size_o=img_size_o))
 
         self.send("WavePy Data", output)
 

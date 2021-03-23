@@ -1,6 +1,7 @@
 from orangewidget import gui
 
 from orangecontrib.wavepy.widgets.gui.ow_wavepy_widget import WavePyWidget
+from orangecontrib.wavepy.util.wavepy_objects import OasysWavePyData
 
 from wavepy2.util.common.common_tools import AlreadyInitializedError
 from wavepy2.util.log.logger import register_logger_single_instance, LoggerMode
@@ -21,10 +22,10 @@ class OWSGTCropReferenceImage(WavePyWidget):
     category = ""
     keywords = ["wavepy", "tools", "crop"]
 
-    inputs = [("WavePy Data", WavePyData, "set_input"),]
+    inputs = [("WavePy Data", OasysWavePyData, "set_input"),]
 
     outputs = [{"name": "WavePy Data",
-                "type": WavePyData,
+                "type": OasysWavePyData,
                 "doc": "WavePy Data",
                 "id": "WavePy_Data"}]
 
@@ -46,9 +47,11 @@ class OWSGTCropReferenceImage(WavePyWidget):
 
     def set_input(self, data):
         if not data is None:
-            self._initialization_parameters = data.get_parameter("initialization_parameters")
-            self._calculation_parameters    = data.get_parameter("calculation_parameters")
-            self._process_manager           = data.get_parameter("process_manager")
+            data = data.duplicate()
+
+            self._initialization_parameters = data.get_initialization_parameters()
+            self._calculation_parameters = data.get_calculation_parameters()
+            self._process_manager = data.get_process_manager()
 
             if self.is_automatic_run: self._execute()
 
@@ -64,10 +67,10 @@ class OWSGTCropReferenceImage(WavePyWidget):
 
         gui.rubber(self.controlArea)
 
-        output = WavePyData()
+        output = OasysWavePyData()
 
-        output.set_parameter("process_manager",           self._process_manager)
-        output.set_parameter("initialization_parameters", self._initialization_parameters)
-        output.set_parameter("calculation_parameters",    output_calculation_parameters)
+        output.set_process_manager(self._process_manager)
+        output.set_initialization_parameters(self._initialization_parameters)
+        output.set_calculation_parameters(self._calculation_parameters)
 
         self.send("WavePy Data", output)

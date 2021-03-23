@@ -3,6 +3,7 @@ from PyQt5.QtCore import QSettings
 from orangewidget import gui
 
 from orangecontrib.wavepy.widgets.gui.ow_wavepy_widget import WavePyWidget
+from orangecontrib.wavepy.util.wavepy_objects import OasysWavePyData
 
 from wavepy2.util.common.common_tools import AlreadyInitializedError
 from wavepy2.util.log.logger import register_logger_single_instance, LoggerMode
@@ -25,7 +26,7 @@ class OWSGTInit(WavePyWidget):
     keywords = ["wavepy", "sgt", "init"]
 
     outputs = [{"name": "S.G.T. Initialization",
-                "type": WavePyData,
+                "type": OasysWavePyData,
                 "doc": "S.G.T. Initialization",
                 "id": "SGT_Initialization"}]
 
@@ -61,9 +62,10 @@ class OWSGTInit(WavePyWidget):
         gui.rubber(self.controlArea)
 
     def _execute(self):
-        output = WavePyData()
-        output.set_parameter("initialization_parameters", self.__init_widget.get_accepted_output())
-        output.set_parameter("process_manager",           self.__single_grating_talbot_manager)
+        output = OasysWavePyData()
+
+        output.set_process_manager(self.__single_grating_talbot_manager)
+        output.set_initialization_parameters(self.__init_widget.get_accepted_output())
 
         self.send("S.G.T. Initialization", output)
 

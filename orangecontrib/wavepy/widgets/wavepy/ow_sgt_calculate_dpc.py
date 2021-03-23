@@ -1,6 +1,7 @@
 from orangewidget import gui
 
 from orangecontrib.wavepy.widgets.gui.ow_wavepy_widget import WavePyWidget
+from orangecontrib.wavepy.util.wavepy_objects import OasysWavePyData
 
 from wavepy2.util.common.common_tools import AlreadyInitializedError
 from wavepy2.util.log.logger import register_logger_single_instance, LoggerMode
@@ -21,10 +22,10 @@ class OWSGTCalculateDPC(WavePyWidget):
     category = ""
     keywords = ["wavepy", "tools", "crop"]
 
-    inputs = [("WavePy Data", WavePyData, "set_input"),]
+    inputs = [("WavePy Data", OasysWavePyData, "set_input"),]
 
     outputs = [{"name": "WavePy Data",
-                "type": WavePyData,
+                "type": OasysWavePyData,
                 "doc": "WavePy Data",
                 "id": "WavePy_Data"}]
 
@@ -46,9 +47,11 @@ class OWSGTCalculateDPC(WavePyWidget):
 
     def set_input(self, data):
         if not data is None:
-            self._initialization_parameters = data.get_parameter("initialization_parameters")
-            self._calculation_parameters    = data.get_parameter("calculation_parameters")
-            self._process_manager           = data.get_parameter("process_manager")
+            data = data.duplicate()
+
+            self._initialization_parameters = data.get_initialization_parameters()
+            self._calculation_parameters = data.get_calculation_parameters()
+            self._process_manager = data.get_process_manager()
 
             if self.is_automatic_run:
                 self._execute()
