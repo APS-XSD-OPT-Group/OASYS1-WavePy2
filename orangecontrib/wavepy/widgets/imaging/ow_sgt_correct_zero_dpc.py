@@ -42,82 +42,64 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         #
 # POSSIBILITY OF SUCH DAMAGE.                                             #
 # #########################################################################
-from oasys.widgets.widget import OWWidget
+from orangewidget.settings import Setting
 from orangewidget import gui
 from oasys.widgets import gui as oasysgui
-from orangewidget.widget import OWAction
-from orangewidget.settings import Setting
 
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtCore import QRect
+from wavepy2.util.plot.plot_tools import PlottingProperties, DefaultContextWidget
 
-INITIALIZATION_PARAMETERS = "initialization_parameters"
-CALCULATION_PARAMETERS    = "calculation_parameters"
-PROCESS_MANAGER           = "process_manager"
+from orangecontrib.wavepy.widgets.gui.ow_wavepy_widget import clear_layout
+from orangecontrib.wavepy.widgets.gui.ow_wavepy_process_widget import WavePyProcessWidget
 
-class WavePyWidget(OWWidget):
+class OWSGTCorrectZeroDPC(WavePyProcessWidget):
+    name = "S.G.T. - Correct Zero DPC"
+    id = "sgt_correct_zero_dpc"
+    description = "S.G.T. - Correct Zero DPC"
+    icon = "icons/sgt_correct_zero_dpc.png"
+    priority = 7
+    category = ""
+    keywords = ["wavepy", "tools", "crop"]
 
-    want_main_area=1
+    CONTROL_AREA_HEIGTH = 840
+    CONTROL_AREA_WIDTH = 1500
 
-    is_automatic_run = Setting(False)
-
-    error_id = 0
-    warning_id = 0
-    info_id = 0
-
-    CONTROL_AREA_WIDTH = 405
-    TABS_AREA_HEIGHT = 560
-
-    MAX_WIDTH_FULL = 1320
     MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
-    MAX_HEIGHT = 700
+    MAX_HEIGHT = CONTROL_AREA_HEIGTH + 10
 
-    def __init__(self, show_general_option_box=False, show_automatic_box=False):
-        super().__init__()
+    must_clean_layout = True
 
-        runaction = OWAction(self._get_execute_button_label(), self)
-        runaction.triggered.connect(self._execute)
-        self.addAction(runaction)
+    correct_pi_jump = Setting(1)
+    remove_mean = Setting(1)
+    correct_dpc_center = Setting(1)
 
-        geom = QApplication.desktop().availableGeometry()
-        self.setGeometry(QRect(round(geom.width()*0.05),
-                               round(geom.height()*0.05),
-                               round(min(geom.width() * 0.98, self.MAX_WIDTH_FULL if self.want_main_area==1 else self.MAX_WIDTH_NO_MAIN)),
-                               round(min(geom.height()*0.95, self.MAX_HEIGHT))))
+    def __init__(self):
+        super(OWSGTCorrectZeroDPC, self).__init__(show_general_option_box=True, show_automatic_box=True)
 
-        self.setMaximumHeight(self.geometry().height())
-        self.setMaximumWidth(self.geometry().width())
+        self._options_area = oasysgui.widgetBox(self._wavepy_widget_area, "Options", addSpace=False, orientation="vertical", width=200)
 
-        self.controlArea.setFixedWidth(self.CONTROL_AREA_WIDTH)
+        gui.checkBox(self._options_area, self, "correct_pi_jump", "Correct pi jump in DPC signal")
+        gui.checkBox(self._options_area, self, "remove_mean", "Remove mean DPC")
+        gui.checkBox(self._options_area, self, "correct_dpc_center", "Correct DPC center")
 
-        self.general_options_box = oasysgui.widgetBox(self.controlArea, "General Options", addSpace=True, orientation="horizontal")
-        self.general_options_box.setVisible(show_general_option_box)
-
-        if show_automatic_box :
-            gui.checkBox(self.general_options_box, self, 'is_automatic_run', 'Automatic Execution')
-
-        self.button_box = oasysgui.widgetBox(self.controlArea, "", addSpace=True, orientation="horizontal")
-
-        gui.button(self.button_box, self, self._get_execute_button_label(), callback=self._execute, height=45)
-
-        self._wavepy_widget_area = oasysgui.widgetBox(self.controlArea, "", addSpace=False, orientation="horizontal", width=self.CONTROL_AREA_WIDTH)
-
-    def _execute(self):
-        raise NotImplementedError("This method is abstract")
-
-    def _get_execute_button_label(self):
-        return "Execute"
+        self._wavepy_widget_area_2 = oasysgui.widgetBox(self._wavepy_widget_area, "", addSpace=False, orientation="vertical", width=self.CONTROL_AREA_WIDTH-200)
 
     def _clear_wavepy_layout(self):
-        clear_layout(self._wavepy_widget_area.layout())
+        clear_layout(self._wavepy_widget_area_2.layout())
 
-def clear_layout(layout):
-    for i in reversed(range(layout.count())):
-        layoutItem = layout.itemAt(i)
-        if layoutItem.widget() is not None:
-            widgetToRemove = layoutItem.widget()
-            widgetToRemove.setParent(None)
-            layout.removeWidget(widgetToRemove)
-        else:
-            layoutToRemove = layout.itemAt(i)
-            clear_layout(layoutToRemove)
+    def _get_default_context(self):
+        return DefaultContextWidget(self._wavepy_widget_area_2)
+
+    def _get_execute_button_label(self):
+        return "Correct Zero DPC"
+
+    def _get_output_parameters(self):
+        self._initialization_parameters.set_parameter("correct_pi_jump", self.correct_pi_jump==1)
+        self._initialization_parameters.set_parameter("remove_mean", self.remove_mean==1)
+        self._initialization_parameters.set_parameter("correct_dpc_center", self.correct_dpc_center==1)
+
+        return self._process_manager.correct_zero_dpc(dpc_result=self._calculation_parameters,
+                                                      initialization_parameters=self._initialization_parameters,
+                                                      plotting_properties=PlottingProperties(context_widget=self._get_default_context(),
+                                                                                             add_context_label=False,
+                                                                                             use_unique_id=True))
+
