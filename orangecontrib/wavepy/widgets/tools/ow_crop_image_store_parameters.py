@@ -13,7 +13,7 @@ from wavepy2.util.plot.plot_tools import PlottingProperties, DefaultContextWidge
 from wavepy2.tools.common.wavepy_data import WavePyData
 from wavepy2.tools.common.bl import crop_image
 
-class OWColorbarCropImage(WavePyWidget):
+class OWCropImageStoreParameters(WavePyWidget):
     name = "Crop Image & Store Params"
     id = "colorbar_crop_image"
     description = "Crop Image & Store Params"
@@ -38,7 +38,7 @@ class OWColorbarCropImage(WavePyWidget):
     MAX_HEIGHT = CONTROL_AREA_HEIGTH + 10
 
     def __init__(self):
-        super(OWColorbarCropImage, self).__init__(show_general_option_box=True, show_automatic_box=True)
+        super(OWCropImageStoreParameters, self).__init__(show_general_option_box=True, show_automatic_box=True)
 
         self.setFixedWidth(self.MAX_WIDTH_NO_MAIN)
         self.setFixedHeight(self.MAX_HEIGHT)

@@ -73,10 +73,10 @@ class OWSGTCalculateDPC(WavePyWidget):
 
         gui.rubber(self.controlArea)
 
-        output = WavePyData()
+        output = OasysWavePyData()
 
-        output.set_parameter("process_manager",           self._process_manager)
-        output.set_parameter("initialization_parameters", self._initialization_parameters)
-        output.set_parameter("calculation_parameters",    output_calculation_parameters)
+        output.set_process_manager(self._process_manager)
+        output.set_initialization_parameters(self._initialization_parameters)
+        output.set_calculation_parameters(output_calculation_parameters)
 
         self.send("WavePy Data", output)

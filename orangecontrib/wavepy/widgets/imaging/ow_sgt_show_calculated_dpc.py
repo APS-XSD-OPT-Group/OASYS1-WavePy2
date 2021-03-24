@@ -13,11 +13,11 @@ from wavepy2.util.plot.plot_tools import PlottingProperties, DefaultContextWidge
 from wavepy2.tools.common.wavepy_data import WavePyData
 from wavepy2.tools.common.bl import crop_image
 
-class OWSGTManageCropDPC(WavePyWidget):
-    name = "S.G.T. - Manage Crop DPC"
-    id = "sgt_manage_crop_dpc"
-    description = "S.G.T. - Manage Crop DPC"
-    icon = "icons/sgt_manage_crop_dpc.png"
+class OWSGTShowCalculatedDPC(WavePyWidget):
+    name = "S.G.T. - Show Calculated DPC"
+    id = "sgt_show_calculated_dpc"
+    description = "S.G.T. - Show Calculated DPC"
+    icon = "icons/sgt_show_calculated_dpc.png"
     priority = 6
     category = ""
     keywords = ["wavepy", "tools", "crop"]
@@ -38,7 +38,7 @@ class OWSGTManageCropDPC(WavePyWidget):
     MAX_HEIGHT = CONTROL_AREA_HEIGTH + 10
 
     def __init__(self):
-        super(OWSGTManageCropDPC, self).__init__(show_general_option_box=True, show_automatic_box=True)
+        super(OWSGTShowCalculatedDPC, self).__init__(show_general_option_box=True, show_automatic_box=True)
 
         self.setFixedWidth(self.MAX_WIDTH_NO_MAIN)
         self.setFixedHeight(self.MAX_HEIGHT)

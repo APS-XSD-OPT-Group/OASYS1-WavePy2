@@ -91,7 +91,10 @@ INSTALL_REQUIRES = (
 PACKAGES = find_packages(exclude=('*.tests', '*.tests.*', 'tests.*', 'tests'))
 
 PACKAGE_DATA = {
-    "orangecontrib.wavepy.widgets":["icons/*.png", "icons/*.jpg", "misc/*.*", "data/*.*"],
+    "orangecontrib.wavepy.widgets.imaging":["icons/*.png", "icons/*.jpg", "misc/*.*", "data/*.*"],
+    "orangecontrib.wavepy.widgets.diagnostic": ["icons/*.png", "icons/*.jpg", "misc/*.*", "data/*.*"],
+    "orangecontrib.wavepy.widgets.metrology": ["icons/*.png", "icons/*.jpg", "misc/*.*", "data/*.*"],
+    "orangecontrib.wavepy.widgets.tools": ["icons/*.png", "icons/*.jpg", "misc/*.*", "data/*.*"],
 }
 
 NAMESPACE_PACAKGES = ["orangecontrib", "orangecontrib.wavepy", "orangecontrib.wavepy.widgets"]
@@ -99,7 +102,9 @@ NAMESPACE_PACAKGES = ["orangecontrib", "orangecontrib.wavepy", "orangecontrib.wa
 ENTRY_POINTS = {
     'oasys.addons' : ("wavepy = orangecontrib.wavepy", ),
     'oasys.widgets' : (
-        "WavepPy = orangecontrib.wavepy.widgets.wavepy",
+        "WavepPy Imaging = orangecontrib.wavepy.widgets.imaging",
+        "WavepPy Diagnostic = orangecontrib.wavepy.widgets.diagnostic",
+        "WavepPy Metrology = orangecontrib.wavepy.widgets.metrology",
         "WavepPy Tools = orangecontrib.wavepy.widgets.tools",
     ),
     'oasys.menus' : ("wavepymenu = orangecontrib.wavepy.menu",)

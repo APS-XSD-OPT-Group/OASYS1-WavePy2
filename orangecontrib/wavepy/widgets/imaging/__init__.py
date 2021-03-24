@@ -11,12 +11,12 @@ Widgets for association rules.
 
 # Category description for the widget registry
 
-NAME = "Tools"
+NAME = "Wavepy - Imaging"
 
-DESCRIPTION = "Widgets for WavePy - Tools"
+DESCRIPTION = "Widgets for WavePy - Imaging"
 
 BACKGROUND = "#A9F5BC"
 
-ICON = "icons/utility.png"
+ICON = "icons/wavepy.png"
 
-PRIORITY = 0.4
+PRIORITY = 0.1
