@@ -1,5 +1,3 @@
-import os
-
 from oasys.widgets.widget import OWWidget
 from orangewidget import gui
 from oasys.widgets import gui as oasysgui
@@ -12,7 +10,6 @@ from PyQt5.QtCore import QRect
 INITIALIZATION_PARAMETERS = "initialization_parameters"
 CALCULATION_PARAMETERS    = "calculation_parameters"
 PROCESS_MANAGER           = "process_manager"
-
 
 class WavePyWidget(OWWidget):
 
@@ -68,14 +65,15 @@ class WavePyWidget(OWWidget):
         return "Execute"
 
     def _clear_wavepy_layout(self):
-        layout = self._wavepy_widget_area.layout()
+        clear_layout(self._wavepy_widget_area.layout())
 
-        for i in reversed(range(layout.count())):
-            layoutItem = layout.itemAt(i)
-            if layoutItem.widget() is not None:
-                widgetToRemove = layoutItem.widget()
-                widgetToRemove.setParent(None)
-                layout.removeWidget(widgetToRemove)
-            else:
-                layoutToRemove = layout.itemAt(i)
-                clearLayout(layoutToRemove)
+def clear_layout(layout):
+    for i in reversed(range(layout.count())):
+        layoutItem = layout.itemAt(i)
+        if layoutItem.widget() is not None:
+            widgetToRemove = layoutItem.widget()
+            widgetToRemove.setParent(None)
+            layout.removeWidget(widgetToRemove)
+        else:
+            layoutToRemove = layout.itemAt(i)
+            clear_layout(layoutToRemove)
