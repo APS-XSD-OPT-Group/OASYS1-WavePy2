@@ -55,14 +55,18 @@ base_tools_path = "orangecontrib.wavepy.widgets.tools."
 base_sgt_path = "orangecontrib.wavepy.widgets.imaging."
 
 sgt_analysis_widget_list = [
-    base_sgt_path + "ow_sgt_init.OWSGTInit",
-    base_sgt_path + "ow_sgt_manager_initialization.OWSGTManagerInitialization",
-    base_tools_path + "ow_crop_image_store_parameters.OWCropImageStoreParameters",
-    base_sgt_path + "ow_sgt_crop_reference_image.OWSGTCropReferenceImage",
-    base_sgt_path + "ow_sgt_calculate_dpc.OWSGTCalculateDPC",
-    base_sgt_path + "ow_sgt_crop_dpc.OWSGTCropDPC",
-    base_sgt_path + "ow_sgt_show_calculated_dpc.OWSGTShowCalculatedDPC",
-    base_sgt_path + "ow_sgt_correct_zero_dpc.OWSGTCorrectZeroDPC",
+    [base_sgt_path + "ow_sgt_init.OWSGTInit", (0.0, 50.0)],
+    [base_sgt_path + "ow_sgt_manager_initialization.OWSGTManagerInitialization", None],
+    [base_tools_path + "ow_crop_image_store_parameters.OWCropImageStoreParameters", None],
+    [base_sgt_path + "ow_sgt_crop_reference_image.OWSGTCropReferenceImage", None],
+    [base_sgt_path + "ow_sgt_calculate_dpc.OWSGTCalculateDPC", (50.0, 200.0)],
+    [base_sgt_path + "ow_sgt_crop_dpc.OWSGTCropDPC", None],
+    [base_sgt_path + "ow_sgt_show_calculated_dpc.OWSGTShowCalculatedDPC", None],
+    [base_sgt_path + "ow_sgt_correct_zero_dpc.OWSGTCorrectZeroDPC", None],
+    [base_sgt_path + "ow_sgt_remove_linear_fit_dpc.OWSGTRemoveLinearFitDPC", None],
+    [base_sgt_path + "ow_sgt_dpc_profile_analysis.OWSGTDPCProfileAnalysis", None],
+    [base_sgt_path + "ow_sgt_fit_radius_dpc.OWSGTFitRadiusDPC", None],
+    #[base_sgt_path + "ow_sgt_do_integration.OWSGTDoIntegration", (50.0, 400.0)],
 ]
 
 def showInfoMessage(message):
@@ -148,12 +152,10 @@ class WavePyMenu(OMenu):
 
     def create_analysis(self, widgets_list):
         nodes = []
-
-        for widget in widgets_list:
-            nodes.extend(self.createNewNodeAndWidget(self.getWidgetDesc(widget), is_automatic=True))
-
+        for widget, position in widgets_list: nodes.extend(self.createNewNodeAndWidget(widget_desc=self.getWidgetDesc(widget),
+                                                                                       position=position,
+                                                                                       is_automatic=True))
         self.createLinks(nodes)
-
 
 
     #################################################################
@@ -176,13 +178,13 @@ class WavePyMenu(OMenu):
     def getWidgetDesc(self, widget_name):
         return self.canvas_main_window.widget_registry.widget(widget_name)
 
-    def createNewNode(self, widget_desc):
-        return self.canvas_main_window.current_document().createNewNode(widget_desc)
+    def createNewNode(self, widget_desc, position=None):
+        return self.canvas_main_window.current_document().createNewNode(widget_desc, position=position)
 
-    def createNewNodeAndWidget(self, widget_desc, is_automatic=True):
+    def createNewNodeAndWidget(self, widget_desc, position=None, is_automatic=True):
         nodes = []
 
-        nodes.append(self.createNewNode(widget_desc))
+        nodes.append(self.createNewNode(widget_desc, position))
         widget = self.getWidgetFromNode(nodes[0])
         widget.is_automatic_run = is_automatic
 
