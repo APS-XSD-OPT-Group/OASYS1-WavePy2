@@ -1,6 +1,6 @@
 # OASYS1-WavePy
 
-OASYS1-Wavepy is the OASYS Add-on of [wavepy2](https://github.com/APS-XSD-OPT-Group/wavepy2).
+OASYS1-Wavepy is the [OASYS](https://www.aps.anl.gov/Science/Scientific-Software/OASYS) Add-on of [wavepy2](https://github.com/APS-XSD-OPT-Group/wavepy2).
 
 Authors
 -------------
@@ -14,7 +14,7 @@ Argonne National Laboratory
 Instructions
 -------------
 
-To install: Use the OASYS Add-on Form (Options->Add-ons...)
+To install: Use the [OASYS](https://www.aps.anl.gov/Science/Scientific-Software/OASYS) Add-on Form (Options->Add-ons...)
 
 Copyright
 ----------
