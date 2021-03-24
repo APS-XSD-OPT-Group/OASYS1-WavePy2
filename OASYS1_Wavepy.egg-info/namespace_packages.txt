@@ -1,3 +1,0 @@
-orangecontrib
-orangecontrib.wavepy
-orangecontrib.wavepy.widgets
