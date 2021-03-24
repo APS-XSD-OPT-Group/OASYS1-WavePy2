@@ -79,9 +79,15 @@ class WavePyProcessWidget(WavePyWidget):
             if self.is_automatic_run: self._execute()
 
     def _execute(self):
+        self.progressBarInit()
+
         if self.must_clean_layout: self._clear_wavepy_layout()
 
+        self.progressBarSet(10)
+
         output_calculation_parameters = self._get_output_parameters()
+
+        self.progressBarSet(90)
 
         self.controlArea.setFixedWidth(self.CONTROL_AREA_WIDTH)
         self.controlArea.setFixedHeight(self.CONTROL_AREA_HEIGTH)
@@ -92,6 +98,9 @@ class WavePyProcessWidget(WavePyWidget):
         output.set_process_manager(self._process_manager)
         output.set_initialization_parameters(self._initialization_parameters)
         output.set_calculation_parameters(output_calculation_parameters)
+
+        self.progressBarSet(100)
+        self.progressBarFinished()
 
         self.send("WavePy Data", output)
 

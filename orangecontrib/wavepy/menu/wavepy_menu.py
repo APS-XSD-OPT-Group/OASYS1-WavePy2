@@ -45,9 +45,56 @@
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import QSettings
 
+from orangecanvas.scheme.link import SchemeLink
+
 from oasys.menus.menu import OMenu
 from wavepy2.util.plot.plotter import PlotterMode
 from wavepy2.util.log.logger import LoggerMode
+
+base_tools_path = "orangecontrib.wavepy.widgets.tools."
+base_sgt_path = "orangecontrib.wavepy.widgets.imaging."
+
+sgt_analysis_widget_list = [
+    base_sgt_path + "ow_sgt_init.OWSGTInit",
+    base_sgt_path + "ow_sgt_manager_initialization.OWSGTManagerInitialization",
+    base_tools_path + "ow_crop_image_store_parameters.OWCropImageStoreParameters",
+    base_sgt_path + "ow_sgt_crop_reference_image.OWSGTCropReferenceImage",
+    base_sgt_path + "ow_sgt_calculate_dpc.OWSGTCalculateDPC",
+    base_sgt_path + "ow_sgt_crop_dpc.OWSGTCropDPC",
+    base_sgt_path + "ow_sgt_show_calculated_dpc.OWSGTShowCalculatedDPC",
+    base_sgt_path + "ow_sgt_correct_zero_dpc.OWSGTCorrectZeroDPC",
+]
+
+def showInfoMessage(message):
+    msgBox = QtWidgets.QMessageBox()
+    msgBox.setIcon(QtWidgets.QMessageBox.Information)
+    msgBox.setText(message)
+    msgBox.setStandardButtons(QtWidgets.QMessageBox.Ok)
+    msgBox.exec_()
+
+def showConfirmMessage(text, message):
+    msgBox = QtWidgets.QMessageBox()
+    msgBox.setIcon(QtWidgets.QMessageBox.Question)
+    msgBox.setText(text)
+    msgBox.setInformativeText(message)
+    msgBox.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+    msgBox.setDefaultButton(QtWidgets.QMessageBox.No)
+    ret = msgBox.exec_()
+    return ret
+
+def showWarningMessage(message):
+    msgBox = QtWidgets.QMessageBox()
+    msgBox.setIcon(QtWidgets.QMessageBox.Warning)
+    msgBox.setText(message)
+    msgBox.setStandardButtons(QtWidgets.QMessageBox.Ok)
+    msgBox.exec_()
+
+def showCriticalMessage(message):
+    msgBox = QtWidgets.QMessageBox()
+    msgBox.setIcon(QtWidgets.QMessageBox.Critical)
+    msgBox.setText(message)
+    msgBox.setStandardButtons(QtWidgets.QMessageBox.Ok)
+    msgBox.exec_()
 
 class WavePyMenu(OMenu):
 
@@ -67,6 +114,8 @@ class WavePyMenu(OMenu):
         self.addSubMenu("Set Logger Mode: ERROR")
         self.addSubMenu("Set Logger Mode: NONE")
         self.closeContainer()
+
+        self.addSubMenu("Create Single Grating Talbot Analysis")
 
     def executeAction_1(self, action):
         QSettings().setValue("wavepy/plotter_mode", PlotterMode.FULL)
@@ -92,33 +141,49 @@ class WavePyMenu(OMenu):
         QSettings().setValue("wavepy/logger_mode", LoggerMode.NONE)
         showInfoMessage("Logger Mode set to: NONE\nReload the workspace to make it effective")
 
-def showInfoMessage(message):
-    msgBox = QtWidgets.QMessageBox()
-    msgBox.setIcon(QtWidgets.QMessageBox.Information)
-    msgBox.setText(message)
-    msgBox.setStandardButtons(QtWidgets.QMessageBox.Ok)
-    msgBox.exec_()
+    def executeAction_7(self, action):
+        if showConfirmMessage("Confirm Action", "Create Single Grating Talbot Analysis?") == QtWidgets.QMessageBox.Yes:
+            self.create_analysis(sgt_analysis_widget_list)
 
-def showConfirmMessage(message):
-    msgBox = QtWidgets.QMessageBox()
-    msgBox.setIcon(QtWidgets.QMessageBox.Question)
-    msgBox.setText(message)
-    msgBox.setInformativeText(message)
-    msgBox.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
-    msgBox.setDefaultButton(QtWidgets.QMessageBox.No)
-    ret = msgBox.exec_()
-    return ret
 
-def showWarningMessage(message):
-    msgBox = QtWidgets.QMessageBox()
-    msgBox.setIcon(QtWidgets.QMessageBox.Warning)
-    msgBox.setText(message)
-    msgBox.setStandardButtons(QtWidgets.QMessageBox.Ok)
-    msgBox.exec_()
+    def create_analysis(self, widgets_list):
+        nodes = []
 
-def showCriticalMessage(message):
-    msgBox = QtWidgets.QMessageBox()
-    msgBox.setIcon(QtWidgets.QMessageBox.Critical)
-    msgBox.setText(message)
-    msgBox.setStandardButtons(QtWidgets.QMessageBox.Ok)
-    msgBox.exec_()
+        for widget in widgets_list:
+            nodes.extend(self.createNewNodeAndWidget(self.getWidgetDesc(widget), is_automatic=True))
+
+        self.createLinks(nodes)
+
+
+
+    #################################################################
+    #
+    # SCHEME MANAGEMENT
+    #
+    #################################################################
+
+    def getWidgetFromNode(self, node):
+        return self.canvas_main_window.current_document().scheme().widget_for_node(node)
+
+    def createLinks(self, nodes):
+        previous_node = None
+        for node in nodes:
+            if not previous_node is None:
+                link = SchemeLink(source_node=previous_node, source_channel="WavePy Data", sink_node=node, sink_channel="WavePy Data")
+                self.canvas_main_window.current_document().addLink(link=link)
+            previous_node = node
+
+    def getWidgetDesc(self, widget_name):
+        return self.canvas_main_window.widget_registry.widget(widget_name)
+
+    def createNewNode(self, widget_desc):
+        return self.canvas_main_window.current_document().createNewNode(widget_desc)
+
+    def createNewNodeAndWidget(self, widget_desc, is_automatic=True):
+        nodes = []
+
+        nodes.append(self.createNewNode(widget_desc))
+        widget = self.getWidgetFromNode(nodes[0])
+        widget.is_automatic_run = is_automatic
+
+        return nodes

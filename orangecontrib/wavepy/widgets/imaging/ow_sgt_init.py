@@ -69,10 +69,10 @@ class OWSGTInit(WavePyWidget):
     category = ""
     keywords = ["wavepy", "sgt", "init"]
 
-    outputs = [{"name": "S.G.T. Initialization",
+    outputs = [{"name": "WavePy Data",
                 "type": OasysWavePyData,
-                "doc": "S.G.T. Initialization",
-                "id": "SGT_Initialization"}]
+                "doc": "WavePy Data",
+                "id": "WavePy_Data"}]
 
     want_main_area = 0
 
@@ -111,6 +111,6 @@ class OWSGTInit(WavePyWidget):
         output.set_process_manager(self.__single_grating_talbot_manager)
         output.set_initialization_parameters(self.__init_widget.get_accepted_output())
 
-        self.send("S.G.T. Initialization", output)
+        self.send("WavePy Data", output)
 
 

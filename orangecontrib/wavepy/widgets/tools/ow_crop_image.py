@@ -93,6 +93,8 @@ class OWCropImage(WavePyWidget):
 
     def set_input(self, data):
         if not data is None:
+            self.progressBarInit()
+
             data = data.duplicate()
 
             self._initialization_parameters = data.get_initialization_parameters()
@@ -106,16 +108,23 @@ class OWCropImage(WavePyWidget):
             if not img is None:
                 self._clear_wavepy_layout()
 
+                self.progressBarSet(10)
+
                 self.__crop_widget = crop_image.draw_crop_image(initialization_parameters=self._initialization_parameters,
                                                                 plotting_properties=PlottingProperties(context_widget=DefaultContextWidget(self._wavepy_widget_area),
                                                                                                        add_context_label=False,
                                                                                                        use_unique_id=True),
                                                                 img=img, tab_widget_height=660)[0]
 
+            self.progressBarSet(90)
+
             self.controlArea.setFixedWidth(self.CONTROL_AREA_WIDTH)
             self.controlArea.setFixedHeight(self.CONTROL_AREA_HEIGTH)
 
             gui.rubber(self.controlArea)
+
+            self.progressBarSet(100)
+            self.progressBarFinished()
 
             if self.is_automatic_run: self._cancel()
 
