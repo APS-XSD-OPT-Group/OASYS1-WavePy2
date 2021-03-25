@@ -1,4 +1,3 @@
-#! /usr/bin/env python3
 # #########################################################################
 # Copyright (c) 2020, UChicago Argonne, LLC. All rights reserved.         #
 #                                                                         #
@@ -43,104 +42,72 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         #
 # POSSIBILITY OF SUCH DAMAGE.                                             #
 # #########################################################################
+from PyQt5.QtCore import QSettings
 
-import os
+from orangewidget import gui
 
-try:
-    from setuptools import find_packages, setup
-except AttributeError:
-    from setuptools import find_packages, setup
+from orangecontrib.wavepy2.util.gui.ow_wavepy_widget import WavePyWidget
+from orangecontrib.wavepy2.util.wavepy_objects import OasysWavePyData
 
-NAME = 'OASYS1-Wavepy2'
-VERSION = '0.0.1'
-ISRELEASED = False
+from wavepy2.util.common.common_tools import AlreadyInitializedError
+from wavepy2.util.log.logger import register_logger_single_instance, LoggerMode
+from wavepy2.util.plot.plotter import register_plotter_instance, PlotterMode
+from wavepy2.util.ini.initializer import register_ini_instance, IniMode
+from wavepy2.util.plot.plot_tools import PlottingProperties, DefaultContextWidget
 
-DESCRIPTION = 'WavePy2, data analyses of coherence and wavefront measurements at synchrotron beamlines'
-README_FILE = os.path.join(os.path.dirname(__file__), 'README.md')
-LONG_DESCRIPTION = open(README_FILE).read()
-AUTHOR = 'Luca Rebuffi'
-AUTHOR_EMAIL = 'lrebuffi@anl.gov'
-URL = 'https://github.com/APS-XSD-OPT-Group/OASYS1-WavePy2'
-DOWNLOAD_URL = 'https://github.com/APS-XSD-OPT-Group/OASYS1-WavePy2'
-LICENSE = 'GPLv3'
+from wavepy2.tools.imaging.single_grating.bl.single_grating_talbot import create_single_grating_talbot_manager
 
-KEYWORDS = (
-    'ray-tracing',
-    'simulator',
-    'oasys1',
-)
+class OWSGTInit(WavePyWidget):
+    name = "S.G.T. - Initialization"
+    id = "sgt_init"
+    description = "S.G.T. - Initialization"
+    icon = "icons/sgt_init.png"
+    priority = 1
+    category = ""
+    keywords = ["wavepy", "sgt", "init"]
 
-CLASSIFIERS = (
-    'Development Status :: 4 - Beta',
-    'License :: OSI Approved :: BSD License',
-    'Natural Language :: English',
-    'Environment :: X11 Applications :: Qt',
-    'Environment :: Plugins',
-    'Programming Language :: Python :: 3.7',
-    'Topic :: Scientific/Engineering :: Visualization',
-    'Intended Audience :: Science/Research'
+    outputs = [{"name": "WavePy Data",
+                "type": OasysWavePyData,
+                "doc": "WavePy Data",
+                "id": "WavePy_Data"}]
 
-)
+    want_main_area = 0
 
-SETUP_REQUIRES = (
-    'setuptools',
-)
+    CONTROL_AREA_WIDTH = 855
 
-INSTALL_REQUIRES = (
-    'oasys1>=1.2.72',
-    'wavepy2>=0.0.33',
-)
+    MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 5
+    MAX_HEIGHT = 490
 
-PACKAGES = find_packages(exclude=('*.tests', '*.tests.*', 'tests.*', 'tests'))
+    def __init__(self):
+        super(OWSGTInit, self).__init__(show_general_option_box=False, show_automatic_box=False)
+        try: register_logger_single_instance(logger_mode=QSettings().value("wavepy/logger_mode", LoggerMode.FULL, type=int))
+        except AlreadyInitializedError: pass
+        try: register_plotter_instance(plotter_mode=QSettings().value("wavepy/plotter_mode", PlotterMode.FULL, type=int))
+        except AlreadyInitializedError: pass
+        try: register_ini_instance(IniMode.LOCAL_FILE, ini_file_name=".single_grating_talbot.ini")
+        except AlreadyInitializedError: pass
 
-PACKAGE_DATA = {
-    "orangecontrib.wavepy2.widgets.imaging":["icons/*.png", "icons/*.jpg", "misc/*.*", "data/*.*"],
-    "orangecontrib.wavepy2.widgets.diagnostic": ["icons/*.png", "icons/*.jpg", "misc/*.*", "data/*.*"],
-    "orangecontrib.wavepy2.widgets.metrology": ["icons/*.png", "icons/*.jpg", "misc/*.*", "data/*.*"],
-    "orangecontrib.wavepy2.widgets.tools": ["icons/*.png", "icons/*.jpg", "misc/*.*", "data/*.*"],
-}
+        self.setFixedWidth(self.MAX_WIDTH_NO_MAIN)
+        self.setFixedHeight(self.MAX_HEIGHT)
 
-NAMESPACE_PACAKGES = ["orangecontrib", "orangecontrib.wavepy2", "orangecontrib.wavepy2.widgets"]
+        self.__single_grating_talbot_manager = create_single_grating_talbot_manager()
 
-ENTRY_POINTS = {
-    'oasys.addons' : ("wavepy2 = orangecontrib.wavepy2", ),
-    'oasys.widgets' : (
-        "WavepPy2 Imaging = orangecontrib.wavepy2.widgets.imaging",
-        "WavepPy2 Diagnostic = orangecontrib.wavepy2.widgets.diagnostic",
-        "WavepPy2 Metrology = orangecontrib.wavepy2.widgets.metrology",
-        "WavepPy2 Tools = orangecontrib.wavepy2.widgets.tools",
-    ),
-    'oasys.menus' : ("wavepy2menu = orangecontrib.wavepy2.menu",)
-}
+        self.__init_widget = self.__single_grating_talbot_manager.draw_initialization_parameters_widget(plotting_properties=PlottingProperties(context_widget=DefaultContextWidget(self._wavepy_widget_area),
+                                                                                                                                               show_runtime_options=False,
+                                                                                                                                               add_context_label=False,
+                                                                                                                                               use_unique_id=True),
+                                                                                                        widget_height=330)[0]
 
-if __name__ == '__main__':
-    is_beta = False
+        self.controlArea.setFixedHeight(self.__init_widget.height() + 145)
 
-    try:
-        import PyMca5, PyQt4
+        gui.rubber(self.controlArea)
 
-        is_beta = True
-    except:
-        setup(
-              name = NAME,
-              version = VERSION,
-              description = DESCRIPTION,
-              long_description = LONG_DESCRIPTION,
-              author = AUTHOR,
-              author_email = AUTHOR_EMAIL,
-              url = URL,
-              download_url = DOWNLOAD_URL,
-              license = LICENSE,
-              keywords = KEYWORDS,
-              classifiers = CLASSIFIERS,
-              packages = PACKAGES,
-              package_data = PACKAGE_DATA,
-              setup_requires = SETUP_REQUIRES,
-              install_requires = INSTALL_REQUIRES,
-              entry_points = ENTRY_POINTS,
-              namespace_packages=NAMESPACE_PACAKGES,
-              include_package_data = True,
-              zip_safe = False,
-              )
+    def _execute(self):
+        output = OasysWavePyData()
 
-    if is_beta: raise NotImplementedError("This version of Wavepy doesn't work with Oasys1 beta.\nPlease install OASYS1 final release: https://www.aps.anl.gov/Science/Scientific-Software/OASYS")
+        output.set_process_manager(self.__single_grating_talbot_manager)
+        output.set_initialization_parameters(self.__init_widget.get_accepted_output())
+
+        self.send("WavePy Data", output)
+
+

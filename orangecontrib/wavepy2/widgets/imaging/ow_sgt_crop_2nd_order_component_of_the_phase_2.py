@@ -1,4 +1,3 @@
-#! /usr/bin/env python3
 # #########################################################################
 # Copyright (c) 2020, UChicago Argonne, LLC. All rights reserved.         #
 #                                                                         #
@@ -43,104 +42,38 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         #
 # POSSIBILITY OF SUCH DAMAGE.                                             #
 # #########################################################################
+from orangecontrib.wavepy2.util.gui.ow_wavepy_interactive_widget import WavePyInteractiveWidget
 
-import os
+class OWSGTCrop2ndOrderComponentOfThePhase2(WavePyInteractiveWidget):
+    name = "S.G.T. - Crop 2nd Order Component of the Phase 2"
+    id = "sgt_crop_2nd_order_cpt_phase_2"
+    description = "S.G.T. - Crop 2nd Order Component of the Phase 2"
+    icon = "icons/sgt_crop_2nd_order_cpt_phase_2.png"
+    priority = 16
+    category = ""
+    keywords = ["wavepy", "tools", "crop"]
 
-try:
-    from setuptools import find_packages, setup
-except AttributeError:
-    from setuptools import find_packages, setup
+    def __init__(self):
+        super(OWSGTCrop2ndOrderComponentOfThePhase2, self).__init__()
 
-NAME = 'OASYS1-Wavepy2'
-VERSION = '0.0.1'
-ISRELEASED = False
+    def _get_interactive_widget(self):
+        if not self._initialization_parameters is None and not self._calculation_parameters is None:
+            self._initialization_parameters.set_parameter("remove_linear", True)
 
-DESCRIPTION = 'WavePy2, data analyses of coherence and wavefront measurements at synchrotron beamlines'
-README_FILE = os.path.join(os.path.dirname(__file__), 'README.md')
-LONG_DESCRIPTION = open(README_FILE).read()
-AUTHOR = 'Luca Rebuffi'
-AUTHOR_EMAIL = 'lrebuffi@anl.gov'
-URL = 'https://github.com/APS-XSD-OPT-Group/OASYS1-WavePy2'
-DOWNLOAD_URL = 'https://github.com/APS-XSD-OPT-Group/OASYS1-WavePy2'
-LICENSE = 'GPLv3'
+            return self._process_manager.draw_crop_2nd_order_component_of_the_phase_2(integration_result=self._calculation_parameters,
+                                                                                      initialization_parameters=self._initialization_parameters,
+                                                                                      plotting_properties=self._get_default_plotting_properties(),
+                                                                                      tab_widget_height=660)[0]
+        else:
+            raise ValueError("No phase to crop found in input data")
 
-KEYWORDS = (
-    'ray-tracing',
-    'simulator',
-    'oasys1',
-)
+    def _get_output_parameters(self, widget_output_data):
+        _, idx4crop, _ = widget_output_data
 
-CLASSIFIERS = (
-    'Development Status :: 4 - Beta',
-    'License :: OSI Approved :: BSD License',
-    'Natural Language :: English',
-    'Environment :: X11 Applications :: Qt',
-    'Environment :: Plugins',
-    'Programming Language :: Python :: 3.7',
-    'Topic :: Scientific/Engineering :: Visualization',
-    'Intended Audience :: Science/Research'
+        return self._process_manager.manage_crop_2nd_order_component_of_the_phase_2(self._calculation_parameters,
+                                                                                    self._initialization_parameters,
+                                                                                    idx4crop)
 
-)
+    def _get_execute_button_label(self):
+        return "Crop for difference to 2nd order component of the phase"
 
-SETUP_REQUIRES = (
-    'setuptools',
-)
-
-INSTALL_REQUIRES = (
-    'oasys1>=1.2.72',
-    'wavepy2>=0.0.33',
-)
-
-PACKAGES = find_packages(exclude=('*.tests', '*.tests.*', 'tests.*', 'tests'))
-
-PACKAGE_DATA = {
-    "orangecontrib.wavepy2.widgets.imaging":["icons/*.png", "icons/*.jpg", "misc/*.*", "data/*.*"],
-    "orangecontrib.wavepy2.widgets.diagnostic": ["icons/*.png", "icons/*.jpg", "misc/*.*", "data/*.*"],
-    "orangecontrib.wavepy2.widgets.metrology": ["icons/*.png", "icons/*.jpg", "misc/*.*", "data/*.*"],
-    "orangecontrib.wavepy2.widgets.tools": ["icons/*.png", "icons/*.jpg", "misc/*.*", "data/*.*"],
-}
-
-NAMESPACE_PACAKGES = ["orangecontrib", "orangecontrib.wavepy2", "orangecontrib.wavepy2.widgets"]
-
-ENTRY_POINTS = {
-    'oasys.addons' : ("wavepy2 = orangecontrib.wavepy2", ),
-    'oasys.widgets' : (
-        "WavepPy2 Imaging = orangecontrib.wavepy2.widgets.imaging",
-        "WavepPy2 Diagnostic = orangecontrib.wavepy2.widgets.diagnostic",
-        "WavepPy2 Metrology = orangecontrib.wavepy2.widgets.metrology",
-        "WavepPy2 Tools = orangecontrib.wavepy2.widgets.tools",
-    ),
-    'oasys.menus' : ("wavepy2menu = orangecontrib.wavepy2.menu",)
-}
-
-if __name__ == '__main__':
-    is_beta = False
-
-    try:
-        import PyMca5, PyQt4
-
-        is_beta = True
-    except:
-        setup(
-              name = NAME,
-              version = VERSION,
-              description = DESCRIPTION,
-              long_description = LONG_DESCRIPTION,
-              author = AUTHOR,
-              author_email = AUTHOR_EMAIL,
-              url = URL,
-              download_url = DOWNLOAD_URL,
-              license = LICENSE,
-              keywords = KEYWORDS,
-              classifiers = CLASSIFIERS,
-              packages = PACKAGES,
-              package_data = PACKAGE_DATA,
-              setup_requires = SETUP_REQUIRES,
-              install_requires = INSTALL_REQUIRES,
-              entry_points = ENTRY_POINTS,
-              namespace_packages=NAMESPACE_PACAKGES,
-              include_package_data = True,
-              zip_safe = False,
-              )
-
-    if is_beta: raise NotImplementedError("This version of Wavepy doesn't work with Oasys1 beta.\nPlease install OASYS1 final release: https://www.aps.anl.gov/Science/Scientific-Software/OASYS")

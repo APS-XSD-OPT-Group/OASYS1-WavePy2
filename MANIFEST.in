@@ -1,8 +1,8 @@
 recursive-include orangecontrib *.pyx
 recursive-include orangecontrib *.py
 
-recursive-include orangecontrib/wavepy/widgets *.png *.svg *.ico *.jpg *.bmp
-recursive-include orangecontrib/wavepy/widgets *.dat
+recursive-include orangecontrib/wavepy2/widgets *.png *.svg *.ico *.jpg *.bmp
+recursive-include orangecontrib/wavepy2/widgets *.dat
 
 include README.md
 include LICENSE.pdf

@@ -1,4 +1,3 @@
-#! /usr/bin/env python3
 # #########################################################################
 # Copyright (c) 2020, UChicago Argonne, LLC. All rights reserved.         #
 #                                                                         #
@@ -43,104 +42,64 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         #
 # POSSIBILITY OF SUCH DAMAGE.                                             #
 # #########################################################################
+from orangewidget.settings import Setting
+from orangewidget import gui
+from oasys.widgets import gui as oasysgui
 
-import os
+from wavepy2.util.plot.plot_tools import PlottingProperties, DefaultContextWidget
 
-try:
-    from setuptools import find_packages, setup
-except AttributeError:
-    from setuptools import find_packages, setup
+from orangecontrib.wavepy2.util.gui import clear_layout
+from orangecontrib.wavepy2.util.gui.ow_wavepy_process_widget import WavePyProcessWidget
 
-NAME = 'OASYS1-Wavepy2'
-VERSION = '0.0.1'
-ISRELEASED = False
+class OWSGTCorrectZeroDPC(WavePyProcessWidget):
+    name = "S.G.T. - Correct Zero DPC"
+    id = "sgt_correct_zero_dpc"
+    description = "S.G.T. - Correct Zero DPC"
+    icon = "icons/sgt_correct_zero_dpc.png"
+    priority = 7
+    category = ""
+    keywords = ["wavepy", "tools", "crop"]
 
-DESCRIPTION = 'WavePy2, data analyses of coherence and wavefront measurements at synchrotron beamlines'
-README_FILE = os.path.join(os.path.dirname(__file__), 'README.md')
-LONG_DESCRIPTION = open(README_FILE).read()
-AUTHOR = 'Luca Rebuffi'
-AUTHOR_EMAIL = 'lrebuffi@anl.gov'
-URL = 'https://github.com/APS-XSD-OPT-Group/OASYS1-WavePy2'
-DOWNLOAD_URL = 'https://github.com/APS-XSD-OPT-Group/OASYS1-WavePy2'
-LICENSE = 'GPLv3'
+    CONTROL_AREA_HEIGTH = 840
+    CONTROL_AREA_WIDTH = 1500
 
-KEYWORDS = (
-    'ray-tracing',
-    'simulator',
-    'oasys1',
-)
+    MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
+    MAX_HEIGHT = CONTROL_AREA_HEIGTH + 10
 
-CLASSIFIERS = (
-    'Development Status :: 4 - Beta',
-    'License :: OSI Approved :: BSD License',
-    'Natural Language :: English',
-    'Environment :: X11 Applications :: Qt',
-    'Environment :: Plugins',
-    'Programming Language :: Python :: 3.7',
-    'Topic :: Scientific/Engineering :: Visualization',
-    'Intended Audience :: Science/Research'
+    must_clean_layout = True
 
-)
+    correct_pi_jump = Setting(1)
+    remove_mean = Setting(1)
+    correct_dpc_center = Setting(1)
 
-SETUP_REQUIRES = (
-    'setuptools',
-)
+    def __init__(self):
+        super(OWSGTCorrectZeroDPC, self).__init__()
 
-INSTALL_REQUIRES = (
-    'oasys1>=1.2.72',
-    'wavepy2>=0.0.33',
-)
+        self._options_area = oasysgui.widgetBox(self._wavepy_widget_area, "Options", addSpace=False, orientation="vertical", width=200)
 
-PACKAGES = find_packages(exclude=('*.tests', '*.tests.*', 'tests.*', 'tests'))
+        gui.checkBox(self._options_area, self, "correct_pi_jump", "Correct pi jump in DPC signal")
+        gui.checkBox(self._options_area, self, "remove_mean", "Remove mean DPC")
+        gui.checkBox(self._options_area, self, "correct_dpc_center", "Correct DPC center")
 
-PACKAGE_DATA = {
-    "orangecontrib.wavepy2.widgets.imaging":["icons/*.png", "icons/*.jpg", "misc/*.*", "data/*.*"],
-    "orangecontrib.wavepy2.widgets.diagnostic": ["icons/*.png", "icons/*.jpg", "misc/*.*", "data/*.*"],
-    "orangecontrib.wavepy2.widgets.metrology": ["icons/*.png", "icons/*.jpg", "misc/*.*", "data/*.*"],
-    "orangecontrib.wavepy2.widgets.tools": ["icons/*.png", "icons/*.jpg", "misc/*.*", "data/*.*"],
-}
+        self._wavepy_widget_area_2 = oasysgui.widgetBox(self._wavepy_widget_area, "", addSpace=False, orientation="vertical", width=self.CONTROL_AREA_WIDTH-200)
 
-NAMESPACE_PACAKGES = ["orangecontrib", "orangecontrib.wavepy2", "orangecontrib.wavepy2.widgets"]
+    def _clear_wavepy_layout(self):
+        clear_layout(self._wavepy_widget_area_2.layout())
 
-ENTRY_POINTS = {
-    'oasys.addons' : ("wavepy2 = orangecontrib.wavepy2", ),
-    'oasys.widgets' : (
-        "WavepPy2 Imaging = orangecontrib.wavepy2.widgets.imaging",
-        "WavepPy2 Diagnostic = orangecontrib.wavepy2.widgets.diagnostic",
-        "WavepPy2 Metrology = orangecontrib.wavepy2.widgets.metrology",
-        "WavepPy2 Tools = orangecontrib.wavepy2.widgets.tools",
-    ),
-    'oasys.menus' : ("wavepy2menu = orangecontrib.wavepy2.menu",)
-}
+    def _get_default_context(self):
+        return DefaultContextWidget(self._wavepy_widget_area_2)
 
-if __name__ == '__main__':
-    is_beta = False
+    def _get_execute_button_label(self):
+        return "Correct Zero DPC"
 
-    try:
-        import PyMca5, PyQt4
+    def _get_output_parameters(self):
+        self._initialization_parameters.set_parameter("correct_pi_jump", self.correct_pi_jump==1)
+        self._initialization_parameters.set_parameter("remove_mean", self.remove_mean==1)
+        self._initialization_parameters.set_parameter("correct_dpc_center", self.correct_dpc_center==1)
 
-        is_beta = True
-    except:
-        setup(
-              name = NAME,
-              version = VERSION,
-              description = DESCRIPTION,
-              long_description = LONG_DESCRIPTION,
-              author = AUTHOR,
-              author_email = AUTHOR_EMAIL,
-              url = URL,
-              download_url = DOWNLOAD_URL,
-              license = LICENSE,
-              keywords = KEYWORDS,
-              classifiers = CLASSIFIERS,
-              packages = PACKAGES,
-              package_data = PACKAGE_DATA,
-              setup_requires = SETUP_REQUIRES,
-              install_requires = INSTALL_REQUIRES,
-              entry_points = ENTRY_POINTS,
-              namespace_packages=NAMESPACE_PACAKGES,
-              include_package_data = True,
-              zip_safe = False,
-              )
+        return self._process_manager.correct_zero_dpc(dpc_result=self._calculation_parameters,
+                                                      initialization_parameters=self._initialization_parameters,
+                                                      plotting_properties=PlottingProperties(context_widget=self._get_default_context(),
+                                                                                             add_context_label=False,
+                                                                                             use_unique_id=True))
 
-    if is_beta: raise NotImplementedError("This version of Wavepy doesn't work with Oasys1 beta.\nPlease install OASYS1 final release: https://www.aps.anl.gov/Science/Scientific-Software/OASYS")

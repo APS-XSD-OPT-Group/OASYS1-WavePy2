@@ -1,4 +1,3 @@
-#! /usr/bin/env python3
 # #########################################################################
 # Copyright (c) 2020, UChicago Argonne, LLC. All rights reserved.         #
 #                                                                         #
@@ -43,104 +42,66 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         #
 # POSSIBILITY OF SUCH DAMAGE.                                             #
 # #########################################################################
+from orangewidget import gui
 
-import os
+from orangecontrib.wavepy2.util.gui.ow_wavepy_widget import WavePyWidget
+from orangecontrib.wavepy2.util.wavepy_objects import OasysWavePyData
 
-try:
-    from setuptools import find_packages, setup
-except AttributeError:
-    from setuptools import find_packages, setup
 
-NAME = 'OASYS1-Wavepy2'
-VERSION = '0.0.1'
-ISRELEASED = False
+class WavePyProcessWidget(WavePyWidget):
+    inputs = [("WavePy Data", OasysWavePyData, "set_input"),]
 
-DESCRIPTION = 'WavePy2, data analyses of coherence and wavefront measurements at synchrotron beamlines'
-README_FILE = os.path.join(os.path.dirname(__file__), 'README.md')
-LONG_DESCRIPTION = open(README_FILE).read()
-AUTHOR = 'Luca Rebuffi'
-AUTHOR_EMAIL = 'lrebuffi@anl.gov'
-URL = 'https://github.com/APS-XSD-OPT-Group/OASYS1-WavePy2'
-DOWNLOAD_URL = 'https://github.com/APS-XSD-OPT-Group/OASYS1-WavePy2'
-LICENSE = 'GPLv3'
+    outputs = [{"name": "WavePy Data",
+                "type": OasysWavePyData,
+                "doc": "WavePy Data",
+                "id": "WavePy_Data"}]
 
-KEYWORDS = (
-    'ray-tracing',
-    'simulator',
-    'oasys1',
-)
+    want_main_area = 0
+    must_clean_layout = True
 
-CLASSIFIERS = (
-    'Development Status :: 4 - Beta',
-    'License :: OSI Approved :: BSD License',
-    'Natural Language :: English',
-    'Environment :: X11 Applications :: Qt',
-    'Environment :: Plugins',
-    'Programming Language :: Python :: 3.7',
-    'Topic :: Scientific/Engineering :: Visualization',
-    'Intended Audience :: Science/Research'
+    def __init__(self, show_general_option_box=True, show_automatic_box=True):
+        super(WavePyProcessWidget, self).__init__(show_general_option_box=show_general_option_box, show_automatic_box=show_automatic_box)
 
-)
+        self.setFixedWidth(self.MAX_WIDTH_NO_MAIN)
+        self.setFixedHeight(self.MAX_HEIGHT)
 
-SETUP_REQUIRES = (
-    'setuptools',
-)
+        gui.rubber(self.controlArea)
 
-INSTALL_REQUIRES = (
-    'oasys1>=1.2.72',
-    'wavepy2>=0.0.33',
-)
+    def set_input(self, data):
+        if not data is None:
+            data = data.duplicate()
 
-PACKAGES = find_packages(exclude=('*.tests', '*.tests.*', 'tests.*', 'tests'))
+            self._initialization_parameters = data.get_initialization_parameters()
+            self._calculation_parameters    = data.get_calculation_parameters()
+            self._process_manager           = data.get_process_manager()
 
-PACKAGE_DATA = {
-    "orangecontrib.wavepy2.widgets.imaging":["icons/*.png", "icons/*.jpg", "misc/*.*", "data/*.*"],
-    "orangecontrib.wavepy2.widgets.diagnostic": ["icons/*.png", "icons/*.jpg", "misc/*.*", "data/*.*"],
-    "orangecontrib.wavepy2.widgets.metrology": ["icons/*.png", "icons/*.jpg", "misc/*.*", "data/*.*"],
-    "orangecontrib.wavepy2.widgets.tools": ["icons/*.png", "icons/*.jpg", "misc/*.*", "data/*.*"],
-}
+            if self.is_automatic_run: self._execute()
 
-NAMESPACE_PACAKGES = ["orangecontrib", "orangecontrib.wavepy2", "orangecontrib.wavepy2.widgets"]
+    def _execute(self):
+        self.progressBarInit()
 
-ENTRY_POINTS = {
-    'oasys.addons' : ("wavepy2 = orangecontrib.wavepy2", ),
-    'oasys.widgets' : (
-        "WavepPy2 Imaging = orangecontrib.wavepy2.widgets.imaging",
-        "WavepPy2 Diagnostic = orangecontrib.wavepy2.widgets.diagnostic",
-        "WavepPy2 Metrology = orangecontrib.wavepy2.widgets.metrology",
-        "WavepPy2 Tools = orangecontrib.wavepy2.widgets.tools",
-    ),
-    'oasys.menus' : ("wavepy2menu = orangecontrib.wavepy2.menu",)
-}
+        if self.must_clean_layout: self._clear_wavepy_layout()
 
-if __name__ == '__main__':
-    is_beta = False
+        self.progressBarSet(10)
 
-    try:
-        import PyMca5, PyQt4
+        output_calculation_parameters = self._get_output_parameters()
 
-        is_beta = True
-    except:
-        setup(
-              name = NAME,
-              version = VERSION,
-              description = DESCRIPTION,
-              long_description = LONG_DESCRIPTION,
-              author = AUTHOR,
-              author_email = AUTHOR_EMAIL,
-              url = URL,
-              download_url = DOWNLOAD_URL,
-              license = LICENSE,
-              keywords = KEYWORDS,
-              classifiers = CLASSIFIERS,
-              packages = PACKAGES,
-              package_data = PACKAGE_DATA,
-              setup_requires = SETUP_REQUIRES,
-              install_requires = INSTALL_REQUIRES,
-              entry_points = ENTRY_POINTS,
-              namespace_packages=NAMESPACE_PACAKGES,
-              include_package_data = True,
-              zip_safe = False,
-              )
+        self.progressBarSet(90)
 
-    if is_beta: raise NotImplementedError("This version of Wavepy doesn't work with Oasys1 beta.\nPlease install OASYS1 final release: https://www.aps.anl.gov/Science/Scientific-Software/OASYS")
+        self.controlArea.setFixedWidth(self.CONTROL_AREA_WIDTH)
+        self.controlArea.setFixedHeight(self.CONTROL_AREA_HEIGTH)
+
+        gui.rubber(self.controlArea)
+
+        output = OasysWavePyData()
+        output.set_process_manager(self._process_manager)
+        output.set_initialization_parameters(self._initialization_parameters)
+        output.set_calculation_parameters(output_calculation_parameters)
+
+        self.progressBarSet(100)
+        self.progressBarFinished()
+
+        self.send("WavePy Data", output)
+
+    def _get_output_parameters(self):
+        raise NotImplementedError()

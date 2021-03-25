@@ -1,4 +1,3 @@
-#! /usr/bin/env python3
 # #########################################################################
 # Copyright (c) 2020, UChicago Argonne, LLC. All rights reserved.         #
 #                                                                         #
@@ -43,104 +42,45 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         #
 # POSSIBILITY OF SUCH DAMAGE.                                             #
 # #########################################################################
+from orangecontrib.wavepy2.util.gui.ow_wavepy_interactive_widget import WavePyInteractiveWidget
 
-import os
+from wavepy2.util.plot.plot_tools import PlottingProperties
 
-try:
-    from setuptools import find_packages, setup
-except AttributeError:
-    from setuptools import find_packages, setup
+from wavepy2.tools.common.wavepy_data import WavePyData
+from wavepy2.tools.common.bl import crop_image
 
-NAME = 'OASYS1-Wavepy2'
-VERSION = '0.0.1'
-ISRELEASED = False
+class OWCropImage(WavePyInteractiveWidget):
+    name = "Crop Image"
+    id = "crop_image"
+    description = "Crop Image"
+    icon = "icons/crop_image.png"
+    priority = 1
+    category = ""
+    keywords = ["wavepy", "tools", "crop"]
 
-DESCRIPTION = 'WavePy2, data analyses of coherence and wavefront measurements at synchrotron beamlines'
-README_FILE = os.path.join(os.path.dirname(__file__), 'README.md')
-LONG_DESCRIPTION = open(README_FILE).read()
-AUTHOR = 'Luca Rebuffi'
-AUTHOR_EMAIL = 'lrebuffi@anl.gov'
-URL = 'https://github.com/APS-XSD-OPT-Group/OASYS1-WavePy2'
-DOWNLOAD_URL = 'https://github.com/APS-XSD-OPT-Group/OASYS1-WavePy2'
-LICENSE = 'GPLv3'
+    def __init__(self):
+        super(OWCropImage, self).__init__()
 
-KEYWORDS = (
-    'ray-tracing',
-    'simulator',
-    'oasys1',
-)
+    def _get_interactive_widget(self):
+        img_to_crop = None
 
-CLASSIFIERS = (
-    'Development Status :: 4 - Beta',
-    'License :: OSI Approved :: BSD License',
-    'Natural Language :: English',
-    'Environment :: X11 Applications :: Qt',
-    'Environment :: Plugins',
-    'Programming Language :: Python :: 3.7',
-    'Topic :: Scientific/Engineering :: Visualization',
-    'Intended Audience :: Science/Research'
+        if not self._calculation_parameters is None: img_to_crop = self._calculation_parameters.get_parameter("img")
+        if img_to_crop is None:                      img_to_crop = self._initialization_parameters.get_parameter("img")
 
-)
+        if not img_to_crop is None:
+            return crop_image.draw_crop_image(initialization_parameters=self._initialization_parameters,
+                                              plotting_properties=PlottingProperties(context_widget=self._get_default_context(),
+                                                                                     add_context_label=False,
+                                                                                     use_unique_id=True),
+                                              img=img_to_crop, tab_widget_height=660)[0]
+        else:
+            raise ValueError("No Image to crop found in input data")
 
-SETUP_REQUIRES = (
-    'setuptools',
-)
+    def _get_output_parameters(self, widget_output_data):
+        img, idx4crop, img_size_o = widget_output_data
 
-INSTALL_REQUIRES = (
-    'oasys1>=1.2.72',
-    'wavepy2>=0.0.33',
-)
+        return WavePyData(img=img, idx4crop=idx4crop, img_size_o=img_size_o)
 
-PACKAGES = find_packages(exclude=('*.tests', '*.tests.*', 'tests.*', 'tests'))
+    def _get_execute_button_label(self):
+        return "Crop Image"
 
-PACKAGE_DATA = {
-    "orangecontrib.wavepy2.widgets.imaging":["icons/*.png", "icons/*.jpg", "misc/*.*", "data/*.*"],
-    "orangecontrib.wavepy2.widgets.diagnostic": ["icons/*.png", "icons/*.jpg", "misc/*.*", "data/*.*"],
-    "orangecontrib.wavepy2.widgets.metrology": ["icons/*.png", "icons/*.jpg", "misc/*.*", "data/*.*"],
-    "orangecontrib.wavepy2.widgets.tools": ["icons/*.png", "icons/*.jpg", "misc/*.*", "data/*.*"],
-}
-
-NAMESPACE_PACAKGES = ["orangecontrib", "orangecontrib.wavepy2", "orangecontrib.wavepy2.widgets"]
-
-ENTRY_POINTS = {
-    'oasys.addons' : ("wavepy2 = orangecontrib.wavepy2", ),
-    'oasys.widgets' : (
-        "WavepPy2 Imaging = orangecontrib.wavepy2.widgets.imaging",
-        "WavepPy2 Diagnostic = orangecontrib.wavepy2.widgets.diagnostic",
-        "WavepPy2 Metrology = orangecontrib.wavepy2.widgets.metrology",
-        "WavepPy2 Tools = orangecontrib.wavepy2.widgets.tools",
-    ),
-    'oasys.menus' : ("wavepy2menu = orangecontrib.wavepy2.menu",)
-}
-
-if __name__ == '__main__':
-    is_beta = False
-
-    try:
-        import PyMca5, PyQt4
-
-        is_beta = True
-    except:
-        setup(
-              name = NAME,
-              version = VERSION,
-              description = DESCRIPTION,
-              long_description = LONG_DESCRIPTION,
-              author = AUTHOR,
-              author_email = AUTHOR_EMAIL,
-              url = URL,
-              download_url = DOWNLOAD_URL,
-              license = LICENSE,
-              keywords = KEYWORDS,
-              classifiers = CLASSIFIERS,
-              packages = PACKAGES,
-              package_data = PACKAGE_DATA,
-              setup_requires = SETUP_REQUIRES,
-              install_requires = INSTALL_REQUIRES,
-              entry_points = ENTRY_POINTS,
-              namespace_packages=NAMESPACE_PACAKGES,
-              include_package_data = True,
-              zip_safe = False,
-              )
-
-    if is_beta: raise NotImplementedError("This version of Wavepy doesn't work with Oasys1 beta.\nPlease install OASYS1 final release: https://www.aps.anl.gov/Science/Scientific-Software/OASYS")
