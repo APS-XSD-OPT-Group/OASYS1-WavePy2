@@ -48,7 +48,7 @@ from oasys.widgets import gui as oasysgui
 
 from wavepy2.util.plot.plot_tools import PlottingProperties, DefaultContextWidget
 
-from orangecontrib.wavepy2.util.gui import clear_layout
+from orangecontrib.wavepy2.util.gui.ow_wavepy_widget import clear_layout
 from orangecontrib.wavepy2.util.gui.ow_wavepy_process_widget import WavePyProcessWidget
 
 class OWSGTCalculateThickness(WavePyProcessWidget):

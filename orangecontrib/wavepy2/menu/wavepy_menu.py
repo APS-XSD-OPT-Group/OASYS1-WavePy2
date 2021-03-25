@@ -54,27 +54,44 @@ from wavepy2.util.log.logger import LoggerMode
 base_tools_path = "orangecontrib.wavepy2.widgets.tools."
 base_sgt_path = "orangecontrib.wavepy2.widgets.imaging."
 
-sgt_analysis_widget_list = [
-    [base_sgt_path + "ow_sgt_init.OWSGTInit", (0.0, 50.0)],
-    [base_sgt_path + "ow_sgt_manager_initialization.OWSGTManagerInitialization", None],
-    [base_tools_path + "ow_crop_image_store_parameters.OWCropImageStoreParameters", None],
-    [base_sgt_path + "ow_sgt_crop_reference_image.OWSGTCropReferenceImage", None],
-    [base_sgt_path + "ow_sgt_calculate_dpc.OWSGTCalculateDPC", (50.0, 200.0)],
-    [base_sgt_path + "ow_sgt_crop_calculated_dpc.OWSGTCropCalculatedDPC", None],
-    [base_sgt_path + "ow_sgt_show_calculated_dpc.OWSGTShowCalculatedDPC", None],
-    [base_sgt_path + "ow_sgt_correct_zero_dpc.OWSGTCorrectZeroDPC", None],
-    [base_sgt_path + "ow_sgt_remove_linear_fit_dpc.OWSGTRemoveLinearFitDPC", None],
-    [base_sgt_path + "ow_sgt_dpc_profile_analysis.OWSGTDPCProfileAnalysis", None],
-    [base_sgt_path + "ow_sgt_fit_radius_dpc.OWSGTFitRadiusDPC", None],
-    [base_sgt_path + "ow_sgt_crop_dpc_for_integration.OWSGTCropDPCForIntegration", (50.0, 400.0)],
-    [base_sgt_path + "ow_sgt_do_integration.OWSGTDoIntegration", None],
-    [base_sgt_path + "ow_sgt_calculate_thickness.OWSGTCalculateThickness", None],
-    [base_sgt_path + "ow_sgt_crop_2nd_order_component_of_the_phase_1.OWSGTCrop2ndOrderComponentOfThePhase1", None],
-    [base_sgt_path + "ow_sgt_calculate_2nd_order_component_of_the_phase_1.OWSGTCalculate2ndOrderComponentOfThePhase1", None],
-    [base_sgt_path + "ow_sgt_crop_2nd_order_component_of_the_phase_2.OWSGTCrop2ndOrderComponentOfThePhase2", None],
-    [base_sgt_path + "ow_sgt_calculate_2nd_order_component_of_the_phase_2.OWSGTCalculate2ndOrderComponentOfThePhase2", None],
-    [base_sgt_path + "ow_sgt_remove_2nd_order.OWSGTRemove2ndOrder", None],
+sgt_analysis_widget_list_no_interactions = [
+    [base_sgt_path + "ow_sgt_init.OWSGTInit", (0.0, 50.0), {}],
+    [base_sgt_path + "ow_sgt_manager_initialization.OWSGTManagerInitialization", None, {"is_automatic_run": True}],
+    [base_tools_path + "ow_crop_image_store_parameters.OWCropImageStoreParameters", None, {"is_automatic_run": True}],
+    [base_sgt_path + "ow_sgt_crop_reference_image.OWSGTCropReferenceImage", None, {"is_automatic_run": True}],
+    [base_sgt_path + "ow_sgt_calculate_dpc.OWSGTCalculateDPC", (50.0, 200.0), {"is_automatic_run": True}],
+    [base_sgt_path + "ow_sgt_show_calculated_dpc.OWSGTShowCalculatedDPC", None, {"is_automatic_run": True}],
+    [base_sgt_path + "ow_sgt_correct_zero_dpc.OWSGTCorrectZeroDPC", None, {"is_automatic_run": True, "correct_dpc_center": False}],
+    [base_sgt_path + "ow_sgt_remove_linear_fit_dpc.OWSGTRemoveLinearFitDPC", None, {"is_automatic_run": True}],
+    [base_sgt_path + "ow_sgt_dpc_profile_analysis.OWSGTDPCProfileAnalysis", None, {"is_automatic_run": True}],
+    [base_sgt_path + "ow_sgt_fit_radius_dpc.OWSGTFitRadiusDPC", None, {"is_automatic_run": True}],
+    [base_sgt_path + "ow_sgt_do_integration.OWSGTDoIntegration",  (50.0, 400.0), {"is_automatic_run": True}],
+    [base_sgt_path + "ow_sgt_calculate_thickness.OWSGTCalculateThickness", None, {"is_automatic_run": True}],
+    [base_sgt_path + "ow_sgt_calculate_2nd_order_component_of_the_phase_1.OWSGTCalculate2ndOrderComponentOfThePhase1", None, {"is_automatic_run": True}],
+    [base_sgt_path + "ow_sgt_calculate_2nd_order_component_of_the_phase_2.OWSGTCalculate2ndOrderComponentOfThePhase2", None, {"is_automatic_run": True}],
+    [base_sgt_path + "ow_sgt_remove_2nd_order.OWSGTRemove2ndOrder", None, {"is_automatic_run": True}],
+]
 
+sgt_analysis_widget_list = [
+    [base_sgt_path + "ow_sgt_init.OWSGTInit", (0.0, 50.0), {}],
+    [base_sgt_path + "ow_sgt_manager_initialization.OWSGTManagerInitialization", None, {"is_automatic_run": True}],
+    [base_tools_path + "ow_crop_image_store_parameters.OWCropImageStoreParameters", None, {"is_automatic_run": True}],
+    [base_sgt_path + "ow_sgt_crop_reference_image.OWSGTCropReferenceImage", None, {"is_automatic_run": True}],
+    [base_sgt_path + "ow_sgt_calculate_dpc.OWSGTCalculateDPC", (50.0, 200.0), {"is_automatic_run": True}],
+    [base_sgt_path + "ow_sgt_crop_calculated_dpc.OWSGTCropCalculatedDPC", None, {"is_automatic_run": True}],
+    [base_sgt_path + "ow_sgt_show_calculated_dpc.OWSGTShowCalculatedDPC", None, {"is_automatic_run": True}],
+    [base_sgt_path + "ow_sgt_correct_zero_dpc.OWSGTCorrectZeroDPC", None, {"is_automatic_run": True, "correct_dpc_center": True}],
+    [base_sgt_path + "ow_sgt_remove_linear_fit_dpc.OWSGTRemoveLinearFitDPC", None, {"is_automatic_run": True}],
+    [base_sgt_path + "ow_sgt_dpc_profile_analysis.OWSGTDPCProfileAnalysis", None, {"is_automatic_run": True}],
+    [base_sgt_path + "ow_sgt_fit_radius_dpc.OWSGTFitRadiusDPC", None, {"is_automatic_run": True}],
+    [base_sgt_path + "ow_sgt_crop_dpc_for_integration.OWSGTCropDPCForIntegration", (50.0, 400.0), {"is_automatic_run": True}],
+    [base_sgt_path + "ow_sgt_do_integration.OWSGTDoIntegration", None, {"is_automatic_run": True}],
+    [base_sgt_path + "ow_sgt_calculate_thickness.OWSGTCalculateThickness", None, {"is_automatic_run": True}],
+    [base_sgt_path + "ow_sgt_crop_2nd_order_component_of_the_phase_1.OWSGTCrop2ndOrderComponentOfThePhase1", None, {"is_automatic_run": True}],
+    [base_sgt_path + "ow_sgt_calculate_2nd_order_component_of_the_phase_1.OWSGTCalculate2ndOrderComponentOfThePhase1", None, {"is_automatic_run": True}],
+    [base_sgt_path + "ow_sgt_crop_2nd_order_component_of_the_phase_2.OWSGTCrop2ndOrderComponentOfThePhase2", None, {"is_automatic_run": True}],
+    [base_sgt_path + "ow_sgt_calculate_2nd_order_component_of_the_phase_2.OWSGTCalculate2ndOrderComponentOfThePhase2", None, {"is_automatic_run": True}],
+    [base_sgt_path + "ow_sgt_remove_2nd_order.OWSGTRemove2ndOrder", None, {"is_automatic_run": True}],
 ]
 
 def showInfoMessage(message):
@@ -113,6 +130,27 @@ class WavePyMenu(OMenu):
     def __init__(self):
         super().__init__(name="WavePy2")
 
+
+        self.openContainer()
+        self.addContainer("Imaging")
+        self.addSubMenu("Create Single Grating Talbot Analysis")
+        self.addSubMenu("Create Single Grating Talbot Analysis (No Interactions)")
+        self.closeContainer()
+
+        self.openContainer()
+        self.addContainer("Coherence")
+        self.addSubMenu("Create Single Grating Z Scan Analysis")
+        self.addSubMenu("Create Single Grating Z Scan Analysis (No Interactions)")
+        self.closeContainer()
+
+        self.openContainer()
+        self.addContainer("Metrology")
+        self.addSubMenu("Create Fit Residual Lenses Analysis")
+        self.addSubMenu("Create Fit Residual Lenses Analysis (No Interactions)")
+        self.closeContainer()
+
+        self.addSeparator()
+
         self.openContainer()
         self.addContainer("Plotter Options")
         self.addSubMenu("Set Plotter Mode: FULL")
@@ -127,42 +165,56 @@ class WavePyMenu(OMenu):
         self.addSubMenu("Set Logger Mode: NONE")
         self.closeContainer()
 
-        self.addSubMenu("Create Single Grating Talbot Analysis")
-
     def executeAction_1(self, action):
+        if showConfirmMessage("Confirm Action", "Create Single Grating Talbot Analysis?") == QtWidgets.QMessageBox.Yes:
+            self.create_analysis(sgt_analysis_widget_list)
+
+    def executeAction_2(self, action):
+        if showConfirmMessage("Confirm Action", "Create Single Grating Talbot Analysis (No Interactions)?") == QtWidgets.QMessageBox.Yes:
+            self.create_analysis(sgt_analysis_widget_list_no_interactions)
+
+    def executeAction_3(self, action):
+        pass
+
+    def executeAction_4(self, action):
+        pass
+
+    def executeAction_5(self, action):
+        pass
+
+    def executeAction_6(self, action):
+        pass
+
+    def executeAction_7(self, action):
         QSettings().setValue("wavepy/plotter_mode", PlotterMode.FULL)
         showInfoMessage("Plotter Mode set to: FULL\nReload the workspace to make it effective")
 
-    def executeAction_2(self, action):
+    def executeAction_8(self, action):
         QSettings().setValue("wavepy/plotter_mode", PlotterMode.DISPLAY_ONLY)
         showInfoMessage("Plotter Mode set to: DISPLAY ONLY\nReload the workspace to make it effective")
 
-    def executeAction_3(self, action):
+    def executeAction_9(self, action):
         QSettings().setValue("wavepy/logger_mode", LoggerMode.FULL)
         showInfoMessage("Logger Mode set to: FULL\nReload the workspace to make it effective")
 
-    def executeAction_4(self, action):
+    def executeAction_10(self, action):
         QSettings().setValue("wavepy/logger_mode", LoggerMode.WARNING)
         showInfoMessage("Logger Mode set to: WARNING\nReload the workspace to make it effective")
 
-    def executeAction_5(self, action):
+    def executeAction_11(self, action):
         QSettings().setValue("wavepy/logger_mode", LoggerMode.ERROR)
         showInfoMessage("Logger Mode set to: ERROR\nReload the workspace to make it effective")
 
-    def executeAction_6(self, action):
+    def executeAction_12(self, action):
         QSettings().setValue("wavepy/logger_mode", LoggerMode.NONE)
         showInfoMessage("Logger Mode set to: NONE\nReload the workspace to make it effective")
-
-    def executeAction_7(self, action):
-        if showConfirmMessage("Confirm Action", "Create Single Grating Talbot Analysis?") == QtWidgets.QMessageBox.Yes:
-            self.create_analysis(sgt_analysis_widget_list)
 
 
     def create_analysis(self, widgets_list):
         nodes = []
-        for widget, position in widgets_list: nodes.extend(self.createNewNodeAndWidget(widget_desc=self.getWidgetDesc(widget),
-                                                                                       position=position,
-                                                                                       is_automatic=True))
+        for widget, position, attributes in widgets_list: nodes.extend(self.createNewNodeAndWidget(widget_desc=self.getWidgetDesc(widget),
+                                                                                                   position=position,
+                                                                                                   attributes=attributes))
         self.createLinks(nodes)
 
 
@@ -189,11 +241,12 @@ class WavePyMenu(OMenu):
     def createNewNode(self, widget_desc, position=None):
         return self.canvas_main_window.current_document().createNewNode(widget_desc, position=position)
 
-    def createNewNodeAndWidget(self, widget_desc, position=None, is_automatic=True):
+    def createNewNodeAndWidget(self, widget_desc, position=None, attributes={}):
         nodes = []
 
         nodes.append(self.createNewNode(widget_desc, position))
         widget = self.getWidgetFromNode(nodes[0])
-        widget.is_automatic_run = is_automatic
+
+        for attribute in attributes.keys(): setattr(widget, attribute, attributes[attribute])
 
         return nodes
