@@ -62,7 +62,7 @@ class OWSGTCropReferenceImage(WavePyProcessWidget):
     must_clean_layout = False
 
     def __init__(self):
-        super(OWSGTCropReferenceImage, self).__init__(show_general_option_box=True, show_automatic_box=True)
+        super(OWSGTCropReferenceImage, self).__init__()
 
     def _get_execute_button_label(self):
         return "Crop Reference Image"

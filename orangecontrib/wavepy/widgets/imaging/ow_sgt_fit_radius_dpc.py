@@ -64,7 +64,7 @@ class OWSGTFitRadiusDPC(WavePyProcessWidget):
     must_clean_layout = True
 
     def __init__(self):
-        super(OWSGTFitRadiusDPC, self).__init__(show_general_option_box=True, show_automatic_box=True)
+        super(OWSGTFitRadiusDPC, self).__init__()
 
     def _get_execute_button_label(self):
         return "Fit Radius DPC"

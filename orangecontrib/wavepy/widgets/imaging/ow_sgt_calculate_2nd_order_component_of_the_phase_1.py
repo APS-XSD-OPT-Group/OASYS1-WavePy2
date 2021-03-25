@@ -42,45 +42,45 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         #
 # POSSIBILITY OF SUCH DAMAGE.                                             #
 # #########################################################################
-from orangecontrib.wavepy.widgets.gui.ow_wavepy_interactive_widget import WavePyInteractiveWidget
+from orangewidget.settings import Setting
+from orangewidget import gui
+from oasys.widgets import gui as oasysgui
 
 from wavepy2.util.plot.plot_tools import PlottingProperties, DefaultContextWidget
 
-from wavepy2.tools.common.wavepy_data import WavePyData
-from wavepy2.tools.common.bl import crop_image
+from orangecontrib.wavepy.widgets.gui.ow_wavepy_widget import clear_layout
+from orangecontrib.wavepy.widgets.gui.ow_wavepy_process_widget import WavePyProcessWidget
 
-class OWCropImage(WavePyInteractiveWidget):
-    name = "Crop Image"
-    id = "crop_image"
-    description = "Crop Image"
-    icon = "icons/crop_image.png"
-    priority = 1
+class OWSGTCalculate2ndOrderComponentOfThePhase1(WavePyProcessWidget):
+    name = "S.G.T. - Calculate 2nd Order Component of the Phase 1"
+    id = "sgt_calculate_2nd_order_cpt_phase_1"
+    description = "S.G.T. - Calculate 2nd Order Component of the Phase 1"
+    icon = "icons/sgt_calculate_2nd_order_cpt_phase_1.png"
+    priority = 15
     category = ""
     keywords = ["wavepy", "tools", "crop"]
 
+    CONTROL_AREA_HEIGTH = 840
+    CONTROL_AREA_WIDTH = 1500
+
+    MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
+    MAX_HEIGHT = CONTROL_AREA_HEIGTH + 10
+
+    must_clean_layout = True
+
     def __init__(self):
-        super(OWCropImage, self).__init__()
+        super(OWSGTCalculate2ndOrderComponentOfThePhase1, self).__init__()
 
-    def _get_interactive_widget(self):
-        img_to_crop = None
-
-        if not self._calculation_parameters is None: img_to_crop = self._calculation_parameters.get_parameter("img")
-        if img_to_crop is None:                      img_to_crop = self._initialization_parameters.get_parameter("img")
-
-        if not img_to_crop is None:
-            return crop_image.draw_crop_image(initialization_parameters=self._initialization_parameters,
-                                              plotting_properties=PlottingProperties(context_widget=self._get_default_context(),
-                                                                                     add_context_label=False,
-                                                                                     use_unique_id=True),
-                                              img=img_to_crop, tab_widget_height=660)[0]
-        else:
-            raise ValueError("No Image to crop found in input data")
-
-    def _get_output_parameters(self, widget_output_data):
-        img, idx4crop, img_size_o = widget_output_data
-
-        return WavePyData(img=img, idx4crop=idx4crop, img_size_o=img_size_o)
 
     def _get_execute_button_label(self):
-        return "Crop Image"
+        return "Calculate 2nd Order Component of the Phase 1"
+
+    def _get_output_parameters(self):
+        self._initialization_parameters.set_parameter("remove_linear", True)
+
+        return self._process_manager.calc_2nd_order_component_of_the_phase_1(integration_result=self._calculation_parameters,
+                                                                             initialization_parameters=self._initialization_parameters,
+                                                                             plotting_properties=PlottingProperties(context_widget=self._get_default_context(),
+                                                                                                                    add_context_label=False,
+                                                                                                                    use_unique_id=True))
 

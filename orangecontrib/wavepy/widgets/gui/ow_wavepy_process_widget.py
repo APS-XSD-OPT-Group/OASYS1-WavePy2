@@ -46,7 +46,6 @@ from orangewidget import gui
 
 from orangecontrib.wavepy.widgets.gui.ow_wavepy_widget import WavePyWidget
 from orangecontrib.wavepy.util.wavepy_objects import OasysWavePyData
-from wavepy2.util.plot.plot_tools import DefaultContextWidget
 
 
 class WavePyProcessWidget(WavePyWidget):
@@ -106,6 +105,3 @@ class WavePyProcessWidget(WavePyWidget):
 
     def _get_output_parameters(self):
         raise NotImplementedError()
-
-    def _get_default_context(self):
-        return DefaultContextWidget(self._wavepy_widget_area)

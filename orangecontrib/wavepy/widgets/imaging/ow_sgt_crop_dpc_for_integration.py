@@ -42,14 +42,9 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         #
 # POSSIBILITY OF SUCH DAMAGE.                                             #
 # #########################################################################
-from orangewidget import gui
+from orangecontrib.wavepy.widgets.gui.ow_wavepy_interactive_widget import WavePyInteractiveWidget
 
-from orangecontrib.wavepy.widgets.gui.ow_wavepy_widget import WavePyWidget
-from orangecontrib.wavepy.util.wavepy_objects import OasysWavePyData
-
-from wavepy2.util.plot.plot_tools import PlottingProperties, DefaultContextWidget
-
-class OWSGTCropDPCForIntegration(WavePyWidget):
+class OWSGTCropDPCForIntegration(WavePyInteractiveWidget):
     name = "S.G.T. - Crop DPC for Integration"
     id = "crop_dpc_int"
     description = "S.G.T. - Crop DPC for Integration"
@@ -58,80 +53,24 @@ class OWSGTCropDPCForIntegration(WavePyWidget):
     category = ""
     keywords = ["wavepy", "tools", "crop"]
 
-    inputs = [("WavePy Data", OasysWavePyData, "set_input"),]
-
-    outputs = [{"name": "WavePy Data",
-                "type": OasysWavePyData,
-                "doc": "WavePy Data",
-                "id": "WavePy_Data"}]
-
-    want_main_area = 0
-
-    CONTROL_AREA_HEIGTH = 840
-    CONTROL_AREA_WIDTH  = 950
-
-    MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
-    MAX_HEIGHT = CONTROL_AREA_HEIGTH + 10
-
     def __init__(self):
-        super(OWSGTCropDPCForIntegration, self).__init__(show_general_option_box=True, show_automatic_box=True)
+        super(OWSGTCropDPCForIntegration, self).__init__()
 
-        self.setFixedWidth(self.MAX_WIDTH_NO_MAIN)
-        self.setFixedHeight(self.MAX_HEIGHT)
+    def _get_interactive_widget(self):
+        if not self._initialization_parameters is None and not self._calculation_parameters is None:
+            return self._process_manager.draw_crop_for_integration(dpc_result=self._calculation_parameters,
+                                                                   initialization_parameters=self._initialization_parameters,
+                                                                   plotting_properties=self._get_default_plotting_properties(),
+                                                                   tab_widget_height=660)[0]
+        else:
+            raise ValueError("No Image to crop found in input data")
 
-        gui.button(self.button_box, self, "Cancel Crop", callback=self._cancel, height=45)
+    def _get_output_parameters(self, widget_output_data):
+        _, idx4crop, _ = widget_output_data
 
-        gui.rubber(self.controlArea)
-
-    def set_input(self, data):
-        if not data is None:
-            data = data.duplicate()
-
-            self._initialization_parameters = data.get_initialization_parameters()
-            self._calculation_parameters = data.get_calculation_parameters()
-            self._process_manager = data.get_process_manager()
-
-            if not self._calculation_parameters is None:
-                self._clear_wavepy_layout()
-
-                self._initialization_parameters.set_parameter("do_integration", True)
-
-                self.__crop_widget = self._process_manager.draw_crop_for_integration(dpc_result=self._calculation_parameters,
-                                                                                     initialization_parameters=self._initialization_parameters,
-                                                                                     plotting_properties=PlottingProperties(context_widget=DefaultContextWidget(self._wavepy_widget_area),
-                                                                                                                            add_context_label=False,
-                                                                                                                            use_unique_id=True),
-                                                                                     tab_widget_height=660)[0]
-
-            self.controlArea.setFixedWidth(self.CONTROL_AREA_WIDTH)
-            self.controlArea.setFixedHeight(self.CONTROL_AREA_HEIGTH)
-
-            gui.rubber(self.controlArea)
-
-            if self.is_automatic_run: self._cancel()
-
-    def __send_result(self, idx4crop):
-        output_calculation_parameters = self._process_manager.manage_crop_for_integration(self._calculation_parameters,
-                                                                                          self._initialization_parameters,
-                                                                                          idx4crop)
-
-        output = OasysWavePyData()
-
-        output.set_process_manager(self._process_manager)
-        output.set_initialization_parameters(self._initialization_parameters)
-        output.set_calculation_parameters(output_calculation_parameters)
-
-        self.send("WavePy Data", output)
+        return self._process_manager.manage_crop_for_integration(self._calculation_parameters,
+                                                                 self._initialization_parameters,
+                                                                 idx4crop)
 
     def _get_execute_button_label(self):
-        return "Crop DPC"
-
-    def _execute(self):
-        _, idx4crop, _ = self.__crop_widget.get_accepted_output()
-
-        self.__send_result(idx4crop)
-
-    def _cancel(self):
-        _, idx4crop, _ = self.__crop_widget.get_rejected_output()
-
-        self.__send_result(idx4crop)
+        return "Crop DPC for Integration"

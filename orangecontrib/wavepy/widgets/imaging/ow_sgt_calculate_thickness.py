@@ -71,7 +71,7 @@ class OWSGTCalculateThickness(WavePyProcessWidget):
     material_idx = Setting(1)
 
     def __init__(self):
-        super(OWSGTCalculateThickness, self).__init__(show_general_option_box=True, show_automatic_box=True)
+        super(OWSGTCalculateThickness, self).__init__()
 
         self._options_area = oasysgui.widgetBox(self._wavepy_widget_area, "Options", addSpace=False, orientation="vertical", width=200)
 

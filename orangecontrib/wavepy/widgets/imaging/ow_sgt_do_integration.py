@@ -53,7 +53,7 @@ from orangecontrib.wavepy.widgets.gui.ow_wavepy_process_widget import WavePyProc
 
 class OWSGTDoIntegration(WavePyProcessWidget):
     name = "S.G.T. - Do Integration"
-    id = "sgt_correct_zero_dpc"
+    id = "sgt_do_integration"
     description = "S.G.T. - Do Integration"
     icon = "icons/sgt_do_integration.png"
     priority = 12
@@ -69,7 +69,7 @@ class OWSGTDoIntegration(WavePyProcessWidget):
     must_clean_layout = True
 
     def __init__(self):
-        super(OWSGTDoIntegration, self).__init__(show_general_option_box=True, show_automatic_box=True)
+        super(OWSGTDoIntegration, self).__init__()
 
 
     def _get_execute_button_label(self):

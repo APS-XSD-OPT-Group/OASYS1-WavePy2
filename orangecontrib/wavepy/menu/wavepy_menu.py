@@ -69,6 +69,12 @@ sgt_analysis_widget_list = [
     [base_sgt_path + "ow_sgt_crop_dpc_for_integration.OWSGTCropDPCForIntegration", (50.0, 400.0)],
     [base_sgt_path + "ow_sgt_do_integration.OWSGTDoIntegration", None],
     [base_sgt_path + "ow_sgt_calculate_thickness.OWSGTCalculateThickness", None],
+    [base_sgt_path + "ow_sgt_crop_2nd_order_component_of_the_phase_1.OWSGTCrop2ndOrderComponentOfThePhase1", None],
+    [base_sgt_path + "ow_sgt_calculate_2nd_order_component_of_the_phase_1.OWSGTCalculate2ndOrderComponentOfThePhase1", None],
+    [base_sgt_path + "ow_sgt_crop_2nd_order_component_of_the_phase_2.OWSGTCrop2ndOrderComponentOfThePhase2", None],
+    [base_sgt_path + "ow_sgt_calculate_2nd_order_component_of_the_phase_2.OWSGTCalculate2ndOrderComponentOfThePhase2", None],
+    [base_sgt_path + "ow_sgt_remove_2nd_order.OWSGTRemove2ndOrder", None],
+
 ]
 
 def showInfoMessage(message):

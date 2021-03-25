@@ -73,7 +73,7 @@ class OWSGTCorrectZeroDPC(WavePyProcessWidget):
     correct_dpc_center = Setting(1)
 
     def __init__(self):
-        super(OWSGTCorrectZeroDPC, self).__init__(show_general_option_box=True, show_automatic_box=True)
+        super(OWSGTCorrectZeroDPC, self).__init__()
 
         self._options_area = oasysgui.widgetBox(self._wavepy_widget_area, "Options", addSpace=False, orientation="vertical", width=200)
 

@@ -67,7 +67,7 @@ class OWSGTManagerInitialization(WavePyProcessWidget):
     MAX_HEIGHT = CONTROL_AREA_HEIGTH + 10
 
     def __init__(self):
-        super(OWSGTManagerInitialization, self).__init__(show_general_option_box=True, show_automatic_box=True)
+        super(OWSGTManagerInitialization, self).__init__()
 
     def _get_execute_button_label(self):
         return "Manager Initialization"

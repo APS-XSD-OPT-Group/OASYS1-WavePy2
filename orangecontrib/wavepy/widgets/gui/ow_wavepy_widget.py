@@ -48,6 +48,8 @@ from oasys.widgets import gui as oasysgui
 from orangewidget.widget import OWAction
 from orangewidget.settings import Setting
 
+from wavepy2.util.plot.plot_tools import DefaultContextWidget, PlottingProperties
+
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import QRect
 
@@ -59,7 +61,7 @@ class WavePyWidget(OWWidget):
 
     want_main_area=1
 
-    is_automatic_run = Setting(False)
+    is_automatic_run = Setting(True)
 
     error_id = 0
     warning_id = 0
@@ -110,6 +112,14 @@ class WavePyWidget(OWWidget):
 
     def _clear_wavepy_layout(self):
         clear_layout(self._wavepy_widget_area.layout())
+
+    def _get_default_context(self):
+        return DefaultContextWidget(self._wavepy_widget_area)
+
+    def _get_default_plotting_properties(self):
+        return PlottingProperties(context_widget=self._get_default_context(),
+                                  add_context_label=False,
+                                  use_unique_id=True)
 
 def clear_layout(layout):
     for i in reversed(range(layout.count())):

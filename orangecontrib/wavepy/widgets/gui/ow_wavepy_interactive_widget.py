@@ -42,45 +42,97 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         #
 # POSSIBILITY OF SUCH DAMAGE.                                             #
 # #########################################################################
-from orangecontrib.wavepy.widgets.gui.ow_wavepy_interactive_widget import WavePyInteractiveWidget
+from orangewidget import gui
+
+from orangecontrib.wavepy.widgets.gui.ow_wavepy_widget import WavePyWidget
+from orangecontrib.wavepy.util.wavepy_objects import OasysWavePyData
 
 from wavepy2.util.plot.plot_tools import PlottingProperties, DefaultContextWidget
 
-from wavepy2.tools.common.wavepy_data import WavePyData
-from wavepy2.tools.common.bl import crop_image
+class WavePyInteractiveWidget(WavePyWidget):
+    inputs = [("WavePy Data", OasysWavePyData, "set_input"),]
 
-class OWCropImage(WavePyInteractiveWidget):
-    name = "Crop Image"
-    id = "crop_image"
-    description = "Crop Image"
-    icon = "icons/crop_image.png"
-    priority = 1
-    category = ""
-    keywords = ["wavepy", "tools", "crop"]
+    outputs = [{"name": "WavePy Data",
+                "type": OasysWavePyData,
+                "doc": "WavePy Data",
+                "id": "WavePy_Data"}]
 
-    def __init__(self):
-        super(OWCropImage, self).__init__()
+    want_main_area = 0
+    must_clean_layout = True
+
+    CONTROL_AREA_HEIGTH = 840
+    CONTROL_AREA_WIDTH  = 950
+
+    MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
+    MAX_HEIGHT = CONTROL_AREA_HEIGTH + 10
+
+    def __init__(self, show_general_option_box=True, show_automatic_box=True):
+        super(WavePyInteractiveWidget, self).__init__(show_general_option_box=show_general_option_box, show_automatic_box=show_automatic_box)
+
+        self.setFixedWidth(self.MAX_WIDTH_NO_MAIN)
+        self.setFixedHeight(self.MAX_HEIGHT)
+
+        gui.button(self.button_box, self, self._get_cancel_button_label(), callback=self._cancel, height=45)
+
+        gui.rubber(self.controlArea)
+
+    def set_input(self, data):
+        if not data is None:
+            self.progressBarInit()
+
+            data = data.duplicate()
+
+            self._initialization_parameters = data.get_initialization_parameters()
+            self._calculation_parameters    = data.get_calculation_parameters()
+            self._process_manager           = data.get_process_manager()
+
+            if self.must_clean_layout: self._clear_wavepy_layout()
+
+            self.progressBarSet(10)
+
+            self._interactive_widget = self._get_interactive_widget()
+
+            self.progressBarSet(90)
+
+            self.controlArea.setFixedWidth(self.CONTROL_AREA_WIDTH)
+            self.controlArea.setFixedHeight(self.CONTROL_AREA_HEIGTH)
+
+            gui.rubber(self.controlArea)
+
+            self.progressBarSet(100)
+            self.progressBarFinished()
+
+            if self.is_automatic_run: self._cancel()
+
+    def _get_cancel_button_label(self):
+        return "Initial Crop"
 
     def _get_interactive_widget(self):
-        img_to_crop = None
+        raise NotImplementedError()
 
-        if not self._calculation_parameters is None: img_to_crop = self._calculation_parameters.get_parameter("img")
-        if img_to_crop is None:                      img_to_crop = self._initialization_parameters.get_parameter("img")
+    def __send_result(self, widget_output_data):
+        if not self._interactive_widget is None:
+            output_calculation_parameters = self._get_output_parameters(widget_output_data)
 
-        if not img_to_crop is None:
-            return crop_image.draw_crop_image(initialization_parameters=self._initialization_parameters,
-                                              plotting_properties=PlottingProperties(context_widget=self._get_default_context(),
-                                                                                     add_context_label=False,
-                                                                                     use_unique_id=True),
-                                              img=img_to_crop, tab_widget_height=660)[0]
-        else:
-            raise ValueError("No Image to crop found in input data")
+            output = OasysWavePyData()
+
+            output.set_process_manager(self._process_manager)
+            output.set_initialization_parameters(self._initialization_parameters)
+            output.set_calculation_parameters(output_calculation_parameters)
+
+            self.send("WavePy Data", output)
 
     def _get_output_parameters(self, widget_output_data):
-        img, idx4crop, img_size_o = widget_output_data
+        raise NotImplementedError()
 
-        return WavePyData(img=img, idx4crop=idx4crop, img_size_o=img_size_o)
+    def _execute(self):
+        self.__send_result(self._get_accepted_output())
 
-    def _get_execute_button_label(self):
-        return "Crop Image"
+    def _cancel(self):
+        self.__send_result(self._get_rejected_output())
 
+    def _get_accepted_output(self):
+        return self._interactive_widget.get_accepted_output()
+
+    def _get_rejected_output(self):
+        return self._interactive_widget.get_rejected_output()
