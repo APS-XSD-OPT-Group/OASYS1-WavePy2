@@ -76,4 +76,5 @@ class OWSGTManagerInitialization(WavePyProcessWidget):
         self._process_manager.manager_initialization(initialization_parameters=self._initialization_parameters,
                                                       script_logger_mode=QSettings().value("wavepy/logger_mode", LoggerMode.FULL, type=int))
 
+
         return None

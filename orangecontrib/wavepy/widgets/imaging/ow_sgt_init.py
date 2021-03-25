@@ -53,7 +53,6 @@ from wavepy2.util.common.common_tools import AlreadyInitializedError
 from wavepy2.util.log.logger import register_logger_single_instance, LoggerMode
 from wavepy2.util.plot.plotter import register_plotter_instance, PlotterMode
 from wavepy2.util.ini.initializer import get_registered_ini_instance, register_ini_instance, IniMode
-from wavepy2.util.log.logger import LoggerMode
 from wavepy2.util.plot.plot_tools import PlottingProperties, DefaultContextWidget
 
 from wavepy2.tools.common.wavepy_data import WavePyData

@@ -53,7 +53,7 @@ from orangecontrib.wavepy.widgets.gui.ow_wavepy_process_widget import WavePyProc
 
 class OWSGTCalculateThickness(WavePyProcessWidget):
     name = "S.G.T. - Calculate Thickness"
-    id = "sgt_correct_zero_dpc"
+    id = "sgt_calculate_thickness"
     description = "S.G.T. - Calculate Thickness"
     icon = "icons/sgt_calculate_thickness.png"
     priority = 13
@@ -68,18 +68,14 @@ class OWSGTCalculateThickness(WavePyProcessWidget):
 
     must_clean_layout = True
 
-    correct_pi_jump = Setting(1)
-    remove_mean = Setting(1)
-    correct_dpc_center = Setting(1)
+    material_idx = Setting(1)
 
     def __init__(self):
         super(OWSGTCalculateThickness, self).__init__(show_general_option_box=True, show_automatic_box=True)
 
         self._options_area = oasysgui.widgetBox(self._wavepy_widget_area, "Options", addSpace=False, orientation="vertical", width=200)
 
-        gui.checkBox(self._options_area, self, "material_idx", "Correct pi jump in DPC signal")
-        gui.checkBox(self._options_area, self, "remove_mean", "Remove mean DPC")
-        gui.checkBox(self._options_area, self, "correct_dpc_center", "Correct DPC center")
+        gui.comboBox(self._options_area, self, "material_idx", items=["Diamond", "Beryllium"], label="Material", labelWidth=100, orientation="horizontal")
 
         self._wavepy_widget_area_2 = oasysgui.widgetBox(self._wavepy_widget_area, "", addSpace=False, orientation="vertical", width=self.CONTROL_AREA_WIDTH-200)
 
@@ -93,13 +89,13 @@ class OWSGTCalculateThickness(WavePyProcessWidget):
         return "Calculate Thickness"
 
     def _get_output_parameters(self):
-        self._initialization_parameters.set_parameter("correct_pi_jump", self.correct_pi_jump==1)
-        self._initialization_parameters.set_parameter("remove_mean", self.remove_mean==1)
-        self._initialization_parameters.set_parameter("correct_dpc_center", self.correct_dpc_center==1)
+        self._initialization_parameters.set_parameter("material_idx", self.material_idx)
+        self._initialization_parameters.set_parameter("do_integration", True)
+        self._initialization_parameters.set_parameter("calc_thickness", True)
 
-        return self._process_manager.correct_zero_dpc(dpc_result=self._calculation_parameters,
-                                                      initialization_parameters=self._initialization_parameters,
-                                                      plotting_properties=PlottingProperties(context_widget=self._get_default_context(),
-                                                                                             add_context_label=False,
-                                                                                             use_unique_id=True))
+        return self._process_manager.calculate_thickness(integration_result=self._calculation_parameters,
+                                                         initialization_parameters=self._initialization_parameters,
+                                                         plotting_properties=PlottingProperties(context_widget=self._get_default_context(),
+                                                                                                add_context_label=False,
+                                                                                                use_unique_id=True))
 

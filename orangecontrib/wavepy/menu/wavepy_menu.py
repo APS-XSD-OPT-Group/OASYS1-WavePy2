@@ -68,6 +68,7 @@ sgt_analysis_widget_list = [
     [base_sgt_path + "ow_sgt_fit_radius_dpc.OWSGTFitRadiusDPC", None],
     [base_sgt_path + "ow_sgt_crop_dpc_for_integration.OWSGTCropDPCForIntegration", (50.0, 400.0)],
     [base_sgt_path + "ow_sgt_do_integration.OWSGTDoIntegration", None],
+    [base_sgt_path + "ow_sgt_calculate_thickness.OWSGTCalculateThickness", None],
 ]
 
 def showInfoMessage(message):
