@@ -47,21 +47,13 @@ from orangewidget import gui
 from orangecontrib.wavepy.widgets.gui.ow_wavepy_widget import WavePyWidget
 from orangecontrib.wavepy.util.wavepy_objects import OasysWavePyData
 
-from wavepy2.util.common.common_tools import AlreadyInitializedError
-from wavepy2.util.log.logger import register_logger_single_instance, LoggerMode
-from wavepy2.util.plot.plotter import register_plotter_instance, PlotterMode
-from wavepy2.util.ini.initializer import get_registered_ini_instance, register_ini_instance, IniMode
-from wavepy2.util.log.logger import LoggerMode
 from wavepy2.util.plot.plot_tools import PlottingProperties, DefaultContextWidget
 
-from wavepy2.tools.common.wavepy_data import WavePyData
-from wavepy2.tools.common.bl import crop_image
-
-class OWSGTCropDPC(WavePyWidget):
-    name = "S.G.T. - Crop DPC"
+class OWSGTCropCalculatedDPC(WavePyWidget):
+    name = "S.G.T. - Crop Calculated DPC"
     id = "crop_dpc"
-    description = "S.G.T. - Crop DPC"
-    icon = "icons/sgt_crop_dpc.png"
+    description = "S.G.T. - Crop Calculated DPC"
+    icon = "icons/sgt_crop_calculated_dpc.png"
     priority = 5
     category = ""
     keywords = ["wavepy", "tools", "crop"]
@@ -82,7 +74,7 @@ class OWSGTCropDPC(WavePyWidget):
     MAX_HEIGHT = CONTROL_AREA_HEIGTH + 10
 
     def __init__(self):
-        super(OWSGTCropDPC, self).__init__(show_general_option_box=True, show_automatic_box=True)
+        super(OWSGTCropCalculatedDPC, self).__init__(show_general_option_box=True, show_automatic_box=True)
 
         self.setFixedWidth(self.MAX_WIDTH_NO_MAIN)
         self.setFixedHeight(self.MAX_HEIGHT)

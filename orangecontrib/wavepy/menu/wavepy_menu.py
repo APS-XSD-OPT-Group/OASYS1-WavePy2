@@ -60,13 +60,14 @@ sgt_analysis_widget_list = [
     [base_tools_path + "ow_crop_image_store_parameters.OWCropImageStoreParameters", None],
     [base_sgt_path + "ow_sgt_crop_reference_image.OWSGTCropReferenceImage", None],
     [base_sgt_path + "ow_sgt_calculate_dpc.OWSGTCalculateDPC", (50.0, 200.0)],
-    [base_sgt_path + "ow_sgt_crop_dpc.OWSGTCropDPC", None],
+    [base_sgt_path + "ow_sgt_crop_calculated_dpc.OWSGTCropCalculatedDPC", None],
     [base_sgt_path + "ow_sgt_show_calculated_dpc.OWSGTShowCalculatedDPC", None],
     [base_sgt_path + "ow_sgt_correct_zero_dpc.OWSGTCorrectZeroDPC", None],
     [base_sgt_path + "ow_sgt_remove_linear_fit_dpc.OWSGTRemoveLinearFitDPC", None],
     [base_sgt_path + "ow_sgt_dpc_profile_analysis.OWSGTDPCProfileAnalysis", None],
     [base_sgt_path + "ow_sgt_fit_radius_dpc.OWSGTFitRadiusDPC", None],
-    #[base_sgt_path + "ow_sgt_do_integration.OWSGTDoIntegration", (50.0, 400.0)],
+    [base_sgt_path + "ow_sgt_crop_dpc_for_integration.OWSGTCropDPCForIntegration", (50.0, 400.0)],
+    [base_sgt_path + "ow_sgt_do_integration.OWSGTDoIntegration", None],
 ]
 
 def showInfoMessage(message):
