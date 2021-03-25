@@ -52,7 +52,7 @@ except AttributeError:
     from setuptools import find_packages, setup
 
 NAME = 'OASYS1-Wavepy'
-VERSION = '1.0.0'
+VERSION = '0.0.2'
 ISRELEASED = False
 
 DESCRIPTION = 'WavePy, data analyses of coherence and wavefront measurements at synchrotron beamlines'
@@ -71,12 +71,15 @@ KEYWORDS = (
 )
 
 CLASSIFIERS = (
-    'Development Status :: 5 - Production/Stable',
+    'Development Status :: 4 - Beta',
+    'License :: OSI Approved :: BSD License',
+    'Natural Language :: English',
     'Environment :: X11 Applications :: Qt',
-    'Environment :: Console',
     'Environment :: Plugins',
-    'Programming Language :: Python :: 3',
-    'Intended Audience :: Science/Research',
+    'Programming Language :: Python :: 3.7',
+    'Topic :: Scientific/Engineering :: Visualization',
+    'Intended Audience :: Science/Research'
+
 )
 
 SETUP_REQUIRES = (
@@ -85,7 +88,7 @@ SETUP_REQUIRES = (
 
 INSTALL_REQUIRES = (
     'oasys1>=1.2.72',
-    'wavepy2>=0.0.32',
+    'wavepy2>=0.0.33',
 )
 
 PACKAGES = find_packages(exclude=('*.tests', '*.tests.*', 'tests.*', 'tests'))
