@@ -56,9 +56,9 @@ N_CPUS = cpu_count() - 2
 
 class OWSGZInit(WavePyInitWidget):
     name = "S.G.Z. - Initialization"
-    id = "coh_init"
+    id = "sgz_init"
     description = "S.G.Z. - Initialization"
-    icon = "icons/coh_init.png"
+    icon = "icons/sgz_init.png"
     priority = 1
     category = ""
     keywords = ["wavepy", "sgz", "init"]
