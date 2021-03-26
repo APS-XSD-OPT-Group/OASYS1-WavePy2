@@ -80,7 +80,7 @@ class WavePyInitWidget(WavePyWidget):
             try: register_ini_instance(IniMode.LOCAL_FILE, ini_file_name=self._get_file_ini_name())
             except AlreadyInitializedError:
                 if not get_registered_ini_instance().get_ini_file_name() == self._get_file_ini_name():
-                    raise ValueError("The Oasys worspace can contain only 1 initialization widget at a time")
+                    raise ValueError("The Oasys worspace can contain only 1 kind of analysis at a time")
 
             try: register_logger_single_instance(logger_mode=QSettings().value("wavepy/logger_mode", LoggerMode.FULL, type=int))
             except AlreadyInitializedError: pass
