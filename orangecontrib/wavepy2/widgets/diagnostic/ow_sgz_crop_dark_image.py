@@ -42,9 +42,11 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         #
 # POSSIBILITY OF SUCH DAMAGE.                                             #
 # #########################################################################
-from orangecontrib.wavepy2.util.gui.ow_wavepy_interactive_widget import WavePyInteractiveWidget
+from orangecontrib.wavepy2.util.gui.ow_crop_image import CropImageWidget
 
-class OWSGZCropDarkImage(WavePyInteractiveWidget):
+from wavepy2.tools.common.bl import crop_image
+
+class OWSGZCropDarkImage(CropImageWidget):
     name = "S.G.Z. - Crop Dark Image"
     id = "sgz_crop_dark_image"
     description = "S.G.Z. - Dark Image"
@@ -56,16 +58,25 @@ class OWSGZCropDarkImage(WavePyInteractiveWidget):
     def __init__(self):
         super(OWSGZCropDarkImage, self).__init__()
 
-    def _get_interactive_widget(self):
-        if not self._initialization_parameters is None and not self._calculation_parameters is None:
-            return self._process_manager.draw_crop_dark_image(initial_crop_parameters=self._calculation_parameters,
-                                                              plotting_properties=self._get_default_plotting_properties(),
-                                                              tab_widget_height=660)[0]
+    def _get_img_name_in_calculation_parameters(self):
+        return "img_original"
+
+    def _get_crop_widget(self, img_to_crop):
+        cmap         = self._calculation_parameters.get_parameter("cmap")
+        colorlimit   = self._calculation_parameters.get_parameter("colorlimit")
+
+        return crop_image.draw_crop_image(initialization_parameters=self._initialization_parameters,
+                                          plotting_properties=self._get_default_plotting_properties(),
+                                          img=img_to_crop,
+                                          message=self._get_window_text(),
+                                          default_idx4crop=[0, 20, 0, 20],
+                                          kwargs4graph={'cmap': cmap, 'vmin': colorlimit[0], 'vmax': colorlimit[1]},
+                                          tab_widget_height=660)[0]
 
     def _get_output_parameters(self, widget_output_data):
         _, idx4cropDark, _ = widget_output_data
 
-        self._calculation_parameters.set_parameter("idx4cropDark", idx2ndCrop)
+        self._calculation_parameters.set_parameter("idx4cropDark", idx4cropDark)
 
         return self._calculation_parameters
 

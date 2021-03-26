@@ -56,23 +56,29 @@ class CropImageStoreParametersWidget(WavePyInteractiveWidget):
         pixelsize   = None
 
         if not self._calculation_parameters is None:
-            img_to_crop = self._calculation_parameters.get_parameter("img")
-            pixelsize   = self._calculation_parameters.get_parameter("pixelsize")
+            img_to_crop = self._calculation_parameters.get_parameter(self._get_img_name_in_calculation_parameters())
+            pixelsize   = self._calculation_parameters.get_parameter(self._get_pixelsize_name_in_calculation_parameters())
 
-        if (img_to_crop is None or pixelsize is None):
-            if not self._initialization_parameters is None:
-                img_to_crop = self._initialization_parameters.get_parameter("img")
-                pixelsize   = self._initialization_parameters.get_parameter("pixelsize")
+        if (img_to_crop is None or pixelsize is None) and not self._initialization_parameters is None:
+            img_to_crop = self._initialization_parameters.get_parameter("img")
+            pixelsize   = self._initialization_parameters.get_parameter("pixelsize")
 
-        if not (img_to_crop is None or pixelsize is None):
-            return crop_image.draw_colorbar_crop_image(initialization_parameters=self._initialization_parameters,
-                                                       plotting_properties=self._get_default_plotting_properties(),
-                                                       img=img_to_crop,
-                                                       pixelsize=pixelsize,
-                                                       message=self._get_window_text(),
-                                                       tab_widget_height=660)[0]
-        else:
-            raise ValueError("No Image to crop found in input data")
+        if not (img_to_crop is None or pixelsize is None): return self._get_crop_widget(img_to_crop, pixelsize)
+        else: raise ValueError("No Image to crop found in input data")
+
+    def _get_crop_widget(self, img_to_crop, pixelsize):
+        return crop_image.draw_colorbar_crop_image(initialization_parameters=self._initialization_parameters,
+                                                   plotting_properties=self._get_default_plotting_properties(),
+                                                   img=img_to_crop,
+                                                   pixelsize=pixelsize,
+                                                   message=self._get_window_text(),
+                                                   tab_widget_height=660)[0]
+
+    def _get_img_name_in_calculation_parameters(self):
+        return "img"
+
+    def _get_pixelsize_name_in_calculation_parameters(self):
+        return "pixelsize"
 
     def _get_output_parameters(self, widget_output_data):
         img, idx4crop, img_size_o, cmap, colorlimit = widget_output_data

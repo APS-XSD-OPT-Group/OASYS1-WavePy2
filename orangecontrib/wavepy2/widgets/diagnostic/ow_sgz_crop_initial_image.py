@@ -61,3 +61,13 @@ class OWSGZCropInitialImage(CropImageStoreParametersWidget):
 
     def _get_window_text(self):
         return "Crop Initial Image?"
+
+    def _get_output_parameters(self, widget_output_data):
+        img, idx4crop, img_size_o, cmap, colorlimit = widget_output_data
+
+        return WavePyData(img_original=self._initialization_parameters.get_parameter("img"),
+                          img=img,
+                          idx4crop=idx4crop,
+                          img_size_o=img_size_o,
+                          cmap=cmap,
+                          colorlimit=colorlimit)

@@ -53,7 +53,7 @@ from orangecontrib.wavepy2.util.wavepy_objects import OasysWavePyData
 from wavepy2.util.common.common_tools import AlreadyInitializedError
 from wavepy2.util.log.logger import register_logger_single_instance, LoggerMode
 from wavepy2.util.plot.plotter import register_plotter_instance, PlotterMode
-from wavepy2.util.ini.initializer import register_ini_instance, IniMode
+from wavepy2.util.ini.initializer import register_ini_instance, get_registered_ini_instance, IniMode
 from wavepy2.util.plot.plot_tools import PlottingProperties, DefaultContextWidget
 
 from wavepy2.tools.diagnostic.coherence.bl.single_grating_coherence_z_scan import create_single_grating_coherence_z_scan_manager
@@ -78,7 +78,9 @@ class WavePyInitWidget(WavePyWidget):
 
         try:
             try: register_ini_instance(IniMode.LOCAL_FILE, ini_file_name=self._get_file_ini_name())
-            except AlreadyInitializedError: raise ValueError("The Oasys worspace can contain only 1 initialization widget at a time")
+            except AlreadyInitializedError:
+                if not get_registered_ini_instance().get_ini_file_name() == self._get_file_ini_name():
+                    raise ValueError("The Oasys worspace can contain only 1 initialization widget at a time")
 
             try: register_logger_single_instance(logger_mode=QSettings().value("wavepy/logger_mode", LoggerMode.FULL, type=int))
             except AlreadyInitializedError: pass

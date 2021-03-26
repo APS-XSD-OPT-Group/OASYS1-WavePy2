@@ -46,11 +46,11 @@ from wavepy2.util.plot.plot_tools import PlottingProperties
 
 from orangecontrib.wavepy2.util.gui.ow_wavepy_process_widget import WavePyProcessWidget
 
-class OWSGZSortCalculationResults(WavePyProcessWidget):
+class OWSGZSortCalculationResult(WavePyProcessWidget):
     name = "S.G.Z. - Sort Calculation Result"
-    id = "sgz_sort_calculation_results"
+    id = "sgz_sort_calculation_result"
     description = "S.G.Z. - Sort Calculation Result"
-    icon = "icons/sgz_sort_calculation_results.png"
+    icon = "icons/sgz_sort_calculation_result.png"
     priority = 6
     category = ""
     keywords = ["wavepy", "tools", "calculate"]
@@ -64,13 +64,13 @@ class OWSGZSortCalculationResults(WavePyProcessWidget):
     must_clean_layout = True
 
     def __init__(self):
-        super(OWSGZSortCalculationResults, self).__init__()
+        super(OWSGZSortCalculationResult, self).__init__()
 
     def _get_execute_button_label(self):
         return "Sort Calculation Result"
 
     def _get_output_parameters(self):
-        return self._process_manager.run_calcsort_calculation_resultulation(run_calculation_result=self._calculation_parameters,
-                                                                            initialization_parameters=self._initialization_parameters,
-                                                                            plotting_properties=self._get_default_plotting_properties())
+        return self._process_manager.sort_calculation_result(run_calculation_result=self._calculation_parameters,
+                                                             initialization_parameters=self._initialization_parameters,
+                                                             plotting_properties=self._get_default_plotting_properties())
 

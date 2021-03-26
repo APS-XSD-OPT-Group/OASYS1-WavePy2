@@ -44,8 +44,6 @@
 # #########################################################################
 from orangecontrib.wavepy2.util.gui.ow_wavepy_interactive_widget import WavePyInteractiveWidget
 
-from wavepy2.util.plot.plot_tools import PlottingProperties
-
 from wavepy2.tools.common.wavepy_data import WavePyData
 from wavepy2.tools.common.bl import crop_image
 
@@ -56,19 +54,21 @@ class CropImageWidget(WavePyInteractiveWidget):
     def _get_interactive_widget(self):
         img_to_crop = None
 
-        if not self._calculation_parameters is None: img_to_crop = self._calculation_parameters.get_parameter("img")
+        if not self._calculation_parameters is None: img_to_crop = self._calculation_parameters.get_parameter(self._get_img_name_in_calculation_parameters())
         if img_to_crop is None:                      img_to_crop = self._initialization_parameters.get_parameter("img")
 
-        if not img_to_crop is None:
-            return crop_image.draw_crop_image(initialization_parameters=self._initialization_parameters,
-                                              plotting_properties=PlottingProperties(context_widget=self._get_default_context(),
-                                                                                     add_context_label=False,
-                                                                                     use_unique_id=True),
-                                              img=img_to_crop,
-                                              message=self._get_window_text(),
-                                              tab_widget_height=660)[0]
-        else:
-            raise ValueError("No Image to crop found in input data")
+        if not img_to_crop is None: return self._get_crop_widget(img_to_crop)
+        else: raise ValueError("No Image to crop found in input data")
+
+    def _get_crop_widget(self, img_to_crop):
+        return crop_image.draw_crop_image(initialization_parameters=self._initialization_parameters,
+                                          plotting_properties=self._get_default_plotting_properties(),
+                                          img=img_to_crop,
+                                          message=self._get_window_text(),
+                                          tab_widget_height=660)[0]
+
+    def _get_img_name_in_calculation_parameters(self):
+        return "img"
 
     def _get_output_parameters(self, widget_output_data):
         img, idx4crop, img_size_o = widget_output_data

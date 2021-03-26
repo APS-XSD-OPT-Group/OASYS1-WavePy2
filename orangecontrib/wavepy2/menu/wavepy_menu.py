@@ -104,8 +104,8 @@ sgz_analysis_widget_list = [
     [base_diagnostic_path + "ow_sgz_crop_dark_image.OWSGZCropDarkImage", None, {"is_automatic_run": True}],
     [base_diagnostic_path + "ow_sgz_calculate_harmonic_periods.OWSGZCalculateHarmonicPeriods", (50.0, 200.0), {"is_automatic_run": True}],
     [base_diagnostic_path + "ow_sgz_run_calculation.OWSGZRunCalculation", None, {"is_automatic_run": True}],
-    [base_diagnostic_path + "ow_sgz_sort_calculation_results.OWSGZSortCalculationResults", None, {"is_automatic_run": True}],
-    [base_diagnostic_path + "ow_sgz_fit_calculation_results.OWSGZFitCalculationResults", None, {"is_automatic_run": True}],
+    [base_diagnostic_path + "ow_sgz_sort_calculation_result.OWSGZSortCalculationResult", None, {"is_automatic_run": True}],
+    [base_diagnostic_path + "ow_sgz_fit_calculation_result.OWSGZFitCalculationResult", None, {"is_automatic_run": True}],
 ]
 
 def showInfoMessage(message):

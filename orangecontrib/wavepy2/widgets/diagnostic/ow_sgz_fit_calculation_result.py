@@ -46,11 +46,11 @@ from wavepy2.util.plot.plot_tools import PlottingProperties
 
 from orangecontrib.wavepy2.util.gui.ow_wavepy_process_widget import WavePyProcessWidget
 
-class OWSGZFitCalculationResults(WavePyProcessWidget):
+class OWSGZFitCalculationResult(WavePyProcessWidget):
     name = "S.G.Z. - Fit Calculation Result"
-    id = "sgz_fit_calculation_results"
+    id = "sgz_fit_calculation_result"
     description = "S.G.Z. - Fit Calculation Result"
-    icon = "icons/sgz_fit_calculation_results.png"
+    icon = "icons/sgz_fit_calculation_result.png"
     priority = 7
     category = ""
     keywords = ["wavepy", "tools", "calculate"]
@@ -64,13 +64,13 @@ class OWSGZFitCalculationResults(WavePyProcessWidget):
     must_clean_layout = True
 
     def __init__(self):
-        super(OWSGZFitCalculationResults, self).__init__()
+        super(OWSGZFitCalculationResult, self).__init__()
 
     def _get_execute_button_label(self):
         return "Fit Calculation Result"
 
     def _get_output_parameters(self):
-        return self._process_manager.run_calcfit_calculation_resultulation(sort_calculation_result=self._calculation_parameters,
-                                                                           initialization_parameters=self._initialization_parameters,
-                                                                           plotting_properties=self._get_default_plotting_properties())
+        return self._process_manager.fit_calculation_result(sort_calculation_result=self._calculation_parameters,
+                                                            initialization_parameters=self._initialization_parameters,
+                                                            plotting_properties=self._get_default_plotting_properties())
 
