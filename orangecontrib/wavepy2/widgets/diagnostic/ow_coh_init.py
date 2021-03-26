@@ -42,35 +42,28 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         #
 # POSSIBILITY OF SUCH DAMAGE.                                             #
 # #########################################################################
-
-
 from orangecontrib.wavepy2.util.gui.ow_wavepy_init_widget import WavePyInitWidget
 
-from wavepy2.tools.imaging.single_grating.bl.single_grating_talbot import create_single_grating_talbot_manager
+from wavepy2.tools.diagnostic.coherence.bl.single_grating_coherence_z_scan import create_single_grating_coherence_z_scan_manager
 
-class OWSGTInit(WavePyInitWidget):
-    name = "S.G.T. - Initialization"
-    id = "sgt_init"
-    description = "S.G.T. - Initialization"
-    icon = "icons/sgt_init.png"
+class OWCOHInit(WavePyInitWidget):
+    name = "S.G.Z. - Initialization"
+    id = "coh_init"
+    description = "S.G.Z. - Initialization"
+    icon = "icons/coh_init.png"
     priority = 1
     category = ""
-    keywords = ["wavepy", "sgt", "init"]
-
-    MAX_HEIGHT = 500
+    keywords = ["wavepy", "sgz", "init"]
 
     def __init__(self):
         super(OWCOHInit, self).__init__()
 
     def _get_file_ini_name(self):
-        return ".single_grating_talbot.ini"
+        return ".single_grating_coherence_z_scan.ini"
 
     def _create_process_manager(self):
-        return create_single_grating_talbot_manager()
+        return create_single_grating_coherence_z_scan_manager()
 
     def _draw_init_widget(self):
-        return self._process_manager.draw_initialization_parameters_widget(plotting_properties=PlottingProperties(context_widget=self._get_default_context(),
-                                                                                                                  show_runtime_options=False,
-                                                                                                                  add_context_label=False,
-                                                                                                                  use_unique_id=True),
-                                                                           widget_height=330)[0]
+        return self._process_manager.draw_initialization_parameters_widget(plotting_properties=self._get_default_plotting_properties(),
+                                                                           widget_height=485)[0]
