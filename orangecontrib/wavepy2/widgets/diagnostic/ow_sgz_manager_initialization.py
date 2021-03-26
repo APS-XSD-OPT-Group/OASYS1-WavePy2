@@ -42,16 +42,38 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         #
 # POSSIBILITY OF SUCH DAMAGE.                                             #
 # #########################################################################
-from orangecontrib.wavepy2.util.gui.ow_crop_image_store_parameters import CropImageStoreParametersWidget
+from PyQt5.QtCore import QSettings
 
-class OWCropImageStoreParameters(CropImageStoreParametersWidget):
-    name = "Crop Image & Store Params"
-    id = "colorbar_crop_image"
-    description = "Crop Image & Store Params"
-    icon = "icons/colorbar_crop_image.png"
+from orangecontrib.wavepy2.util.gui.ow_wavepy_process_widget import WavePyProcessWidget
+
+from wavepy2.util.log.logger import LoggerMode
+
+class OWSGZManagerInitialization(WavePyProcessWidget):
+    name = "S.G.Z. Manager Initialization"
+    id = "sgz_manager_initialization"
+    description = "S.G.Z. Manager Initialization"
+    icon = "icons/sgz_manager_initialization.png"
     priority = 2
     category = ""
     keywords = ["wavepy", "tools", "crop"]
 
+    must_clean_layout = False
+
+    CONTROL_AREA_HEIGTH = 150
+    CONTROL_AREA_WIDTH  = 400
+
+    MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
+    MAX_HEIGHT = CONTROL_AREA_HEIGTH + 10
+
     def __init__(self):
-        super(OWCropImageStoreParameters, self).__init__()
+        super(OWSGZManagerInitialization, self).__init__()
+
+    def _get_execute_button_label(self):
+        return "Manager Initialization"
+
+    def _get_output_parameters(self):
+        self._process_manager.manager_initialization(initialization_parameters=self._initialization_parameters,
+                                                      script_logger_mode=QSettings().value("wavepy/logger_mode", LoggerMode.FULL, type=int))
+
+
+        return None

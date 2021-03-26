@@ -42,16 +42,32 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         #
 # POSSIBILITY OF SUCH DAMAGE.                                             #
 # #########################################################################
-from orangecontrib.wavepy2.util.gui.ow_crop_image_store_parameters import CropImageStoreParametersWidget
+from orangecontrib.wavepy2.util.gui.ow_wavepy_interactive_widget import WavePyInteractiveWidget
 
-class OWCropImageStoreParameters(CropImageStoreParametersWidget):
-    name = "Crop Image & Store Params"
-    id = "colorbar_crop_image"
-    description = "Crop Image & Store Params"
-    icon = "icons/colorbar_crop_image.png"
-    priority = 2
+class OWSGZCropDarkImage(WavePyInteractiveWidget):
+    name = "S.G.Z. - Crop Dark Image"
+    id = "sgz_crop_dark_image"
+    description = "S.G.Z. - Dark Image"
+    icon = "icons/sgz_crop_dark_image.png"
+    priority = 3.1
     category = ""
     keywords = ["wavepy", "tools", "crop"]
 
     def __init__(self):
-        super(OWCropImageStoreParameters, self).__init__()
+        super(OWSGZCropDarkImage, self).__init__()
+
+    def _get_interactive_widget(self):
+        if not self._initialization_parameters is None and not self._calculation_parameters is None:
+            return self._process_manager.draw_crop_dark_image(initial_crop_parameters=self._calculation_parameters,
+                                                              plotting_properties=self._get_default_plotting_properties(),
+                                                              tab_widget_height=660)[0]
+
+    def _get_output_parameters(self, widget_output_data):
+        _, idx4cropDark, _ = widget_output_data
+
+        self._calculation_parameters.set_parameter("idx4cropDark", idx2ndCrop)
+
+        return self._calculation_parameters
+
+    def _get_execute_button_label(self):
+        return "Crop Dark Image"

@@ -44,14 +44,20 @@
 # #########################################################################
 from orangecontrib.wavepy2.util.gui.ow_crop_image_store_parameters import CropImageStoreParametersWidget
 
-class OWCropImageStoreParameters(CropImageStoreParametersWidget):
-    name = "Crop Image & Store Params"
-    id = "colorbar_crop_image"
-    description = "Crop Image & Store Params"
-    icon = "icons/colorbar_crop_image.png"
-    priority = 2
+from wavepy2.tools.common.wavepy_data import WavePyData
+from wavepy2.tools.common.bl import crop_image
+
+class OWSGZCropInitialImage(CropImageStoreParametersWidget):
+    name = "S.G.Z. - Crop for All Images"
+    id = "sgz_crop_initial_image"
+    description = "S.G.Z. - Crop for All Images"
+    icon = "icons/sgz_crop_initial_image.png"
+    priority = 3.0
     category = ""
     keywords = ["wavepy", "tools", "crop"]
 
     def __init__(self):
-        super(OWCropImageStoreParameters, self).__init__()
+        super(OWSGZCropInitialImage, self).__init__()
+
+    def _get_window_text(self):
+        return "Crop Initial Image?"

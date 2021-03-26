@@ -42,14 +42,9 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         #
 # POSSIBILITY OF SUCH DAMAGE.                                             #
 # #########################################################################
-from orangecontrib.wavepy2.util.gui.ow_wavepy_interactive_widget import WavePyInteractiveWidget
+from orangecontrib.wavepy2.util.gui.ow_crop_image import CropImageWidget
 
-from wavepy2.util.plot.plot_tools import PlottingProperties
-
-from wavepy2.tools.common.wavepy_data import WavePyData
-from wavepy2.tools.common.bl import crop_image
-
-class OWCropImage(WavePyInteractiveWidget):
+class OWCropImage(CropImageWidget):
     name = "Crop Image"
     id = "crop_image"
     description = "Crop Image"
@@ -60,27 +55,3 @@ class OWCropImage(WavePyInteractiveWidget):
 
     def __init__(self):
         super(OWCropImage, self).__init__()
-
-    def _get_interactive_widget(self):
-        img_to_crop = None
-
-        if not self._calculation_parameters is None: img_to_crop = self._calculation_parameters.get_parameter("img")
-        if img_to_crop is None:                      img_to_crop = self._initialization_parameters.get_parameter("img")
-
-        if not img_to_crop is None:
-            return crop_image.draw_crop_image(initialization_parameters=self._initialization_parameters,
-                                              plotting_properties=PlottingProperties(context_widget=self._get_default_context(),
-                                                                                     add_context_label=False,
-                                                                                     use_unique_id=True),
-                                              img=img_to_crop, tab_widget_height=660)[0]
-        else:
-            raise ValueError("No Image to crop found in input data")
-
-    def _get_output_parameters(self, widget_output_data):
-        img, idx4crop, img_size_o = widget_output_data
-
-        return WavePyData(img=img, idx4crop=idx4crop, img_size_o=img_size_o)
-
-    def _get_execute_button_label(self):
-        return "Crop Image"
-

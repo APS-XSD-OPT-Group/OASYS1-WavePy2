@@ -42,28 +42,35 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         #
 # POSSIBILITY OF SUCH DAMAGE.                                             #
 # #########################################################################
-from orangecontrib.wavepy2.util.gui.ow_wavepy_init_widget import WavePyInitWidget
+from wavepy2.util.plot.plot_tools import PlottingProperties
 
-from wavepy2.tools.diagnostic.coherence.bl.single_grating_coherence_z_scan import create_single_grating_coherence_z_scan_manager
+from orangecontrib.wavepy2.util.gui.ow_wavepy_process_widget import WavePyProcessWidget
 
-class OWCOHInit(WavePyInitWidget):
-    name = "S.G.Z. - Initialization"
-    id = "coh_init"
-    description = "S.G.Z. - Initialization"
-    icon = "icons/coh_init.png"
-    priority = 1
+class OWSGZCalculateHarmonicPeriods(WavePyProcessWidget):
+    name = "S.G.Z. - Calculate Harmonic Periods"
+    id = "sgz_calculate_harmonic_periods"
+    description = "S.G.Z. - Calculate Harmonic Periods"
+    icon = "icons/sgz_calculate_harmonic_periods.png"
+    priority = 4
     category = ""
-    keywords = ["wavepy", "sgz", "init"]
+    keywords = ["wavepy", "tools", "calculate"]
+
+    CONTROL_AREA_HEIGTH = 840
+    CONTROL_AREA_WIDTH = 1500
+
+    MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
+    MAX_HEIGHT = CONTROL_AREA_HEIGTH + 10
+
+    must_clean_layout = True
 
     def __init__(self):
-        super(OWCOHInit, self).__init__()
+        super(OWSGZCalculateHarmonicPeriods, self).__init__()
 
-    def _get_file_ini_name(self):
-        return ".single_grating_coherence_z_scan.ini"
+    def _get_execute_button_label(self):
+        return "Calculate Harmonic Periods"
 
-    def _create_process_manager(self):
-        return create_single_grating_coherence_z_scan_manager()
+    def _get_output_parameters(self):
+        return self._process_manager.calculate_harmonic_periods(initial_crop_parameters=self._calculation_parameters,
+                                                                initialization_parameters=self._initialization_parameters,
+                                                                plotting_properties=self._get_default_plotting_properties())
 
-    def _draw_init_widget(self):
-        return self._process_manager.draw_initialization_parameters_widget(plotting_properties=self._get_default_plotting_properties(),
-                                                                           widget_height=485)[0]

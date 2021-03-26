@@ -74,6 +74,8 @@ class WavePyInitWidget(WavePyWidget):
     def __init__(self):
         super(WavePyInitWidget, self).__init__(show_general_option_box=False, show_automatic_box=False)
 
+        self._is_valid_widget = True
+
         try:
             try: register_ini_instance(IniMode.LOCAL_FILE, ini_file_name=self._get_file_ini_name())
             except AlreadyInitializedError: raise ValueError("The Oasys worspace can contain only 1 initialization widget at a time")
@@ -90,6 +92,8 @@ class WavePyInitWidget(WavePyWidget):
             self.setFixedWidth(self.MAX_WIDTH_NO_MAIN)
             self.setFixedHeight(self.MAX_HEIGHT)
         except Exception as e:
+            self._is_valid_widget = False
+
             label = gui.label(self._wavepy_widget_area, self, label="\n\n    INVALID WIDGET:\n\n    " + str(e))
 
             font = QFont(label.font())
@@ -117,11 +121,12 @@ class WavePyInitWidget(WavePyWidget):
         raise NotImplementedError()
 
     def _execute(self):
-        output = OasysWavePyData()
+        if self._is_valid_widget:
+            output = OasysWavePyData()
 
-        output.set_process_manager(self._process_manager)
-        output.set_initialization_parameters(self._init_widget.get_accepted_output())
+            output.set_process_manager(self._process_manager)
+            output.set_initialization_parameters(self._init_widget.get_accepted_output())
 
-        self.send("WavePy Data", output)
+            self.send("WavePy Data", output)
 
 

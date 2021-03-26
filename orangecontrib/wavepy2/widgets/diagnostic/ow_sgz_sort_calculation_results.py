@@ -42,16 +42,35 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         #
 # POSSIBILITY OF SUCH DAMAGE.                                             #
 # #########################################################################
-from orangecontrib.wavepy2.util.gui.ow_crop_image_store_parameters import CropImageStoreParametersWidget
+from wavepy2.util.plot.plot_tools import PlottingProperties
 
-class OWCropImageStoreParameters(CropImageStoreParametersWidget):
-    name = "Crop Image & Store Params"
-    id = "colorbar_crop_image"
-    description = "Crop Image & Store Params"
-    icon = "icons/colorbar_crop_image.png"
-    priority = 2
+from orangecontrib.wavepy2.util.gui.ow_wavepy_process_widget import WavePyProcessWidget
+
+class OWSGZSortCalculationResults(WavePyProcessWidget):
+    name = "S.G.Z. - Sort Calculation Result"
+    id = "sgz_sort_calculation_results"
+    description = "S.G.Z. - Sort Calculation Result"
+    icon = "icons/sgz_sort_calculation_results.png"
+    priority = 6
     category = ""
-    keywords = ["wavepy", "tools", "crop"]
+    keywords = ["wavepy", "tools", "calculate"]
+
+    CONTROL_AREA_HEIGTH = 840
+    CONTROL_AREA_WIDTH = 1500
+
+    MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
+    MAX_HEIGHT = CONTROL_AREA_HEIGTH + 10
+
+    must_clean_layout = True
 
     def __init__(self):
-        super(OWCropImageStoreParameters, self).__init__()
+        super(OWSGZSortCalculationResults, self).__init__()
+
+    def _get_execute_button_label(self):
+        return "Sort Calculation Result"
+
+    def _get_output_parameters(self):
+        return self._process_manager.run_calcsort_calculation_resultulation(run_calculation_result=self._calculation_parameters,
+                                                                            initialization_parameters=self._initialization_parameters,
+                                                                            plotting_properties=self._get_default_plotting_properties())
+

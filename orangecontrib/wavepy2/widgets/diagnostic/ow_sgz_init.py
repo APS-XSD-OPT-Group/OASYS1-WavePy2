@@ -42,16 +42,28 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         #
 # POSSIBILITY OF SUCH DAMAGE.                                             #
 # #########################################################################
-from orangecontrib.wavepy2.util.gui.ow_crop_image_store_parameters import CropImageStoreParametersWidget
+from orangecontrib.wavepy2.util.gui.ow_wavepy_init_widget import WavePyInitWidget
 
-class OWCropImageStoreParameters(CropImageStoreParametersWidget):
-    name = "Crop Image & Store Params"
-    id = "colorbar_crop_image"
-    description = "Crop Image & Store Params"
-    icon = "icons/colorbar_crop_image.png"
-    priority = 2
+from wavepy2.tools.diagnostic.coherence.bl.single_grating_coherence_z_scan import create_single_grating_coherence_z_scan_manager, SINGLE_THREAD
+
+class OWSGZInit(WavePyInitWidget):
+    name = "S.G.Z. - Initialization"
+    id = "coh_init"
+    description = "S.G.Z. - Initialization"
+    icon = "icons/coh_init.png"
+    priority = 1
     category = ""
-    keywords = ["wavepy", "tools", "crop"]
+    keywords = ["wavepy", "sgz", "init"]
 
     def __init__(self):
-        super(OWCropImageStoreParameters, self).__init__()
+        super(OWSGZInit, self).__init__()
+
+    def _get_file_ini_name(self):
+        return ".single_grating_coherence_z_scan.ini"
+
+    def _create_process_manager(self):
+        return create_single_grating_coherence_z_scan_manager(mode=SINGLE_THREAD)
+
+    def _draw_init_widget(self):
+        return self._process_manager.draw_initialization_parameters_widget(plotting_properties=self._get_default_plotting_properties(),
+                                                                           widget_height=485)[0]

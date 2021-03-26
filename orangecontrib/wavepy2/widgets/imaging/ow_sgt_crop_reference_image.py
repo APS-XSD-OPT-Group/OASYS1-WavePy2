@@ -49,7 +49,7 @@ class OWSGTCropReferenceImage(WavePyProcessWidget):
     id = "sgt_crop_reference_image"
     description = "S.G.T. - Crop Reference Image"
     icon = "icons/sgt_crop_reference_image.png"
-    priority = 3
+    priority = 3.1
     category = ""
     keywords = ["wavepy", "tools", "crop"]
 

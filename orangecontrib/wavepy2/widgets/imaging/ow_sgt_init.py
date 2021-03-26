@@ -45,6 +45,7 @@
 
 
 from orangecontrib.wavepy2.util.gui.ow_wavepy_init_widget import WavePyInitWidget
+from wavepy2.util.plot.plot_tools import PlottingProperties
 
 from wavepy2.tools.imaging.single_grating.bl.single_grating_talbot import create_single_grating_talbot_manager
 
@@ -60,7 +61,7 @@ class OWSGTInit(WavePyInitWidget):
     MAX_HEIGHT = 500
 
     def __init__(self):
-        super(OWCOHInit, self).__init__()
+        super(OWSGTInit, self).__init__()
 
     def _get_file_ini_name(self):
         return ".single_grating_talbot.ini"

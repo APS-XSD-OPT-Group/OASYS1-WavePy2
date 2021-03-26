@@ -95,7 +95,5 @@ class OWSGTCalculateThickness(WavePyProcessWidget):
 
         return self._process_manager.calculate_thickness(integration_result=self._calculation_parameters,
                                                          initialization_parameters=self._initialization_parameters,
-                                                         plotting_properties=PlottingProperties(context_widget=self._get_default_context(),
-                                                                                                add_context_label=False,
-                                                                                                use_unique_id=True))
+                                                         plotting_properties=self._get_default_plotting_properties())
 
