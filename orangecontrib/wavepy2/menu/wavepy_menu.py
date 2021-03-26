@@ -96,7 +96,6 @@ sgt_analysis_widget_list = [
     [base_imaging_path + "ow_sgt_remove_2nd_order.OWSGTRemove2ndOrder", None, {"is_automatic_run": True}],
 ]
 
-
 sgz_analysis_widget_list = [
     [base_diagnostic_path + "ow_sgz_init.OWSGZInit", (0.0, 50.0), {}],
     [base_diagnostic_path + "ow_sgz_manager_initialization.OWSGZManagerInitialization", None, {"is_automatic_run": True}],
