@@ -44,7 +44,7 @@
 # #########################################################################
 from orangecontrib.wavepy2.util.gui.ow_wavepy_init_widget import WavePyInitWidget
 
-from wavepy2.tools.diagnostic.coherence.bl.single_grating_coherence_z_scan import create_single_grating_coherence_z_scan_manager, SINGLE_THREAD
+from wavepy2.tools.diagnostic.coherence.bl.single_grating_coherence_z_scan import create_single_grating_coherence_z_scan_manager, SINGLE_THREAD, APPLICATION_NAME
 
 class OWSGZInit(WavePyInitWidget):
     name = "S.G.Z. - Initialization"
@@ -57,6 +57,9 @@ class OWSGZInit(WavePyInitWidget):
 
     def __init__(self):
         super(OWSGZInit, self).__init__()
+
+    def _get_application_name(self):
+        return APPLICATION_NAME
 
     def _get_file_ini_name(self):
         return ".single_grating_coherence_z_scan.ini"

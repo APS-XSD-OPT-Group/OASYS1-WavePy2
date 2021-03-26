@@ -45,6 +45,7 @@
 from orangecontrib.wavepy2.util.gui.ow_crop_image import CropImageWidget
 
 from wavepy2.tools.common.bl import crop_image
+from wavepy2.tools.diagnostic.coherence.bl.single_grating_coherence_z_scan import APPLICATION_NAME
 
 class OWSGZCropDarkImage(CropImageWidget):
     name = "S.G.Z. - Crop Dark Image"
@@ -67,6 +68,7 @@ class OWSGZCropDarkImage(CropImageWidget):
 
         return crop_image.draw_crop_image(initialization_parameters=self._initialization_parameters,
                                           plotting_properties=self._get_default_plotting_properties(),
+                                          application_name=self._get_application_name(),
                                           img=img_to_crop,
                                           message=self._get_window_text(),
                                           default_idx4crop=[0, 20, 0, 20],
@@ -82,3 +84,6 @@ class OWSGZCropDarkImage(CropImageWidget):
 
     def _get_execute_button_label(self):
         return "Crop Dark Image"
+
+    def _get_application_name(self):
+        return APPLICATION_NAME

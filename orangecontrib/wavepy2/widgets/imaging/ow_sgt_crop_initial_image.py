@@ -46,6 +46,7 @@ from orangecontrib.wavepy2.util.gui.ow_crop_image_store_parameters import CropIm
 
 from wavepy2.tools.common.wavepy_data import WavePyData
 from wavepy2.tools.common.bl import crop_image
+from wavepy2.tools.imaging.single_grating.bl.single_grating_talbot import APPLICATION_NAME
 
 class OWSGTCropInitialImage(CropImageStoreParametersWidget):
     name = "S.G.T. - Crop Initial Image"
@@ -61,3 +62,6 @@ class OWSGTCropInitialImage(CropImageStoreParametersWidget):
 
     def _get_window_text(self):
         return "Crop Initial Image?"
+
+    def _get_application_name(self):
+        return APPLICATION_NAME

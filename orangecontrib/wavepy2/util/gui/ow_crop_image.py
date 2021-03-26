@@ -63,9 +63,13 @@ class CropImageWidget(WavePyInteractiveWidget):
     def _get_crop_widget(self, img_to_crop):
         return crop_image.draw_crop_image(initialization_parameters=self._initialization_parameters,
                                           plotting_properties=self._get_default_plotting_properties(),
+                                          application_name=self._get_application_name(),
                                           img=img_to_crop,
                                           message=self._get_window_text(),
                                           tab_widget_height=660)[0]
+
+    def _get_application_name(self):
+        return None
 
     def _get_img_name_in_calculation_parameters(self):
         return "img"

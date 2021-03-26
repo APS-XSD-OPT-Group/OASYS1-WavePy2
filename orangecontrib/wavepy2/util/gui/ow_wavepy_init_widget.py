@@ -77,9 +77,9 @@ class WavePyInitWidget(WavePyWidget):
         self._is_valid_widget = True
 
         try:
-            try: register_ini_instance(IniMode.LOCAL_FILE, ini_file_name=self._get_file_ini_name())
+            try: register_ini_instance(IniMode.LOCAL_FILE, application_name=self._get_application_name(), ini_file_name=self._get_file_ini_name())
             except AlreadyInitializedError:
-                if not get_registered_ini_instance().get_ini_file_name() == self._get_file_ini_name():
+                if not get_registered_ini_instance(self._get_application_name()).get_ini_file_name() == self._get_file_ini_name():
                     raise ValueError("The Oasys worspace can contain only 1 kind of analysis at a time")
 
             try: register_logger_single_instance(logger_mode=QSettings().value("wavepy/logger_mode", LoggerMode.FULL, type=int))
@@ -111,7 +111,12 @@ class WavePyInitWidget(WavePyWidget):
             self.setFixedWidth(self.MAX_WIDTH_NO_MAIN)
             self.setFixedHeight(320)
 
+            if self.IS_DEVELOP: raise e
+
         gui.rubber(self.controlArea)
+
+    def _get_application_name(self):
+        return None
 
     def _get_file_ini_name(self):
         raise NotImplementedError()
