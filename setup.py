@@ -97,7 +97,6 @@ PACKAGE_DATA = {
     "orangecontrib.wavepy2.widgets.imaging":["icons/*.png", "icons/*.jpg", "misc/*.*", "data/*.*"],
     "orangecontrib.wavepy2.widgets.diagnostic": ["icons/*.png", "icons/*.jpg", "misc/*.*", "data/*.*"],
     "orangecontrib.wavepy2.widgets.metrology": ["icons/*.png", "icons/*.jpg", "misc/*.*", "data/*.*"],
-    "orangecontrib.wavepy2.widgets.tools": ["icons/*.png", "icons/*.jpg", "misc/*.*", "data/*.*"],
 }
 
 NAMESPACE_PACAKGES = ["orangecontrib", "orangecontrib.wavepy2", "orangecontrib.wavepy2.widgets"]
@@ -108,7 +107,6 @@ ENTRY_POINTS = {
         "WavepPy2 Imaging = orangecontrib.wavepy2.widgets.imaging",
         "WavepPy2 Diagnostic = orangecontrib.wavepy2.widgets.diagnostic",
         "WavepPy2 Metrology = orangecontrib.wavepy2.widgets.metrology",
-        "WavepPy2 Tools = orangecontrib.wavepy2.widgets.tools",
     ),
     'oasys.menus' : ("wavepy2menu = orangecontrib.wavepy2.menu",)
 }

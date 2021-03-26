@@ -42,9 +42,17 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         #
 # POSSIBILITY OF SUCH DAMAGE.                                             #
 # #########################################################################
+from multiprocessing import cpu_count
+
+from orangewidget.settings import Setting
+from orangewidget import gui
+from oasys.widgets import gui as oasysgui
+
 from orangecontrib.wavepy2.util.gui.ow_wavepy_init_widget import WavePyInitWidget
 
 from wavepy2.tools.diagnostic.coherence.bl.single_grating_coherence_z_scan import create_single_grating_coherence_z_scan_manager, SINGLE_THREAD, APPLICATION_NAME
+
+N_CPUS = cpu_count() - 2
 
 class OWSGZInit(WavePyInitWidget):
     name = "S.G.Z. - Initialization"
@@ -55,8 +63,14 @@ class OWSGZInit(WavePyInitWidget):
     category = ""
     keywords = ["wavepy", "sgz", "init"]
 
+    parallel_mode = Setting(1)
+
+    MAX_HEIGHT = 720
+
     def __init__(self):
-        super(OWSGZInit, self).__init__()
+        super(OWSGZInit, self).__init__(show_general_option_box=True)
+
+        self.__draw_additional_input_area()
 
     def _get_application_name(self):
         return APPLICATION_NAME
@@ -65,8 +79,33 @@ class OWSGZInit(WavePyInitWidget):
         return ".single_grating_coherence_z_scan.ini"
 
     def _create_process_manager(self):
-        return create_single_grating_coherence_z_scan_manager(mode=SINGLE_THREAD)
+        if N_CPUS > 1: return create_single_grating_coherence_z_scan_manager(mode=self.parallel_mode)
+        else:          return create_single_grating_coherence_z_scan_manager(mode=SINGLE_THREAD)
+
+    def __draw_additional_input_area(self):
+        cb_parallel_mode = gui.comboBox(oasysgui.widgetBox(self._general_options_box, "", addSpace=False, orientation="vertical", width=350), self,
+                                        "parallel_mode", items=["Single-Thread", "Multi-Thread"], label="Computing Mode",
+                                        labelWidth=200, orientation="horizontal", callback=self.__set_parallel_mode)
+
+        if N_CPUS < 2:
+            self.parallel_mode = SINGLE_THREAD
+            cb_parallel_mode.setReadOnly(True)
+        else:
+            self.__cpus_label = gui.label(oasysgui.widgetBox(self._general_options_box, "", addSpace=False, orientation="vertical"), self,
+                                          label=("  # cpus: " + str(N_CPUS)))
+            self.__set_parallel_mode()
+
+        self.controlArea.setFixedHeight(self._init_widget.height() + 195)
+        gui.rubber(self.controlArea)
 
     def _draw_init_widget(self):
         return self._process_manager.draw_initialization_parameters_widget(plotting_properties=self._get_default_plotting_properties(),
                                                                            widget_height=485)[0]
+
+    def _execute(self):
+        self._process_manager = self._create_process_manager()
+
+        super(OWSGZInit, self)._execute()
+
+    def __set_parallel_mode(self):
+        self.__cpus_label.setVisible(self.parallel_mode==1)

@@ -46,6 +46,7 @@ from PyQt5.QtCore import QSettings
 from PyQt5.QtGui import QPalette, QColor, QFont
 
 from orangewidget import gui
+from oasys.widgets import gui as oasysgui
 
 from orangecontrib.wavepy2.util.gui.ow_wavepy_widget import WavePyWidget
 from orangecontrib.wavepy2.util.wavepy_objects import OasysWavePyData
@@ -54,9 +55,6 @@ from wavepy2.util.common.common_tools import AlreadyInitializedError
 from wavepy2.util.log.logger import register_logger_single_instance, LoggerMode
 from wavepy2.util.plot.plotter import register_plotter_instance, PlotterMode
 from wavepy2.util.ini.initializer import register_ini_instance, get_registered_ini_instance, IniMode
-from wavepy2.util.plot.plot_tools import PlottingProperties, DefaultContextWidget
-
-from wavepy2.tools.diagnostic.coherence.bl.single_grating_coherence_z_scan import create_single_grating_coherence_z_scan_manager
 
 class WavePyInitWidget(WavePyWidget):
     outputs = [{"name": "WavePy Data",
@@ -71,8 +69,8 @@ class WavePyInitWidget(WavePyWidget):
     MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
     MAX_HEIGHT = 660
 
-    def __init__(self):
-        super(WavePyInitWidget, self).__init__(show_general_option_box=False, show_automatic_box=False)
+    def __init__(self, show_general_option_box=False):
+        super(WavePyInitWidget, self).__init__(show_general_option_box=show_general_option_box, show_automatic_box=False)
 
         self._is_valid_widget = True
 

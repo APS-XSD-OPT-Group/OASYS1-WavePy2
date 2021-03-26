@@ -68,7 +68,6 @@ class WavePyWidget(OWWidget):
     info_id = 0
 
     CONTROL_AREA_WIDTH = 405
-    TABS_AREA_HEIGHT = 560
 
     MAX_WIDTH_FULL = 1320
     MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
@@ -92,15 +91,14 @@ class WavePyWidget(OWWidget):
 
         self.controlArea.setFixedWidth(self.CONTROL_AREA_WIDTH)
 
-        self.general_options_box = oasysgui.widgetBox(self.controlArea, "General Options", addSpace=True, orientation="horizontal")
-        self.general_options_box.setVisible(show_general_option_box)
+        self._general_options_box = oasysgui.widgetBox(self.controlArea, "General Options", addSpace=True, orientation="horizontal")
+        self._general_options_box.setVisible(show_general_option_box)
 
         if show_automatic_box :
-            gui.checkBox(self.general_options_box, self, 'is_automatic_run', 'Automatic Execution')
+            gui.checkBox(self._general_options_box, self, 'is_automatic_run', 'Automatic Execution')
 
-        self.button_box = oasysgui.widgetBox(self.controlArea, "", addSpace=True, orientation="horizontal")
-
-        gui.button(self.button_box, self, self._get_execute_button_label(), callback=self._execute, height=45)
+        self._button_box = oasysgui.widgetBox(self.controlArea, "", addSpace=False, orientation="horizontal")
+        gui.button(self._button_box, self, self._get_execute_button_label(), callback=self._execute, height=45)
 
         self._wavepy_widget_area = oasysgui.widgetBox(self.controlArea, "", addSpace=False, orientation="horizontal", width=self.CONTROL_AREA_WIDTH)
 

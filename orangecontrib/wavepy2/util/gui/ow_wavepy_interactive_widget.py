@@ -71,7 +71,7 @@ class WavePyInteractiveWidget(WavePyWidget):
         self.setFixedWidth(self.MAX_WIDTH_NO_MAIN)
         self.setFixedHeight(self.MAX_HEIGHT)
 
-        gui.button(self.button_box, self, self._get_cancel_button_label(), callback=self._cancel, height=45)
+        gui.button(self._button_box, self, self._get_cancel_button_label(), callback=self._cancel, height=45)
 
         gui.rubber(self.controlArea)
 
