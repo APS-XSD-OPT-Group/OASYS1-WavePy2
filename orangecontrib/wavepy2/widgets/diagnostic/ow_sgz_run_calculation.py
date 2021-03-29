@@ -42,11 +42,12 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         #
 # POSSIBILITY OF SUCH DAMAGE.                                             #
 # #########################################################################
-from wavepy2.util.plot.plot_tools import PlottingProperties
+from orangewidget.settings import Setting
+from orangewidget import gui
 
-from orangecontrib.wavepy2.util.gui.ow_wavepy_process_widget import WavePyProcessWidget
+from orangecontrib.wavepy2.util.gui.ow_wavepy_process_widget import WavePyProcessWidgetWithOptions
 
-class OWSGZRunCalculation(WavePyProcessWidget):
+class OWSGZRunCalculation(WavePyProcessWidgetWithOptions):
     name = "S.G.Z. - Run Calculation"
     id = "sgz_run_calculation"
     description = "S.G.Z. - Run Calculation"
@@ -63,13 +64,19 @@ class OWSGZRunCalculation(WavePyProcessWidget):
 
     must_clean_layout = True
 
+    show_fourier = Setting(0)
+
     def __init__(self):
         super(OWSGZRunCalculation, self).__init__()
+
+        gui.checkBox(self._options_area, self, "show_fourier", "Show Fourier Analysis")
 
     def _get_execute_button_label(self):
         return "Run Calculation"
 
     def _get_output_parameters(self):
+        self._initialization_parameters.set_parameter("show_fourier", self.show_fourier==1)
+
         return self._process_manager.run_calculation(harm_periods_result=self._calculation_parameters,
                                                      initialization_parameters=self._initialization_parameters,
                                                      plotting_properties=self._get_default_plotting_properties())

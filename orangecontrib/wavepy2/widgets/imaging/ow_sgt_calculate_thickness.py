@@ -44,14 +44,10 @@
 # #########################################################################
 from orangewidget.settings import Setting
 from orangewidget import gui
-from oasys.widgets import gui as oasysgui
 
-from wavepy2.util.plot.plot_tools import PlottingProperties, DefaultContextWidget
+from orangecontrib.wavepy2.util.gui.ow_wavepy_process_widget import WavePyProcessWidgetWithOptions
 
-from orangecontrib.wavepy2.util.gui.ow_wavepy_widget import clear_layout
-from orangecontrib.wavepy2.util.gui.ow_wavepy_process_widget import WavePyProcessWidget
-
-class OWSGTCalculateThickness(WavePyProcessWidget):
+class OWSGTCalculateThickness(WavePyProcessWidgetWithOptions):
     name = "S.G.T. - Calculate Thickness"
     id = "sgt_calculate_thickness"
     description = "S.G.T. - Calculate Thickness"
@@ -73,17 +69,7 @@ class OWSGTCalculateThickness(WavePyProcessWidget):
     def __init__(self):
         super(OWSGTCalculateThickness, self).__init__()
 
-        self._options_area = oasysgui.widgetBox(self._wavepy_widget_area, "Options", addSpace=False, orientation="vertical", width=200)
-
         gui.comboBox(self._options_area, self, "material_idx", items=["Diamond", "Beryllium"], label="Material", labelWidth=100, orientation="horizontal")
-
-        self._wavepy_widget_area_2 = oasysgui.widgetBox(self._wavepy_widget_area, "", addSpace=False, orientation="vertical", width=self.CONTROL_AREA_WIDTH-200)
-
-    def _clear_wavepy_layout(self):
-        clear_layout(self._wavepy_widget_area_2.layout())
-
-    def _get_default_context(self):
-        return DefaultContextWidget(self._wavepy_widget_area_2)
 
     def _get_execute_button_label(self):
         return "Calculate Thickness"

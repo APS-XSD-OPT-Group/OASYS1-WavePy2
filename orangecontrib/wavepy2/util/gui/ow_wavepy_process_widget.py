@@ -43,6 +43,7 @@
 # POSSIBILITY OF SUCH DAMAGE.                                             #
 # #########################################################################
 from orangewidget import gui
+from oasys.widgets import gui as oasysgui
 
 from orangecontrib.wavepy2.util.gui.ow_wavepy_widget import WavePyWidget
 from orangecontrib.wavepy2.util.wavepy_objects import OasysWavePyData
@@ -105,3 +106,25 @@ class WavePyProcessWidget(WavePyWidget):
 
     def _get_output_parameters(self):
         raise NotImplementedError()
+
+from orangecontrib.wavepy2.util.gui.ow_wavepy_widget import clear_layout
+from wavepy2.util.plot.plot_tools import DefaultContextWidget
+
+class WavePyProcessWidgetWithOptions(WavePyProcessWidget):
+
+    def __init__(self, show_general_option_box=True, show_automatic_box=True):
+        super(WavePyProcessWidgetWithOptions, self).__init__(show_general_option_box=show_general_option_box, show_automatic_box=show_automatic_box)
+
+        self._options_area               = oasysgui.widgetBox(self._wavepy_widget_area, "Options", addSpace=False, orientation="vertical",
+                                                              width=self._get_option_area_width())
+        self._lateral_wavepy_widget_area = oasysgui.widgetBox(self._wavepy_widget_area, "", addSpace=False, orientation="vertical",
+                                                              width=self.CONTROL_AREA_WIDTH - self._get_option_area_width())
+
+    def _get_option_area_width(self):
+        return 200
+
+    def _clear_wavepy_layout(self):
+        clear_layout(self._lateral_wavepy_widget_area.layout())
+
+    def _get_default_context(self):
+        return DefaultContextWidget(self._lateral_wavepy_widget_area)
