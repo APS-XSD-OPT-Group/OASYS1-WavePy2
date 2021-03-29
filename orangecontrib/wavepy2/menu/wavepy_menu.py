@@ -107,6 +107,16 @@ sgz_analysis_widget_list = [
     [base_diagnostic_path + "ow_sgz_fit_calculation_result.OWSGZFitCalculationResult", None, {"is_automatic_run": True}],
 ]
 
+frl_analysis_widget_list = [
+    [base_metrology_path + "ow_frl_init.OWFRLInit", (0.0, 50.0), {}],
+    [base_metrology_path + "ow_frl_manager_initialization.OWFRLManagerInitialization", None, {"is_automatic_run": True}],
+    [base_metrology_path + "ow_frl_crop_thickness.OWFRLCropThickness", None, {"is_automatic_run": True}],
+    [base_metrology_path + "ow_frl_manage_crop_thickness.OWFRLManageCropThickness", None, {"is_automatic_run": True}],
+    [base_metrology_path + "ow_frl_center_image.OWFRLCenterImage", (50.0, 200.0), {"is_automatic_run": True}],
+    [base_metrology_path + "ow_frl_fit_radius_dpc.OWFRLFitRadiusDPC", None, {"is_automatic_run": True}],
+    [base_metrology_path + "ow_frl_do_fit.OWFRLDoFit", None, {"is_automatic_run": True}],
+]
+
 def showInfoMessage(message):
     msgBox = QtWidgets.QMessageBox()
     msgBox.setIcon(QtWidgets.QMessageBox.Information)
@@ -189,7 +199,8 @@ class WavePyMenu(OMenu):
             self.create_analysis(sgz_analysis_widget_list)
 
     def executeAction_4(self, action):
-        pass
+        if showConfirmMessage("Confirm Action", "Create Fit Residual Lenses Analysis?") == QtWidgets.QMessageBox.Yes:
+            self.create_analysis(frl_analysis_widget_list)
 
     def executeAction_5(self, action):
         QSettings().setValue("wavepy/plotter_mode", PlotterMode.FULL)

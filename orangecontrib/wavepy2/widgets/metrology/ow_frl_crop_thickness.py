@@ -42,37 +42,34 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         #
 # POSSIBILITY OF SUCH DAMAGE.                                             #
 # #########################################################################
-from orangecontrib.wavepy2.util.gui.ow_wavepy_init_widget import WavePyInitWidget
-from wavepy2.util.plot.plot_tools import PlottingProperties
+from wavepy2.tools.common.wavepy_data import WavePyData
 
-from wavepy2.tools.imaging.single_grating.bl.single_grating_talbot import create_single_grating_talbot_manager, APPLICATION_NAME
+from orangecontrib.wavepy2.util.gui.ow_wavepy_interactive_widget import WavePyInteractiveWidget
 
-class OWSGTInit(WavePyInitWidget):
-    name = "S.G.T. - Initialization"
-    id = "sgt_init"
-    description = "S.G.T. - Initialization"
-    icon = "icons/sgt_init.png"
-    priority = 1
+class OWFRLCropThickness(WavePyInteractiveWidget):
+    name = "F.R.L. - Crop Thickness"
+    id = "frl_crop_thickness"
+    description = "F.R.L. - Crop Thickness"
+    icon = "icons/frl_crop_thickness.png"
+    priority = 3
     category = ""
-    keywords = ["wavepy", "sgt", "init"]
-
-    MAX_HEIGHT = 500
+    keywords = ["wavepy", "tools", "crop"]
 
     def __init__(self):
-        super(OWSGTInit, self).__init__()
+        super(OWFRLCropThickness, self).__init__()
 
-    def _get_application_name(self):
-        return APPLICATION_NAME
+    def _get_interactive_widget(self):
+        if not self._initialization_parameters is None:
+            self._initialization_parameters.set_parameter("crop_thickness", True)
 
-    def _get_file_ini_name(self):
-        return ".single_grating_talbot.ini"
+            return self._process_manager.draw_crop_thickness(initialization_parameters=self._initialization_parameters,
+                                                             plotting_properties=self._get_default_plotting_properties(),
+                                                             tab_widget_height=660)[0]
 
-    def _create_process_manager(self):
-        return create_single_grating_talbot_manager()
+    def _get_output_parameters(self, widget_output_data):
+        _, idx4crop, _ = widget_output_data
 
-    def _draw_init_widget(self):
-        return self._process_manager.draw_initialization_parameters_widget(plotting_properties=PlottingProperties(context_widget=self._get_default_context(),
-                                                                                                                  show_runtime_options=False,
-                                                                                                                  add_context_label=False,
-                                                                                                                  use_unique_id=True),
-                                                                           widget_height=330)[0]
+        return WavePyData(idx4crop=idx4crop)
+
+    def _get_execute_button_label(self):
+        return "Crop Thickness"

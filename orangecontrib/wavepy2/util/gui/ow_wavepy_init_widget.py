@@ -75,15 +75,15 @@ class WavePyInitWidget(WavePyWidget):
         self._is_valid_widget = True
 
         try:
-            try: register_ini_instance(IniMode.LOCAL_FILE, application_name=self._get_application_name(), ini_file_name=self._get_file_ini_name())
-            except AlreadyInitializedError:
-                if not get_registered_ini_instance(self._get_application_name()).get_ini_file_name() == self._get_file_ini_name():
-                    raise ValueError("The Oasys worspace can contain only 1 kind of analysis at a time")
-
             try: register_logger_single_instance(logger_mode=QSettings().value("wavepy/logger_mode", LoggerMode.FULL, type=int))
             except AlreadyInitializedError: pass
             try: register_plotter_instance(plotter_mode=QSettings().value("wavepy/plotter_mode", PlotterMode.FULL, type=int))
             except AlreadyInitializedError: pass
+
+            try: register_ini_instance(IniMode.LOCAL_FILE, application_name=self._get_application_name(), ini_file_name=self._get_file_ini_name())
+            except AlreadyInitializedError:
+                if not get_registered_ini_instance(self._get_application_name()).get_ini_file_name() == self._get_file_ini_name():
+                    raise ValueError("The Oasys worspace can contain only 1 kind of analysis at a time")
 
             self._process_manager = self._create_process_manager()
             self._init_widget     = self._draw_init_widget()

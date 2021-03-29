@@ -45,30 +45,30 @@
 from orangecontrib.wavepy2.util.gui.ow_wavepy_init_widget import WavePyInitWidget
 from wavepy2.util.plot.plot_tools import PlottingProperties
 
-from wavepy2.tools.imaging.single_grating.bl.single_grating_talbot import create_single_grating_talbot_manager, APPLICATION_NAME
+from wavepy2.tools.metrology.lenses.bl.fit_residual_lenses import create_fit_residual_lenses_manager, APPLICATION_NAME
 
-class OWSGTInit(WavePyInitWidget):
-    name = "S.G.T. - Initialization"
-    id = "sgt_init"
-    description = "S.G.T. - Initialization"
-    icon = "icons/sgt_init.png"
+class OWFRLInit(WavePyInitWidget):
+    name = "F.R.L. - Initialization"
+    id = "frl_init"
+    description = "F.R.L. - Initialization"
+    icon = "icons/frl_init.png"
     priority = 1
     category = ""
-    keywords = ["wavepy", "sgt", "init"]
+    keywords = ["wavepy", "frl", "init"]
 
     MAX_HEIGHT = 500
 
     def __init__(self):
-        super(OWSGTInit, self).__init__()
+        super(OWFRLInit, self).__init__(show_general_option_box=True)
 
     def _get_application_name(self):
         return APPLICATION_NAME
 
     def _get_file_ini_name(self):
-        return ".single_grating_talbot.ini"
+        return ".fit_residual_lenses.ini"
 
     def _create_process_manager(self):
-        return create_single_grating_talbot_manager()
+        return create_fit_residual_lenses_manager()
 
     def _draw_init_widget(self):
         return self._process_manager.draw_initialization_parameters_widget(plotting_properties=PlottingProperties(context_widget=self._get_default_context(),

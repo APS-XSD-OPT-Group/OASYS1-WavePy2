@@ -42,37 +42,38 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         #
 # POSSIBILITY OF SUCH DAMAGE.                                             #
 # #########################################################################
-from orangecontrib.wavepy2.util.gui.ow_wavepy_init_widget import WavePyInitWidget
-from wavepy2.util.plot.plot_tools import PlottingProperties
+from PyQt5.QtCore import QSettings
 
-from wavepy2.tools.imaging.single_grating.bl.single_grating_talbot import create_single_grating_talbot_manager, APPLICATION_NAME
+from orangecontrib.wavepy2.util.gui.ow_wavepy_process_widget import WavePyProcessWidget
 
-class OWSGTInit(WavePyInitWidget):
-    name = "S.G.T. - Initialization"
-    id = "sgt_init"
-    description = "S.G.T. - Initialization"
-    icon = "icons/sgt_init.png"
-    priority = 1
+from wavepy2.util.log.logger import LoggerMode
+
+class OWFRLManagerInitialization(WavePyProcessWidget):
+    name = "F.R.L. Manager Initialization"
+    id = "frl_manager_initialization"
+    description = "F.R.L. Manager Initialization"
+    icon = "icons/frl_manager_initialization.png"
+    priority = 2
     category = ""
-    keywords = ["wavepy", "sgt", "init"]
+    keywords = ["wavepy", "tools", "crop"]
 
-    MAX_HEIGHT = 500
+    must_clean_layout = False
+
+    CONTROL_AREA_HEIGTH = 150
+    CONTROL_AREA_WIDTH  = 400
+
+    MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
+    MAX_HEIGHT = CONTROL_AREA_HEIGTH + 10
 
     def __init__(self):
-        super(OWSGTInit, self).__init__()
+        super(OWFRLManagerInitialization, self).__init__()
 
-    def _get_application_name(self):
-        return APPLICATION_NAME
+    def _get_execute_button_label(self):
+        return "Manager Initialization"
 
-    def _get_file_ini_name(self):
-        return ".single_grating_talbot.ini"
+    def _get_output_parameters(self):
+        self._process_manager.manager_initialization(initialization_parameters=self._initialization_parameters,
+                                                     script_logger_mode=QSettings().value("wavepy/logger_mode", LoggerMode.FULL, type=int))
 
-    def _create_process_manager(self):
-        return create_single_grating_talbot_manager()
 
-    def _draw_init_widget(self):
-        return self._process_manager.draw_initialization_parameters_widget(plotting_properties=PlottingProperties(context_widget=self._get_default_context(),
-                                                                                                                  show_runtime_options=False,
-                                                                                                                  add_context_label=False,
-                                                                                                                  use_unique_id=True),
-                                                                           widget_height=330)[0]
+        return None

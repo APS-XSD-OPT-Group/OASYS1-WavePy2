@@ -42,37 +42,35 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         #
 # POSSIBILITY OF SUCH DAMAGE.                                             #
 # #########################################################################
-from orangecontrib.wavepy2.util.gui.ow_wavepy_init_widget import WavePyInitWidget
+from orangecontrib.wavepy2.util.gui.ow_wavepy_process_widget import WavePyProcessWidget
+
 from wavepy2.util.plot.plot_tools import PlottingProperties
 
-from wavepy2.tools.imaging.single_grating.bl.single_grating_talbot import create_single_grating_talbot_manager, APPLICATION_NAME
-
-class OWSGTInit(WavePyInitWidget):
-    name = "S.G.T. - Initialization"
-    id = "sgt_init"
-    description = "S.G.T. - Initialization"
-    icon = "icons/sgt_init.png"
-    priority = 1
+class OWFRLDoFit(WavePyProcessWidget):
+    name = "F.R.L. - Do Fit"
+    id = "frl_do_fit"
+    description = "F.R.L. - Do Fit"
+    icon = "icons/frl_do_fit.png"
+    priority = 6
     category = ""
-    keywords = ["wavepy", "sgt", "init"]
+    keywords = ["wavepy", "tools", "fit"]
 
-    MAX_HEIGHT = 500
+    CONTROL_AREA_HEIGTH = 840
+    CONTROL_AREA_WIDTH = 1500
+
+    MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
+    MAX_HEIGHT = CONTROL_AREA_HEIGTH + 10
+
+    must_clean_layout = True
 
     def __init__(self):
-        super(OWSGTInit, self).__init__()
+        super(OWFRLDoFit, self).__init__()
 
-    def _get_application_name(self):
-        return APPLICATION_NAME
+    def _get_execute_button_label(self):
+        return "Do Fit"
 
-    def _get_file_ini_name(self):
-        return ".single_grating_talbot.ini"
+    def _get_output_parameters(self):
+        return self._process_manager.do_fit(fit_radius_dpc_result=self._calculation_parameters,
+                                            initialization_parameters=self._initialization_parameters,
+                                            plotting_properties=self._get_default_plotting_properties())
 
-    def _create_process_manager(self):
-        return create_single_grating_talbot_manager()
-
-    def _draw_init_widget(self):
-        return self._process_manager.draw_initialization_parameters_widget(plotting_properties=PlottingProperties(context_widget=self._get_default_context(),
-                                                                                                                  show_runtime_options=False,
-                                                                                                                  add_context_label=False,
-                                                                                                                  use_unique_id=True),
-                                                                           widget_height=330)[0]
