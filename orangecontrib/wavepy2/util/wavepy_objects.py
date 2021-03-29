@@ -42,6 +42,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         #
 # POSSIBILITY OF SUCH DAMAGE.                                             #
 # #########################################################################
+import copy
 
 class OasysWavePyData(object):
     def __init__(self, process_manager=None, initialization_parameters=None, calculation_parameters=None, **parameters):
@@ -90,3 +91,75 @@ class OasysWavePyData(object):
                 duplicated.set_parameter(parameter_name, copy.deepcopy(self.get_parameter(parameter_name)))
 
         return duplicated
+
+from PyQt5.QtWidgets import QWidget, QHBoxLayout
+from PyQt5.QtCore import Qt
+from PyQt5.Qt import QTextCursor
+
+
+from wavepy2.util.log.logger import LogStream
+
+import oasys.widgets.gui as gui
+
+class LogStreamWidget(LogStream, QWidget):
+    class Widget(QWidget):
+        def __init__(self, parent=None):
+            super(LogStreamWidget.Widget, self).__init__(parent=parent)
+
+            self.setFixedHeight(400)
+            self.setFixedWidth(850)
+
+            text_area_box = gui.__widgetBox(self, "Test", orientation="vertical", height=160, width=200)
+
+            self.__text_area = gui.textArea(height=120, width=160, readOnly=True)
+            self.__text_area.setText("")
+
+            text_area_box.layout().addWidget(self.__text_area)
+
+        def write(self, text):
+            cursor = self.__text_area.textCursor()
+            cursor.movePosition(QTextCursor.End)
+            cursor.insertText(text)
+            self.__text_area.setTextCursor(cursor)
+            self.__text_area.ensureCursorVisible()
+
+    def __init__(self):
+        layout = QHBoxLayout()
+        layout.setAlignment(Qt.AlignCenter)
+        self.setLayout(layout)
+
+        self.__widget = LogStreamWidget.Widget(parent=self)
+        self.setFixedWidth(self.__widget.width())
+        self.setFixedHeight(self.__widget.height())
+
+        layout.addWidget(self.__widget)
+
+    def close(self): pass
+    def write(self, text): self.__widget.write(text)
+    def flush(self, *args, **kwargs): pass
+
+from wavepy2.util import Singleton, synchronized_method
+from wavepy2.util.common.common_tools import GenericRegistry
+
+@Singleton
+class __LogStreamRegistry(GenericRegistry):
+    def __init__(self):
+        GenericRegistry.__init__(self, registry_name="Log Stream")
+
+    @synchronized_method
+    def register_log_stream(self, log_stream, application_name=None):
+        super().register_instance(log_stream, application_name)
+
+    @synchronized_method
+    def reset(self, application_name=None):
+        super().reset(application_name)
+
+    def get_log_stream_instance(self, application_name=None):
+        return super().get_instance(application_name)
+
+def register_log_stream_widget_instance(application_name=None, reset=False):
+    if reset: __LogStreamRegistry.Instance().reset(application_name)
+    __LogStreamRegistry.Instance().register_log_stream(LogStreamWidget(), application_name)
+
+def get_registered_log_stream_instance(application_name=None):
+    return __LogStreamRegistry.Instance().get_log_stream_instance(application_name)
