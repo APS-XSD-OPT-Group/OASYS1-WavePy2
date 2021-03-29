@@ -48,7 +48,7 @@ from PyQt5.QtGui import QPalette, QColor, QFont
 from orangewidget import gui
 
 from orangecontrib.wavepy2.util.gui.ow_wavepy_widget import WavePyWidget
-from orangecontrib.wavepy2.util.wavepy_objects import OasysWavePyData, __LogStreamRegistry, LogStreamWidget
+from orangecontrib.wavepy2.util.wavepy_objects import OasysWavePyData, register_log_stream_widget_instance, get_registered_log_stream_instance
 
 from wavepy2.util.common.common_tools import AlreadyInitializedError
 from wavepy2.util.log.logger import register_logger_single_instance, LoggerMode
@@ -74,10 +74,12 @@ class WavePyInitWidget(WavePyWidget):
         self._is_valid_widget = True
 
         try:
-            #try: __LogStreamRegistry.Instance().
+            try: register_log_stream_widget_instance(application_name=self._get_application_name())
+            except AlreadyInitializedError: pass
 
-
-            try: register_logger_single_instance(logger_mode=QSettings().value("wavepy/logger_mode", LoggerMode.FULL, type=int), application_name=self._get_application_name())
+            try: register_logger_single_instance(logger_mode=QSettings().value("wavepy/logger_mode", LoggerMode.FULL, type=int),
+                                                 stream=get_registered_log_stream_instance(application_name=self._get_application_name()),
+                                                 application_name=self._get_application_name())
             except AlreadyInitializedError: pass
 
             try: register_plotter_instance(plotter_mode=QSettings().value("wavepy/plotter_mode", PlotterMode.FULL, type=int), application_name=self._get_application_name())

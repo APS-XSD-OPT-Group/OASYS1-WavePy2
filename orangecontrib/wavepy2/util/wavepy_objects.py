@@ -101,17 +101,17 @@ from wavepy2.util.log.logger import LogStream
 
 import oasys.widgets.gui as gui
 
-class LogStreamWidget(LogStream, QWidget):
+class LogStreamWidget(LogStream):
     class Widget(QWidget):
-        def __init__(self, parent=None):
-            super(LogStreamWidget.Widget, self).__init__(parent=parent)
+        def __init__(self, width=850, height=400):
+            QWidget.__init__(self)
 
-            self.setFixedHeight(400)
-            self.setFixedWidth(850)
+            self.setFixedHeight(height)
+            self.setFixedWidth(width)
 
-            text_area_box = gui.__widgetBox(self, "Test", orientation="vertical", height=160, width=200)
+            text_area_box = gui.widgetBox(self, "", orientation="vertical", height=height, width=width)
 
-            self.__text_area = gui.textArea(height=120, width=160, readOnly=True)
+            self.__text_area = gui.textArea(height=height-5, width=width-5, readOnly=True)
             self.__text_area.setText("")
 
             text_area_box.layout().addWidget(self.__text_area)
@@ -123,20 +123,18 @@ class LogStreamWidget(LogStream, QWidget):
             self.__text_area.setTextCursor(cursor)
             self.__text_area.ensureCursorVisible()
 
-    def __init__(self):
-        layout = QHBoxLayout()
-        layout.setAlignment(Qt.AlignCenter)
-        self.setLayout(layout)
+        def clear_log(self):
+            self.__text_area.clear()
 
-        self.__widget = LogStreamWidget.Widget(parent=self)
-        self.setFixedWidth(self.__widget.width())
-        self.setFixedHeight(self.__widget.height())
-
-        layout.addWidget(self.__widget)
+    def __init__(self, width=850, height=400):
+        self.__widget = LogStreamWidget.Widget(width, height)
 
     def close(self): pass
     def write(self, text): self.__widget.write(text)
     def flush(self, *args, **kwargs): pass
+
+    def get_widget(self):
+        return self.__widget
 
 from wavepy2.util import Singleton, synchronized_method
 from wavepy2.util.common.common_tools import GenericRegistry
