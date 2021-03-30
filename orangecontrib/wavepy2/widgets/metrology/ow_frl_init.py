@@ -56,7 +56,7 @@ class OWFRLInit(WavePyInitWidget):
     category = ""
     keywords = ["wavepy", "frl", "init"]
 
-    MAX_HEIGHT = 500
+    MAX_HEIGHT = 435
 
     def __init__(self):
         super(OWFRLInit, self).__init__(show_general_option_box=True)
@@ -75,4 +75,4 @@ class OWFRLInit(WavePyInitWidget):
                                                                                                                   show_runtime_options=False,
                                                                                                                   add_context_label=False,
                                                                                                                   use_unique_id=True),
-                                                                           widget_height=330)[0]
+                                                                           widget_height=250)[0]

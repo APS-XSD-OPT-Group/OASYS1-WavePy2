@@ -75,4 +75,4 @@ class OWSGTInit(WavePyInitWidget):
                                                                                                                   show_runtime_options=False,
                                                                                                                   add_context_label=False,
                                                                                                                   use_unique_id=True),
-                                                                           widget_height=330)[0]
+                                                                           widget_height=270)[0]
