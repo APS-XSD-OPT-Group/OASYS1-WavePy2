@@ -58,8 +58,7 @@ CALCULATION_PARAMETERS    = "calculation_parameters"
 PROCESS_MANAGER           = "process_manager"
 
 class WavePyWidget(OWWidget):
-
-    want_main_area=1
+    want_main_area = 0
 
     is_automatic_run = Setting(True)
 

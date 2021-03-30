@@ -57,7 +57,6 @@ class WavePyProcessWidget(WavePyWidget):
                 "doc": "WavePy Data",
                 "id": "WavePy_Data"}]
 
-    want_main_area = 0
     must_clean_layout = True
 
     def __init__(self, show_general_option_box=True, show_automatic_box=True):

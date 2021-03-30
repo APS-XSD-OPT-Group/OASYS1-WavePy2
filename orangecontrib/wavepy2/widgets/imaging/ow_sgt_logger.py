@@ -42,35 +42,21 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         #
 # POSSIBILITY OF SUCH DAMAGE.                                             #
 # #########################################################################
-from orangecontrib.wavepy2.util.gui.ow_wavepy_widget import WavePyWidget
-from orangecontrib.wavepy2.util.wavepy_objects import get_registered_log_stream_instance
+from orangecontrib.wavepy2.util.gui.ow_wavepy_logger import WavePyLogger
 
 from wavepy2.tools.imaging.single_grating.bl.single_grating_talbot import APPLICATION_NAME
 
-class OWSGTLogger(WavePyWidget):
+class OWSGTLogger(WavePyLogger):
     name = "S.G.T. - Logger"
-    id = "sgt_init"
+    id = "sgt_logger"
     description = "S.G.T. - Logger"
-    icon = "icons/sgt_init.png"
+    icon = "icons/sgt_logger.png"
     priority = 1.1
     category = ""
-    keywords = ["wavepy", "sgt", "init"]
-
-    want_main_area=0
-
-    CONTROL_AREA_WIDTH = 905
-    MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
-    MAX_HEIGHT = 500
+    keywords = ["wavepy", "sgt", "logger"]
 
     def __init__(self):
         super(OWSGTLogger, self).__init__()
 
-        self.__log_widget = get_registered_log_stream_instance(application_name=APPLICATION_NAME).get_widget()
-
-        self._wavepy_widget_area.layout().addWidget(self.__log_widget)
-
-    def _execute(self):
-        self.__log_widget.clear_log()
-
-    def _get_execute_button_label(self):
-        return "Clear Log"
+    def _get_application_name(self):
+        return APPLICATION_NAME

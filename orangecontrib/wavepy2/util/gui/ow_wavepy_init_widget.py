@@ -61,8 +61,6 @@ class WavePyInitWidget(WavePyWidget):
                 "doc": "WavePy Data",
                 "id": "WavePy_Data"}]
 
-    want_main_area = 0
-
     CONTROL_AREA_WIDTH = 860
 
     MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10

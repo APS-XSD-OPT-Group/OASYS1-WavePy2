@@ -157,7 +157,7 @@ class __LogStreamRegistry(GenericRegistry):
 
 def register_log_stream_widget_instance(application_name=None, reset=False):
     if reset: __LogStreamRegistry.Instance().reset(application_name)
-    __LogStreamRegistry.Instance().register_log_stream(LogStreamWidget(), application_name)
+    __LogStreamRegistry.Instance().register_log_stream(LogStreamWidget(width=1095, height=450), application_name)
 
 def get_registered_log_stream_instance(application_name=None):
     return __LogStreamRegistry.Instance().get_log_stream_instance(application_name)

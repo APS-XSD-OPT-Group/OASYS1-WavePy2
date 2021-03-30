@@ -42,95 +42,27 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         #
 # POSSIBILITY OF SUCH DAMAGE.                                             #
 # #########################################################################
-from orangewidget import gui
-
 from orangecontrib.wavepy2.util.gui.ow_wavepy_widget import WavePyWidget
-from orangecontrib.wavepy2.util.wavepy_objects import OasysWavePyData
+from orangecontrib.wavepy2.util.wavepy_objects import get_registered_log_stream_instance
 
+class WavePyLogger(WavePyWidget):
 
-class WavePyInteractiveWidget(WavePyWidget):
-    inputs = [("WavePy Data", OasysWavePyData, "set_input"),]
-
-    outputs = [{"name": "WavePy Data",
-                "type": OasysWavePyData,
-                "doc": "WavePy Data",
-                "id": "WavePy_Data"}]
-
-    must_clean_layout = True
-
-    CONTROL_AREA_HEIGTH = 840
-    CONTROL_AREA_WIDTH  = 950
-
+    CONTROL_AREA_WIDTH = 1100
     MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
-    MAX_HEIGHT = CONTROL_AREA_HEIGTH + 10
+    MAX_HEIGHT = 530
 
-    def __init__(self, show_general_option_box=True, show_automatic_box=True):
-        super(WavePyInteractiveWidget, self).__init__(show_general_option_box=show_general_option_box, show_automatic_box=show_automatic_box)
+    def __init__(self):
+        super(WavePyLogger, self).__init__()
 
-        self.setFixedWidth(self.MAX_WIDTH_NO_MAIN)
-        self.setFixedHeight(self.MAX_HEIGHT)
+        self.__log_widget = get_registered_log_stream_instance(application_name=self._get_application_name()).get_widget()
 
-        gui.button(self._button_box, self, self._get_cancel_button_label(), callback=self._cancel, height=45)
-
-        gui.rubber(self.controlArea)
-
-    def set_input(self, data):
-        if not data is None:
-            self.progressBarInit()
-
-            data = data.duplicate()
-
-            self._initialization_parameters = data.get_initialization_parameters()
-            self._calculation_parameters    = data.get_calculation_parameters()
-            self._process_manager           = data.get_process_manager()
-
-            if self.must_clean_layout: self._clear_wavepy_layout()
-
-            self.progressBarSet(10)
-
-            self._interactive_widget = self._get_interactive_widget()
-
-            self.progressBarSet(90)
-
-            self.controlArea.setFixedWidth(self.CONTROL_AREA_WIDTH)
-            self.controlArea.setFixedHeight(self.CONTROL_AREA_HEIGTH)
-
-            gui.rubber(self.controlArea)
-
-            self.progressBarSet(100)
-            self.progressBarFinished()
-
-            if self.is_automatic_run: self._cancel()
-
-    def _get_cancel_button_label(self):
-        return "Initial Crop"
-
-    def _get_interactive_widget(self):
-        raise NotImplementedError()
-
-    def __send_result(self, widget_output_data):
-        if not self._interactive_widget is None:
-            output_calculation_parameters = self._get_output_parameters(widget_output_data)
-
-            output = OasysWavePyData()
-
-            output.set_process_manager(self._process_manager)
-            output.set_initialization_parameters(self._initialization_parameters)
-            output.set_calculation_parameters(output_calculation_parameters)
-
-            self.send("WavePy Data", output)
-
-    def _get_output_parameters(self, widget_output_data):
-        raise NotImplementedError()
+        self._wavepy_widget_area.layout().addWidget(self.__log_widget)
 
     def _execute(self):
-        self.__send_result(self._get_accepted_output())
+        self.__log_widget.clear_log()
 
-    def _cancel(self):
-        self.__send_result(self._get_rejected_output())
+    def _get_execute_button_label(self):
+        return "Clear Log"
 
-    def _get_accepted_output(self):
-        return self._interactive_widget.get_accepted_output()
-
-    def _get_rejected_output(self):
-        return self._interactive_widget.get_rejected_output()
+    def _get_application_name(self):
+        return None
