@@ -42,6 +42,11 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         #
 # POSSIBILITY OF SUCH DAMAGE.                                             #
 # #########################################################################
+from PyQt5.QtCore import QSettings
+from PyQt5.QtGui import QPalette, QColor, QFont
+
+from orangewidget import gui
+
 from orangecontrib.wavepy2.util.gui.ow_wavepy_widget import WavePyWidget
 from orangecontrib.wavepy2.util.wavepy_objects import get_registered_log_stream_instance
 
@@ -54,9 +59,29 @@ class WavePyLogger(WavePyWidget):
     def __init__(self):
         super(WavePyLogger, self).__init__()
 
-        self.__log_widget = get_registered_log_stream_instance(application_name=self._get_application_name()).get_widget()
+        self._is_valid_widget = True
 
-        self._wavepy_widget_area.layout().addWidget(self.__log_widget)
+        try:
+            self.__log_widget = get_registered_log_stream_instance(application_name=self._get_application_name()).get_widget()
+
+            self._wavepy_widget_area.layout().addWidget(self.__log_widget)
+
+        except Exception as e:
+            self._is_valid_widget = False
+
+            label = gui.label(self._wavepy_widget_area, self, label="    INVALID WIDGET:\n\n    " + str(e) +
+                                                                    "\n\n\n    Add " + self._get_application_name() + " Initialization widget first")
+
+            font = QFont(label.font())
+            font.setBold(True)
+            font.setPointSize(24)
+            label.setFont(font)
+            palette = QPalette(label.palette())
+            palette.setColor(QPalette.Text, QColor('dark blue'))
+            palette.setColor(QPalette.Base, QColor(243, 240, 160))
+            label.setPalette(palette)
+
+            if self.IS_DEVELOP: raise e
 
     def _execute(self):
         self.__log_widget.clear_log()
