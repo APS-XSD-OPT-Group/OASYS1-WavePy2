@@ -42,6 +42,8 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         #
 # POSSIBILITY OF SUCH DAMAGE.                                             #
 # #########################################################################
+import os
+
 from PyQt5.QtCore import QSettings
 from PyQt5.QtGui import QPalette, QColor, QFont
 
@@ -61,6 +63,8 @@ class WavePyInitWidget(WavePyWidget):
                 "doc": "WavePy Data",
                 "id": "WavePy_Data"}]
 
+    LOG_STDOUT = False if not "LOGSTDOUT" in os.environ.keys() else str(os.environ.get('LOGSTDOUT')) == "1"
+
     CONTROL_AREA_WIDTH = 860
 
     MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
@@ -75,10 +79,15 @@ class WavePyInitWidget(WavePyWidget):
             try: register_log_stream_widget_instance(application_name=self._get_application_name())
             except AlreadyInitializedError: pass
 
-            try: register_logger_single_instance(logger_mode=QSettings().value("wavepy/logger_mode", LoggerMode.FULL, type=int),
-                                                 stream=get_registered_log_stream_instance(application_name=self._get_application_name()),
-                                                 application_name=self._get_application_name())
-            except AlreadyInitializedError: pass
+            if not self.LOG_STDOUT:
+                try: register_logger_single_instance(logger_mode=QSettings().value("wavepy/logger_mode", LoggerMode.FULL, type=int),
+                                                     stream=get_registered_log_stream_instance(application_name=self._get_application_name()),
+                                                     application_name=self._get_application_name())
+                except AlreadyInitializedError: pass
+            else:
+                try: register_logger_single_instance(logger_mode=QSettings().value("wavepy/logger_mode", LoggerMode.FULL, type=int),
+                                                     application_name=self._get_application_name())
+                except AlreadyInitializedError: pass
 
             try: register_plotter_instance(plotter_mode=QSettings().value("wavepy/plotter_mode", PlotterMode.FULL, type=int), application_name=self._get_application_name())
             except AlreadyInitializedError: pass
