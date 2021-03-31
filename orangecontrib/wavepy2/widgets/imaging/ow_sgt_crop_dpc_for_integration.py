@@ -53,6 +53,10 @@ class OWSGTCropDPCForIntegration(WavePyInteractiveWidget):
     category = ""
     keywords = ["wavepy", "tools", "crop"]
 
+    CONTROL_AREA_WIDTH  = 840
+
+    MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
+
     def __init__(self):
         super(OWSGTCropDPCForIntegration, self).__init__()
 

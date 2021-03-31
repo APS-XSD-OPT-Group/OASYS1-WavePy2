@@ -57,8 +57,6 @@ class OWSGTManagerInitialization(WavePyProcessWidget):
     category = ""
     keywords = ["wavepy", "tools", "crop"]
 
-    must_clean_layout = False
-
     CONTROL_AREA_HEIGTH = 150
     CONTROL_AREA_WIDTH  = 400
 

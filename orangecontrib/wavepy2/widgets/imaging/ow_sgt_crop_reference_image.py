@@ -59,8 +59,6 @@ class OWSGTCropReferenceImage(WavePyProcessWidget):
     MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
     MAX_HEIGHT = CONTROL_AREA_HEIGTH + 10
 
-    must_clean_layout = False
-
     def __init__(self):
         super(OWSGTCropReferenceImage, self).__init__()
 

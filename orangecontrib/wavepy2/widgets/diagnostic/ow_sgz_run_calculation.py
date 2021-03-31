@@ -62,8 +62,6 @@ class OWSGZRunCalculation(WavePyProcessWidgetWithOptions):
     MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
     MAX_HEIGHT = CONTROL_AREA_HEIGTH + 10
 
-    must_clean_layout = True
-
     show_fourier = Setting(0)
 
     def __init__(self):

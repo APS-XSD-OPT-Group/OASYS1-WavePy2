@@ -62,8 +62,6 @@ class OWSGTCorrectZeroDPC(WavePyProcessWidgetWithOptions):
     MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
     MAX_HEIGHT = CONTROL_AREA_HEIGTH + 10
 
-    must_clean_layout = True
-
     correct_pi_jump = Setting(1)
     remove_mean = Setting(1)
     correct_dpc_center = Setting(1)

@@ -55,8 +55,6 @@ class OWSGTCalculateDPC(WavePyProcessWidget):
     category = ""
     keywords = ["wavepy", "tools", "crop"]
 
-    must_clean_layout = True
-
     def __init__(self):
         super(OWSGTCalculateDPC, self).__init__()
 

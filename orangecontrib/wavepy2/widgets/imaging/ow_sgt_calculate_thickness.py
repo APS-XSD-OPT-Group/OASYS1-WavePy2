@@ -56,13 +56,9 @@ class OWSGTCalculateThickness(WavePyProcessWidgetWithOptions):
     category = ""
     keywords = ["wavepy", "tools", "crop"]
 
-    CONTROL_AREA_HEIGTH = 840
-    CONTROL_AREA_WIDTH = 1500
+    CONTROL_AREA_WIDTH = 1230
 
     MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
-    MAX_HEIGHT = CONTROL_AREA_HEIGTH + 10
-
-    must_clean_layout = True
 
     material_idx = Setting(1)
 
@@ -81,5 +77,6 @@ class OWSGTCalculateThickness(WavePyProcessWidgetWithOptions):
 
         return self._process_manager.calculate_thickness(integration_result=self._calculation_parameters,
                                                          initialization_parameters=self._initialization_parameters,
-                                                         plotting_properties=self._get_default_plotting_properties())
+                                                         plotting_properties=self._get_default_plotting_properties(),
+                                                         figure_height=650, figure_width=900)
 

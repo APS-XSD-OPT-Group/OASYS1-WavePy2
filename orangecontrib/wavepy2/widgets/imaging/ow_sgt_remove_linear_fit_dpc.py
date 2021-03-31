@@ -61,8 +61,6 @@ class OWSGTRemoveLinearFitDPC(WavePyProcessWidget):
     MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
     MAX_HEIGHT = CONTROL_AREA_HEIGTH + 10
 
-    must_clean_layout = True
-
     def __init__(self):
         super(OWSGTRemoveLinearFitDPC, self).__init__()
 

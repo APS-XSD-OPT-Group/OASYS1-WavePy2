@@ -55,13 +55,9 @@ class OWSGTRemove2ndOrder(WavePyProcessWidget):
     category = ""
     keywords = ["wavepy", "tools", "crop"]
 
-    CONTROL_AREA_HEIGTH = 840
-    CONTROL_AREA_WIDTH = 1500
+    CONTROL_AREA_WIDTH = 1030
 
     MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
-    MAX_HEIGHT = CONTROL_AREA_HEIGTH + 10
-
-    must_clean_layout = True
 
     def __init__(self):
         super(OWSGTRemove2ndOrder, self).__init__()
@@ -74,5 +70,6 @@ class OWSGTRemove2ndOrder(WavePyProcessWidget):
 
         return self._process_manager.remove_2nd_order(integration_result=self._calculation_parameters,
                                                       initialization_parameters=self._initialization_parameters,
-                                                      plotting_properties=self._get_default_plotting_properties())
+                                                      plotting_properties=self._get_default_plotting_properties(),
+                                                      figure_height=650, figure_width=900)
 
