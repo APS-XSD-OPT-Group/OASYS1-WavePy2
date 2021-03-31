@@ -72,5 +72,6 @@ class OWSGTShowCalculatedDPC(WavePyProcessWidget):
     def _get_output_parameters(self):
         return self._process_manager.show_calculated_dpc(dpc_result=self._calculation_parameters,
                                                          initialization_parameters=self._initialization_parameters,
-                                                         plotting_properties=self._get_default_plotting_properties())
+                                                         plotting_properties=self._get_default_plotting_properties(),
+                                                         figure_width=self.CONTROL_AREA_WIDTH-180)
 

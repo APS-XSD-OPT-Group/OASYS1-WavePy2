@@ -56,7 +56,7 @@ class OWSGTRemoveLinearFitDPC(WavePyProcessWidget):
     keywords = ["wavepy", "tools", "crop"]
 
     CONTROL_AREA_HEIGTH = 840
-    CONTROL_AREA_WIDTH = 1500
+    CONTROL_AREA_WIDTH = 1365
 
     MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
     MAX_HEIGHT = CONTROL_AREA_HEIGTH + 10

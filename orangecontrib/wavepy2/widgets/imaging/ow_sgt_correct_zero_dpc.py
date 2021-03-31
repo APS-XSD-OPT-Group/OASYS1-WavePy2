@@ -85,5 +85,7 @@ class OWSGTCorrectZeroDPC(WavePyProcessWidgetWithOptions):
 
         return self._process_manager.correct_zero_dpc(dpc_result=self._calculation_parameters,
                                                       initialization_parameters=self._initialization_parameters,
-                                                      plotting_properties=self._get_default_plotting_properties())
+                                                      plotting_properties=self._get_default_plotting_properties(),
+                                                      tab_widget_height=690,
+                                                      figure_width=1140)
 
