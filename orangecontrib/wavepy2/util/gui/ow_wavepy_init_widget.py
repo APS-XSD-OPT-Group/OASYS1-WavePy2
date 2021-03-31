@@ -55,6 +55,7 @@ from orangecontrib.wavepy2.util.wavepy_objects import OasysWavePyData, register_
 from wavepy2.util.common.common_tools import AlreadyInitializedError
 from wavepy2.util.log.logger import register_logger_single_instance, LoggerMode
 from wavepy2.util.plot.plotter import register_plotter_instance, PlotterMode
+from wavepy2.util.plot.plot_tools import PlottingProperties
 from wavepy2.util.ini.initializer import register_ini_instance, get_registered_ini_instance, IniMode
 
 class WavePyInitWidget(WavePyWidget):
@@ -146,4 +147,8 @@ class WavePyInitWidget(WavePyWidget):
 
             self.send("WavePy Data", output)
 
-
+    def _get_default_plotting_properties(self):
+        return PlottingProperties(context_widget=self._get_default_context(),
+                                  show_runtime_options=False,
+                                  add_context_label=False,
+                                  use_unique_id=True)

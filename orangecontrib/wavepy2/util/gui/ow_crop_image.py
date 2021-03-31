@@ -66,7 +66,7 @@ class CropImageWidget(WavePyInteractiveWidget):
                                           application_name=self._get_application_name(),
                                           img=img_to_crop,
                                           message=self._get_window_text(),
-                                          tab_widget_height=660)[0]
+                                          tab_widget_height=670)[0]
 
     def _get_application_name(self):
         return None

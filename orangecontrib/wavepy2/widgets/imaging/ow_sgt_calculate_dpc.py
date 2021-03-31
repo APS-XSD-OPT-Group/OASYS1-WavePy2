@@ -55,12 +55,6 @@ class OWSGTCalculateDPC(WavePyProcessWidget):
     category = ""
     keywords = ["wavepy", "tools", "crop"]
 
-    CONTROL_AREA_HEIGTH = 840
-    CONTROL_AREA_WIDTH = 1500
-
-    MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
-    MAX_HEIGHT = CONTROL_AREA_HEIGTH + 10
-
     must_clean_layout = True
 
     def __init__(self):
@@ -72,5 +66,7 @@ class OWSGTCalculateDPC(WavePyProcessWidget):
     def _get_output_parameters(self):
         return self._process_manager.calculate_dpc(initial_crop_parameters=self._calculation_parameters,
                                                    initialization_parameters=self._initialization_parameters,
-                                                   plotting_properties=self._get_default_plotting_properties())
+                                                   plotting_properties=self._get_default_plotting_properties(),
+                                                   figure_height=650,
+                                                   tab_widget_width=self.CONTROL_AREA_WIDTH-20)
 

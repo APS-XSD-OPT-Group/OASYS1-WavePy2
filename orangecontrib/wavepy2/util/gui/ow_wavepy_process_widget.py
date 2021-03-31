@@ -50,6 +50,12 @@ from orangecontrib.wavepy2.util.wavepy_objects import OasysWavePyData
 
 
 class WavePyProcessWidget(WavePyWidget):
+    CONTROL_AREA_HEIGTH = 900
+    CONTROL_AREA_WIDTH  = 1600
+
+    MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
+    MAX_HEIGHT = CONTROL_AREA_HEIGTH + 10
+
     inputs = [("WavePy Data", OasysWavePyData, "set_input"),]
 
     outputs = [{"name": "WavePy Data",

@@ -71,8 +71,5 @@ class OWSGTInit(WavePyInitWidget):
         return create_single_grating_talbot_manager()
 
     def _draw_init_widget(self):
-        return self._process_manager.draw_initialization_parameters_widget(plotting_properties=PlottingProperties(context_widget=self._get_default_context(),
-                                                                                                                  show_runtime_options=False,
-                                                                                                                  add_context_label=False,
-                                                                                                                  use_unique_id=True),
-                                                                           widget_height=270)[0]
+        return self._process_manager.draw_initialization_parameters_widget(plotting_properties=self._get_default_plotting_properties(),
+                                                                           widget_height=330)[0]
