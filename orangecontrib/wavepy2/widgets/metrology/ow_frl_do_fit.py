@@ -55,12 +55,9 @@ class OWFRLDoFit(WavePyProcessWidget):
     category = ""
     keywords = ["wavepy", "tools", "fit"]
 
-    CONTROL_AREA_HEIGTH = 840
-    CONTROL_AREA_WIDTH = 1500
+    CONTROL_AREA_WIDTH = 1030
 
     MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
-    MAX_HEIGHT = CONTROL_AREA_HEIGTH + 10
-
     def __init__(self):
         super(OWFRLDoFit, self).__init__()
 
@@ -70,5 +67,7 @@ class OWFRLDoFit(WavePyProcessWidget):
     def _get_output_parameters(self):
         return self._process_manager.do_fit(fit_radius_dpc_result=self._calculation_parameters,
                                             initialization_parameters=self._initialization_parameters,
-                                            plotting_properties=self._get_default_plotting_properties())
+                                            plotting_properties=self._get_default_plotting_properties(),
+                                            tab_widget_width=self.CONTROL_AREA_WIDTH-20,
+                                            tab_widget_height=740, figure_width=900, figure_height=620)
 

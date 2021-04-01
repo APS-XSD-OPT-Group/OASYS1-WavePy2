@@ -56,7 +56,7 @@ class OWSGTInit(WavePyInitWidget):
     category = ""
     keywords = ["wavepy", "sgt", "init"]
 
-    MAX_HEIGHT = 500
+    MAX_HEIGHT = 490
 
     def __init__(self):
         super(OWSGTInit, self).__init__()
@@ -72,4 +72,5 @@ class OWSGTInit(WavePyInitWidget):
 
     def _draw_init_widget(self):
         return self._process_manager.draw_initialization_parameters_widget(plotting_properties=self._get_default_plotting_properties(),
-                                                                           widget_height=330)[0]
+                                                                           widget_height=330,
+                                                                           tab_widget_width=self.CONTROL_AREA_WIDTH-20)[0]

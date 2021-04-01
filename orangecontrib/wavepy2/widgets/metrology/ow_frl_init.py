@@ -60,6 +60,8 @@ class OWFRLInit(WavePyInitWidget):
     def __init__(self):
         super(OWFRLInit, self).__init__(show_general_option_box=True)
 
+        self.controlArea.setFixedHeight(self.MAX_HEIGHT-10)
+
     def _get_application_name(self):
         return APPLICATION_NAME
 
@@ -70,5 +72,8 @@ class OWFRLInit(WavePyInitWidget):
         return create_fit_residual_lenses_manager()
 
     def _draw_init_widget(self):
+
         return self._process_manager.draw_initialization_parameters_widget(plotting_properties=self._get_default_plotting_properties(),
-                                                                           widget_height=250)[0]
+                                                                           widget_height=240,
+                                                                           tab_widget_heigth=260,
+                                                                           tab_widget_width=self.CONTROL_AREA_WIDTH-20)[0]
