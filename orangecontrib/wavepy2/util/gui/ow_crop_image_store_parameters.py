@@ -48,7 +48,7 @@ from wavepy2.tools.common.wavepy_data import WavePyData
 from wavepy2.tools.common.bl import crop_image
 
 class CropImageStoreParametersWidget(WavePyInteractiveWidget):
-    CONTROL_AREA_HEIGTH = 910
+    CONTROL_AREA_HEIGTH = 920
     MAX_HEIGHT = CONTROL_AREA_HEIGTH + 10
 
     def __init__(self):
@@ -76,8 +76,8 @@ class CropImageStoreParametersWidget(WavePyInteractiveWidget):
                                                    img=img_to_crop,
                                                    pixelsize=pixelsize,
                                                    message=self._get_window_text(),
-                                                   tab_widget_height=770,
-                                                   tab_widget_width=self.CONTROL_AREA_WIDTH-10)[0]
+                                                   tab_widget_height=765,
+                                                   tab_widget_width=self.CONTROL_AREA_WIDTH-20)[0]
 
     def _get_application_name(self):
         return None

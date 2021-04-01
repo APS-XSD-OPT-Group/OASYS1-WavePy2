@@ -48,6 +48,12 @@ from wavepy2.tools.common.wavepy_data import WavePyData
 from wavepy2.tools.common.bl import crop_image
 
 class CropImageWidget(WavePyInteractiveWidget):
+
+    CONTROL_AREA_WIDTH  = 840
+    MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
+    CONTROL_AREA_HEIGTH = 830
+    MAX_HEIGHT = CONTROL_AREA_HEIGTH + 10
+
     def __init__(self):
         super(CropImageWidget, self).__init__()
 

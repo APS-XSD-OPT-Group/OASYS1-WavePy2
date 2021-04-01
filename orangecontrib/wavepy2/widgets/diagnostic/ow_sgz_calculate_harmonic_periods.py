@@ -55,8 +55,8 @@ class OWSGZCalculateHarmonicPeriods(WavePyProcessWidget):
     category = ""
     keywords = ["wavepy", "tools", "calculate"]
 
-    CONTROL_AREA_HEIGTH = 840
-    CONTROL_AREA_WIDTH = 1500
+    CONTROL_AREA_HEIGTH = 830
+    CONTROL_AREA_WIDTH = 710
 
     MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
     MAX_HEIGHT = CONTROL_AREA_HEIGTH + 10
@@ -70,5 +70,9 @@ class OWSGZCalculateHarmonicPeriods(WavePyProcessWidget):
     def _get_output_parameters(self):
         return self._process_manager.calculate_harmonic_periods(initial_crop_parameters=self._calculation_parameters,
                                                                 initialization_parameters=self._initialization_parameters,
-                                                                plotting_properties=self._get_default_plotting_properties())
+                                                                plotting_properties=self._get_default_plotting_properties(),
+                                                                figure_width=860,
+                                                                figure_height=750,
+                                                                tab_widget_height=660,
+                                                                tab_widget_width=self.CONTROL_AREA_WIDTH-20)
 

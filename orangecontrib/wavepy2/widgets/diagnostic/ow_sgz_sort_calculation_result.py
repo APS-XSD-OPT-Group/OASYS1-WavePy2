@@ -55,11 +55,9 @@ class OWSGZSortCalculationResult(WavePyProcessWidget):
     category = ""
     keywords = ["wavepy", "tools", "calculate"]
 
-    CONTROL_AREA_HEIGTH = 840
-    CONTROL_AREA_WIDTH = 1500
+    CONTROL_AREA_WIDTH = 1030
 
     MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
-    MAX_HEIGHT = CONTROL_AREA_HEIGTH + 10
 
     def __init__(self):
         super(OWSGZSortCalculationResult, self).__init__()
@@ -70,5 +68,6 @@ class OWSGZSortCalculationResult(WavePyProcessWidget):
     def _get_output_parameters(self):
         return self._process_manager.sort_calculation_result(run_calculation_result=self._calculation_parameters,
                                                              initialization_parameters=self._initialization_parameters,
-                                                             plotting_properties=self._get_default_plotting_properties())
+                                                             plotting_properties=self._get_default_plotting_properties(),
+                                                             figure_height=650, figure_width=900)
 
