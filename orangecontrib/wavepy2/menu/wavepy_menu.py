@@ -67,7 +67,7 @@ sgt_analysis_widget_list_no_interactions = [
     [base_imaging_path + "ow_sgt_remove_linear_fit_dpc.OWSGTRemoveLinearFitDPC", None, {"is_automatic_run": True}],
     [base_imaging_path + "ow_sgt_dpc_profile_analysis.OWSGTDPCProfileAnalysis", None, {"is_automatic_run": True}],
     [base_imaging_path + "ow_sgt_fit_radius_dpc.OWSGTFitRadiusDPC", None, {"is_automatic_run": True}],
-    [base_imaging_path + "ow_sgt_do_integration.OWSGTDoIntegration", (50.0, 400.0), {"is_automatic_run": True}],
+    [base_imaging_path + "ow_sgt_do_integration.OWSGTDoIntegration", (50.0, 350.0), {"is_automatic_run": True}],
     [base_imaging_path + "ow_sgt_calculate_thickness.OWSGTCalculateThickness", None, {"is_automatic_run": True}],
     [base_imaging_path + "ow_sgt_calculate_2nd_order_component_of_the_phase_1.OWSGTCalculate2ndOrderComponentOfThePhase1", None, {"is_automatic_run": True}],
     [base_imaging_path + "ow_sgt_calculate_2nd_order_component_of_the_phase_2.OWSGTCalculate2ndOrderComponentOfThePhase2", None, {"is_automatic_run": True}],
@@ -86,7 +86,7 @@ sgt_analysis_widget_list = [
     [base_imaging_path + "ow_sgt_remove_linear_fit_dpc.OWSGTRemoveLinearFitDPC", None, {"is_automatic_run": True}],
     [base_imaging_path + "ow_sgt_dpc_profile_analysis.OWSGTDPCProfileAnalysis", None, {"is_automatic_run": True}],
     [base_imaging_path + "ow_sgt_fit_radius_dpc.OWSGTFitRadiusDPC", None, {"is_automatic_run": True}],
-    [base_imaging_path + "ow_sgt_crop_dpc_for_integration.OWSGTCropDPCForIntegration", (50.0, 400.0), {"is_automatic_run": True}],
+    [base_imaging_path + "ow_sgt_crop_dpc_for_integration.OWSGTCropDPCForIntegration", (50.0, 350.0), {"is_automatic_run": True}],
     [base_imaging_path + "ow_sgt_do_integration.OWSGTDoIntegration", None, {"is_automatic_run": True}],
     [base_imaging_path + "ow_sgt_calculate_thickness.OWSGTCalculateThickness", None, {"is_automatic_run": True}],
     [base_imaging_path + "ow_sgt_crop_2nd_order_component_of_the_phase_1.OWSGTCrop2ndOrderComponentOfThePhase1", None, {"is_automatic_run": True}],
@@ -229,11 +229,21 @@ class WavePyMenu(OMenu):
 
     def create_analysis(self, widgets_list):
         nodes = []
-        for widget, position, attributes in widgets_list: nodes.extend(self.createNewNodeAndWidget(widget_desc=self.getWidgetDesc(widget),
-                                                                                                   position=position,
-                                                                                                   attributes=attributes))
+        lower_row_position = self.get_lower_row_position()
+
+        for widget, position, attributes in widgets_list:
+            if not position is None: position = (position[0], position[1] + lower_row_position)
+
+            nodes.extend(self.createNewNodeAndWidget(widget_desc=self.getWidgetDesc(widget),
+                                                     position=position,
+                                                     attributes=attributes))
         self.createLinks(nodes)
 
+    def get_lower_row_position(self):
+        try:
+            lower_row_position = max([link.sink_node.position[1] for link in self.canvas_main_window.current_document().scheme().links])
+            if lower_row_position != 0.0: return 150.0 + lower_row_position
+        except: return 0.0
 
     #################################################################
     #
