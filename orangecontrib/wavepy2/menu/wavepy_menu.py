@@ -56,25 +56,7 @@ base_imaging_path = "orangecontrib.wavepy2.widgets.imaging."
 base_diagnostic_path = "orangecontrib.wavepy2.widgets.diagnostic."
 base_metrology_path = "orangecontrib.wavepy2.widgets.metrology."
 
-sgt_analysis_widget_list_no_interactions = [
-    [base_imaging_path + "ow_sgt_init.OWSGTInit", (0.0, 50.0), {}],
-    [base_imaging_path + "ow_sgt_manager_initialization.OWSGTManagerInitialization", None, {"is_automatic_run": True}],
-    [base_imaging_path + "ow_sgt_crop_initial_image.OWSGTCropInitialImage", None, {"is_automatic_run": True}],
-    [base_imaging_path + "ow_sgt_crop_reference_image.OWSGTCropReferenceImage", None, {"is_automatic_run": True}],
-    [base_imaging_path + "ow_sgt_calculate_dpc.OWSGTCalculateDPC", (50.0, 200.0), {"is_automatic_run": True}],
-    [base_imaging_path + "ow_sgt_show_calculated_dpc.OWSGTShowCalculatedDPC", None, {"is_automatic_run": True}],
-    [base_imaging_path + "ow_sgt_correct_zero_dpc.OWSGTCorrectZeroDPC", None, {"is_automatic_run": True, "correct_dpc_center": 0}],
-    [base_imaging_path + "ow_sgt_remove_linear_fit_dpc.OWSGTRemoveLinearFitDPC", None, {"is_automatic_run": True}],
-    [base_imaging_path + "ow_sgt_dpc_profile_analysis.OWSGTDPCProfileAnalysis", None, {"is_automatic_run": True}],
-    [base_imaging_path + "ow_sgt_fit_radius_dpc.OWSGTFitRadiusDPC", None, {"is_automatic_run": True}],
-    [base_imaging_path + "ow_sgt_do_integration.OWSGTDoIntegration", (50.0, 350.0), {"is_automatic_run": True}],
-    [base_imaging_path + "ow_sgt_calculate_thickness.OWSGTCalculateThickness", None, {"is_automatic_run": True}],
-    [base_imaging_path + "ow_sgt_calculate_2nd_order_component_of_the_phase_1.OWSGTCalculate2ndOrderComponentOfThePhase1", None, {"is_automatic_run": True}],
-    [base_imaging_path + "ow_sgt_calculate_2nd_order_component_of_the_phase_2.OWSGTCalculate2ndOrderComponentOfThePhase2", None, {"is_automatic_run": True}],
-    [base_imaging_path + "ow_sgt_remove_2nd_order.OWSGTRemove2ndOrder", None, {"is_automatic_run": True}],
-]
-
-sgt_analysis_widget_list = [
+sgt_analysis_widget_list_not_interactive = [
     [base_imaging_path + "ow_sgt_init.OWSGTInit", (0.0, 50.0), {}],
     [base_imaging_path + "ow_sgt_manager_initialization.OWSGTManagerInitialization", None, {"is_automatic_run": True}],
     [base_imaging_path + "ow_sgt_crop_initial_image.OWSGTCropInitialImage", None, {"is_automatic_run": True}],
@@ -82,7 +64,7 @@ sgt_analysis_widget_list = [
     [base_imaging_path + "ow_sgt_calculate_dpc.OWSGTCalculateDPC", (50.0, 200.0), {"is_automatic_run": True}],
     [base_imaging_path + "ow_sgt_crop_calculated_dpc.OWSGTCropCalculatedDPC", None, {"is_automatic_run": True}],
     [base_imaging_path + "ow_sgt_show_calculated_dpc.OWSGTShowCalculatedDPC", None, {"is_automatic_run": True}],
-    [base_imaging_path + "ow_sgt_correct_zero_dpc.OWSGTCorrectZeroDPC", None, {"is_automatic_run": True, "correct_dpc_center": 1}],
+    [base_imaging_path + "ow_sgt_correct_zero_dpc.OWSGTCorrectZeroDPC", None, {"is_automatic_run": True, "correct_dpc_center": 0}],
     [base_imaging_path + "ow_sgt_remove_linear_fit_dpc.OWSGTRemoveLinearFitDPC", None, {"is_automatic_run": True}],
     [base_imaging_path + "ow_sgt_dpc_profile_analysis.OWSGTDPCProfileAnalysis", None, {"is_automatic_run": True}],
     [base_imaging_path + "ow_sgt_fit_radius_dpc.OWSGTFitRadiusDPC", None, {"is_automatic_run": True}],
@@ -96,7 +78,29 @@ sgt_analysis_widget_list = [
     [base_imaging_path + "ow_sgt_remove_2nd_order.OWSGTRemove2ndOrder", None, {"is_automatic_run": True}],
 ]
 
-sgz_analysis_widget_list = [
+sgt_analysis_widget_list_interactive = [
+    [base_imaging_path + "ow_sgt_init.OWSGTInit", (0.0, 50.0), {}],
+    [base_imaging_path + "ow_sgt_manager_initialization.OWSGTManagerInitialization", None, {"is_automatic_run": True}],
+    [base_imaging_path + "ow_sgt_crop_initial_image.OWSGTCropInitialImage", None, {"is_automatic_run": False}],
+    [base_imaging_path + "ow_sgt_crop_reference_image.OWSGTCropReferenceImage", None, {"is_automatic_run": True}],
+    [base_imaging_path + "ow_sgt_calculate_dpc.OWSGTCalculateDPC", (50.0, 200.0), {"is_automatic_run": True}],
+    [base_imaging_path + "ow_sgt_crop_calculated_dpc.OWSGTCropCalculatedDPC", None, {"is_automatic_run": False}],
+    [base_imaging_path + "ow_sgt_show_calculated_dpc.OWSGTShowCalculatedDPC", None, {"is_automatic_run": True}],
+    [base_imaging_path + "ow_sgt_correct_zero_dpc.OWSGTCorrectZeroDPC", None, {"is_automatic_run": True, "correct_dpc_center": 1}],
+    [base_imaging_path + "ow_sgt_remove_linear_fit_dpc.OWSGTRemoveLinearFitDPC", None, {"is_automatic_run": True}],
+    [base_imaging_path + "ow_sgt_dpc_profile_analysis.OWSGTDPCProfileAnalysis", None, {"is_automatic_run": True}],
+    [base_imaging_path + "ow_sgt_fit_radius_dpc.OWSGTFitRadiusDPC", None, {"is_automatic_run": True}],
+    [base_imaging_path + "ow_sgt_crop_dpc_for_integration.OWSGTCropDPCForIntegration", (50.0, 350.0), {"is_automatic_run": False}],
+    [base_imaging_path + "ow_sgt_do_integration.OWSGTDoIntegration", None, {"is_automatic_run": True}],
+    [base_imaging_path + "ow_sgt_calculate_thickness.OWSGTCalculateThickness", None, {"is_automatic_run": True}],
+    [base_imaging_path + "ow_sgt_crop_2nd_order_component_of_the_phase_1.OWSGTCrop2ndOrderComponentOfThePhase1", None, {"is_automatic_run": False}],
+    [base_imaging_path + "ow_sgt_calculate_2nd_order_component_of_the_phase_1.OWSGTCalculate2ndOrderComponentOfThePhase1", None, {"is_automatic_run": True}],
+    [base_imaging_path + "ow_sgt_crop_2nd_order_component_of_the_phase_2.OWSGTCrop2ndOrderComponentOfThePhase2", None, {"is_automatic_run": False}],
+    [base_imaging_path + "ow_sgt_calculate_2nd_order_component_of_the_phase_2.OWSGTCalculate2ndOrderComponentOfThePhase2", None, {"is_automatic_run": True}],
+    [base_imaging_path + "ow_sgt_remove_2nd_order.OWSGTRemove2ndOrder", None, {"is_automatic_run": True}],
+]
+
+sgz_analysis_widget_list_not_interactive = [
     [base_diagnostic_path + "ow_sgz_init.OWSGZInit", (0.0, 50.0), {}],
     [base_diagnostic_path + "ow_sgz_manager_initialization.OWSGZManagerInitialization", None, {"is_automatic_run": True}],
     [base_diagnostic_path + "ow_sgz_crop_initial_image.OWSGZCropInitialImage", None, {"is_automatic_run": True}],
@@ -107,10 +111,31 @@ sgz_analysis_widget_list = [
     [base_diagnostic_path + "ow_sgz_fit_calculation_result.OWSGZFitCalculationResult", None, {"is_automatic_run": True}],
 ]
 
-frl_analysis_widget_list = [
+sgz_analysis_widget_list_interactive = [
+    [base_diagnostic_path + "ow_sgz_init.OWSGZInit", (0.0, 50.0), {}],
+    [base_diagnostic_path + "ow_sgz_manager_initialization.OWSGZManagerInitialization", None, {"is_automatic_run": True}],
+    [base_diagnostic_path + "ow_sgz_crop_initial_image.OWSGZCropInitialImage", None, {"is_automatic_run": False}],
+    [base_diagnostic_path + "ow_sgz_crop_dark_image.OWSGZCropDarkImage", None, {"is_automatic_run": False}],
+    [base_diagnostic_path + "ow_sgz_calculate_harmonic_periods.OWSGZCalculateHarmonicPeriods", (50.0, 200.0), {"is_automatic_run": True}],
+    [base_diagnostic_path + "ow_sgz_run_calculation.OWSGZRunCalculation", None, {"is_automatic_run": True, "show_fourier" : 0}],
+    [base_diagnostic_path + "ow_sgz_sort_calculation_result.OWSGZSortCalculationResult", None, {"is_automatic_run": True}],
+    [base_diagnostic_path + "ow_sgz_fit_calculation_result.OWSGZFitCalculationResult", None, {"is_automatic_run": True}],
+]
+
+frl_analysis_widget_list_not_interactive = [
     [base_metrology_path + "ow_frl_init.OWFRLInit", (0.0, 50.0), {}],
     [base_metrology_path + "ow_frl_manager_initialization.OWFRLManagerInitialization", None, {"is_automatic_run": True}],
     [base_metrology_path + "ow_frl_crop_thickness.OWFRLCropThickness", None, {"is_automatic_run": True}],
+    [base_metrology_path + "ow_frl_manage_crop_thickness.OWFRLManageCropThickness", None, {"is_automatic_run": True}],
+    [base_metrology_path + "ow_frl_center_image.OWFRLCenterImage", (50.0, 200.0), {"is_automatic_run": True}],
+    [base_metrology_path + "ow_frl_fit_radius_dpc.OWFRLFitRadiusDPC", None, {"is_automatic_run": True}],
+    [base_metrology_path + "ow_frl_do_fit.OWFRLDoFit", None, {"is_automatic_run": True}],
+]
+
+frl_analysis_widget_list_interactive = [
+    [base_metrology_path + "ow_frl_init.OWFRLInit", (0.0, 50.0), {}],
+    [base_metrology_path + "ow_frl_manager_initialization.OWFRLManagerInitialization", None, {"is_automatic_run": True}],
+    [base_metrology_path + "ow_frl_crop_thickness.OWFRLCropThickness", None, {"is_automatic_run": False}],
     [base_metrology_path + "ow_frl_manage_crop_thickness.OWFRLManageCropThickness", None, {"is_automatic_run": True}],
     [base_metrology_path + "ow_frl_center_image.OWFRLCenterImage", (50.0, 200.0), {"is_automatic_run": True}],
     [base_metrology_path + "ow_frl_fit_radius_dpc.OWFRLFitRadiusDPC", None, {"is_automatic_run": True}],
@@ -156,18 +181,20 @@ class WavePyMenu(OMenu):
 
         self.openContainer()
         self.addContainer("Imaging")
-        self.addSubMenu("Create Single Grating Talbot Analysis")
-        self.addSubMenu("Create Single Grating Talbot Analysis (No Interactions)")
+        self.addSubMenu("Create Single Grating Talbot analysis (not interactive)")
+        self.addSubMenu("Create Single Grating Talbot analysis (interactive)")
         self.closeContainer()
 
         self.openContainer()
         self.addContainer("Coherence")
-        self.addSubMenu("Create Single Grating Z Scan Analysis")
+        self.addSubMenu("Create Single Grating Z Scan analysis (not interactive)")
+        self.addSubMenu("Create Single Grating Z Scan analysis (interactive)")
         self.closeContainer()
 
         self.openContainer()
         self.addContainer("Metrology")
-        self.addSubMenu("Create Fit Residual Lenses Analysis")
+        self.addSubMenu("Create Fit Residual Lenses analysis (not interactive)")
+        self.addSubMenu("Create Fit Residual Lenses analysis (interactive)")
         self.closeContainer()
 
         self.addSeparator()
@@ -187,42 +214,50 @@ class WavePyMenu(OMenu):
         self.closeContainer()
 
     def executeAction_1(self, action):
-        if showConfirmMessage("Confirm Action", "Create Single Grating Talbot Analysis?") == QtWidgets.QMessageBox.Yes:
-            self.create_analysis(sgt_analysis_widget_list)
+        if showConfirmMessage("Confirm Action", "Create Single Grating Talbot analysis (not interactive)?") == QtWidgets.QMessageBox.Yes:
+            self.create_analysis(sgt_analysis_widget_list_not_interactive)
 
     def executeAction_2(self, action):
-        if showConfirmMessage("Confirm Action", "Create Single Grating Talbot Analysis (No Interactions)?") == QtWidgets.QMessageBox.Yes:
-            self.create_analysis(sgt_analysis_widget_list_no_interactions)
+        if showConfirmMessage("Confirm Action", "Create Single Grating Talbot analysis (interactive)?") == QtWidgets.QMessageBox.Yes:
+            self.create_analysis(sgt_analysis_widget_list_interactive)
 
     def executeAction_3(self, action):
-        if showConfirmMessage("Confirm Action", "Create Single Grating Z Scan Analysis?") == QtWidgets.QMessageBox.Yes:
-            self.create_analysis(sgz_analysis_widget_list)
+        if showConfirmMessage("Confirm Action", "Create Single Grating Z Scan analysis (not interactive)?") == QtWidgets.QMessageBox.Yes:
+            self.create_analysis(sgz_analysis_widget_list_not_interactive)
 
     def executeAction_4(self, action):
-        if showConfirmMessage("Confirm Action", "Create Fit Residual Lenses Analysis?") == QtWidgets.QMessageBox.Yes:
-            self.create_analysis(frl_analysis_widget_list)
+        if showConfirmMessage("Confirm Action", "Create Single Grating Z Scan analysis (interactive)?") == QtWidgets.QMessageBox.Yes:
+            self.create_analysis(sgz_analysis_widget_list_interactive)
 
     def executeAction_5(self, action):
+        if showConfirmMessage("Confirm Action", "Create Fit Residual Lenses analysis (not interactive)?") == QtWidgets.QMessageBox.Yes:
+            self.create_analysis(frl_analysis_widget_list_not_interactive)
+
+    def executeAction_6(self, action):
+        if showConfirmMessage("Confirm Action", "Create Fit Residual Lenses analysis (interactive)?") == QtWidgets.QMessageBox.Yes:
+            self.create_analysis(frl_analysis_widget_list_interactive)
+
+    def executeAction_7(self, action):
         QSettings().setValue("wavepy/plotter_mode", PlotterMode.FULL)
         showInfoMessage("Plotter Mode set to: FULL\nReload the workspace to make it effective")
 
-    def executeAction_6(self, action):
+    def executeAction_8(self, action):
         QSettings().setValue("wavepy/plotter_mode", PlotterMode.DISPLAY_ONLY)
         showInfoMessage("Plotter Mode set to: DISPLAY ONLY\nReload the workspace to make it effective")
 
-    def executeAction_7(self, action):
+    def executeAction_9(self, action):
         QSettings().setValue("wavepy/logger_mode", LoggerMode.FULL)
         showInfoMessage("Logger Mode set to: FULL\nReload the workspace to make it effective")
 
-    def executeAction_8(self, action):
+    def executeAction_10(self, action):
         QSettings().setValue("wavepy/logger_mode", LoggerMode.WARNING)
         showInfoMessage("Logger Mode set to: WARNING\nReload the workspace to make it effective")
 
-    def executeAction_9(self, action):
+    def executeAction_11(self, action):
         QSettings().setValue("wavepy/logger_mode", LoggerMode.ERROR)
         showInfoMessage("Logger Mode set to: ERROR\nReload the workspace to make it effective")
 
-    def executeAction_10(self, action):
+    def executeAction_12(self, action):
         QSettings().setValue("wavepy/logger_mode", LoggerMode.NONE)
         showInfoMessage("Logger Mode set to: NONE\nReload the workspace to make it effective")
 
