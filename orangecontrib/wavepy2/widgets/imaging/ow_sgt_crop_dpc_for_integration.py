@@ -62,6 +62,8 @@ class OWSGTCropDPCForIntegration(WavePyInteractiveWidget):
 
     def _get_interactive_widget(self):
         if not self._initialization_parameters is None and not self._calculation_parameters is None:
+            self._initialization_parameters.set_parameter("do_integration", True)
+
             return self._process_manager.draw_crop_for_integration(dpc_result=self._calculation_parameters,
                                                                    initialization_parameters=self._initialization_parameters,
                                                                    plotting_properties=self._get_default_plotting_properties(),
