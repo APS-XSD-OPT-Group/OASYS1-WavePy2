@@ -102,6 +102,8 @@ sgt_analysis_widget_list_interactive = [
     [base_imaging_path + "ow_sgt_remove_2nd_order.OWSGTRemove2ndOrder", None, {"is_automatic_run": True}],
 ]
 
+sgt_analysis_logger_widget_props = [base_imaging_path + "ow_sgt_logger.OWSGTLogger", (0.0, 500.0), {}]
+
 sgz_analysis_widget_list_not_interactive = [
     [base_diagnostic_path + "ow_sgz_init.OWSGZInit", (0.0, 50.0), {}],
     [base_diagnostic_path + "ow_sgz_manager_initialization.OWSGZManagerInitialization", None, {"is_automatic_run": True}],
@@ -124,6 +126,8 @@ sgz_analysis_widget_list_interactive = [
     [base_diagnostic_path + "ow_sgz_fit_calculation_result.OWSGZFitCalculationResult", None, {"is_automatic_run": True}],
 ]
 
+sgz_analysis_logger_widget_props = [base_diagnostic_path + "ow_sgz_logger.OWSGZLogger", (0.0, 350.0), {}]
+
 frl_analysis_widget_list_not_interactive = [
     [base_metrology_path + "ow_frl_init.OWFRLInit", (0.0, 50.0), {}],
     [base_metrology_path + "ow_frl_manager_initialization.OWFRLManagerInitialization", None, {"is_automatic_run": True}],
@@ -144,6 +148,8 @@ frl_analysis_widget_list_interactive = [
     [base_metrology_path + "ow_frl_do_fit.OWFRLDoFit", None, {"is_automatic_run": True}],
 ]
 
+frl_analysis_logger_widget_props = [base_metrology_path + "ow_frl_logger.OWFRLLogger", (0.0, 350.0), {}]
+
 class WavePyMenu(OMenu):
 
     def __init__(self):
@@ -152,20 +158,20 @@ class WavePyMenu(OMenu):
 
         self.openContainer()
         self.addContainer("Imaging")
-        self.addSubMenu("Create Single Grating Talbot analysis (not interactive)")
         self.addSubMenu("Create Single Grating Talbot analysis (interactive)")
+        self.addSubMenu("Create Single Grating Talbot analysis (not interactive)")
         self.closeContainer()
 
         self.openContainer()
         self.addContainer("Coherence")
-        self.addSubMenu("Create Single Grating Z Scan analysis (not interactive)")
         self.addSubMenu("Create Single Grating Z Scan analysis (interactive)")
+        self.addSubMenu("Create Single Grating Z Scan analysis (not interactive)")
         self.closeContainer()
 
         self.openContainer()
         self.addContainer("Metrology")
-        self.addSubMenu("Create Fit Residual Lenses analysis (not interactive)")
         self.addSubMenu("Create Fit Residual Lenses analysis (interactive)")
+        self.addSubMenu("Create Fit Residual Lenses analysis (not interactive)")
         self.closeContainer()
 
         self.addSeparator()
@@ -185,28 +191,28 @@ class WavePyMenu(OMenu):
         self.closeContainer()
 
     def executeAction_1(self, action):
-        if _showConfirmMessage("Confirm Action", "Create Single Grating Talbot analysis (not interactive)?") == QMessageBox.Yes:
-            self.__create_analysis(sgt_analysis_widget_list_not_interactive)
+        if _showConfirmMessage("Confirm Action", "Create Single Grating Talbot analysis (interactive)?") == QMessageBox.Yes:
+            self.__create_analysis(sgt_analysis_widget_list_interactive, sgt_analysis_logger_widget_props)
 
     def executeAction_2(self, action):
-        if _showConfirmMessage("Confirm Action", "Create Single Grating Talbot analysis (interactive)?") == QMessageBox.Yes:
-            self.__create_analysis(sgt_analysis_widget_list_interactive)
+        if _showConfirmMessage("Confirm Action", "Create Single Grating Talbot analysis (not interactive)?") == QMessageBox.Yes:
+            self.__create_analysis(sgt_analysis_widget_list_not_interactive, sgt_analysis_logger_widget_props)
 
     def executeAction_3(self, action):
-        if _showConfirmMessage("Confirm Action", "Create Single Grating Z Scan analysis (not interactive)?") == QMessageBox.Yes:
-            self.__create_analysis(sgz_analysis_widget_list_not_interactive)
+        if _showConfirmMessage("Confirm Action", "Create Single Grating Z Scan analysis (interactive)?") == QMessageBox.Yes:
+            self.__create_analysis(sgz_analysis_widget_list_interactive, sgz_analysis_logger_widget_props)
 
     def executeAction_4(self, action):
-        if _showConfirmMessage("Confirm Action", "Create Single Grating Z Scan analysis (interactive)?") == QMessageBox.Yes:
-            self.__create_analysis(sgz_analysis_widget_list_interactive)
+        if _showConfirmMessage("Confirm Action", "Create Single Grating Z Scan analysis (not interactive)?") == QMessageBox.Yes:
+            self.__create_analysis(sgz_analysis_widget_list_not_interactive, sgz_analysis_logger_widget_props)
 
     def executeAction_5(self, action):
-        if _showConfirmMessage("Confirm Action", "Create Fit Residual Lenses analysis (not interactive)?") == QMessageBox.Yes:
-            self.__create_analysis(frl_analysis_widget_list_not_interactive)
+        if _showConfirmMessage("Confirm Action", "Create Fit Residual Lenses analysis (interactive)?") == QMessageBox.Yes:
+            self.__create_analysis(frl_analysis_widget_list_interactive, frl_analysis_logger_widget_props)
 
     def executeAction_6(self, action):
-        if _showConfirmMessage("Confirm Action", "Create Fit Residual Lenses analysis (interactive)?") == QMessageBox.Yes:
-            self.__create_analysis(frl_analysis_widget_list_interactive)
+        if _showConfirmMessage("Confirm Action", "Create Fit Residual Lenses analysis (not interactive)?") == QMessageBox.Yes:
+            self.__create_analysis(frl_analysis_widget_list_not_interactive, frl_analysis_logger_widget_props)
 
     def executeAction_7(self, action):
         self.__switch_plotter_mode(PlotterMode.FULL, "FULL")
@@ -232,7 +238,7 @@ class WavePyMenu(OMenu):
     #
     #################################################################
 
-    def __create_analysis(self, widgets_list):
+    def __create_analysis(self, widgets_list, logger_widget_props=None):
         nodes = []
         lower_row_position = self.__get_lower_row_position()
 
@@ -244,10 +250,15 @@ class WavePyMenu(OMenu):
                                                      attributes=attributes))
         self.createLinks(nodes)
 
+        if not logger_widget_props is None:
+            self.createNewNodeAndWidget(widget_desc=self.getWidgetDesc(logger_widget_props[0]),
+                                        position=(logger_widget_props[1][0], logger_widget_props[1][1] + lower_row_position),
+                                        attributes=logger_widget_props[2])
+
     def __get_lower_row_position(self):
         try:
             lower_row_position = max([link.sink_node.position[1] for link in self.canvas_main_window.current_document().scheme().links])
-            if lower_row_position != 0.0: return 150.0 + lower_row_position
+            if lower_row_position != 0.0: return 300.0 + lower_row_position
         except: return 0.0
 
     def __switch_plotter_mode(self, plotter_mode, plotter_name):
