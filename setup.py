@@ -52,7 +52,7 @@ except AttributeError:
     from setuptools import find_packages, setup
 
 NAME = 'OASYS1-Wavepy2'
-VERSION = '0.0.11'
+VERSION = '0.0.12'
 ISRELEASED = False
 
 DESCRIPTION = 'WavePy2, data analyses of coherence and wavefront measurements at synchrotron beamlines'

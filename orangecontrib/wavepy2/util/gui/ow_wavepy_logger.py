@@ -51,7 +51,7 @@ from orangecontrib.wavepy2.util.wavepy_objects import get_registered_log_stream_
 
 class WavePyLogger(WavePyWidget):
 
-    CONTROL_AREA_WIDTH = 1110
+    CONTROL_AREA_WIDTH = 1100
     MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
     MAX_HEIGHT = 540
 
