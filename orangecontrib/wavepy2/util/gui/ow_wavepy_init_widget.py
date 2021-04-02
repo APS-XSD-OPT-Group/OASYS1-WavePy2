@@ -77,28 +77,8 @@ class WavePyInitWidget(WavePyWidget):
         self._is_valid_widget = True
 
         try:
-            try: register_log_stream_widget_instance(application_name=self._get_application_name())
-            except AlreadyInitializedError: pass
+            self.initialize_business_logic()
 
-            if not self.LOG_STDOUT:
-                try: register_logger_single_instance(logger_mode=QSettings().value("wavepy/logger_mode", LoggerMode.FULL, type=int),
-                                                     stream=get_registered_log_stream_instance(application_name=self._get_application_name()),
-                                                     application_name=self._get_application_name())
-                except AlreadyInitializedError: pass
-            else:
-                try: register_logger_single_instance(logger_mode=QSettings().value("wavepy/logger_mode", LoggerMode.FULL, type=int),
-                                                     application_name=self._get_application_name())
-                except AlreadyInitializedError: pass
-
-            try: register_plotter_instance(plotter_mode=QSettings().value("wavepy/plotter_mode", PlotterMode.FULL, type=int), application_name=self._get_application_name())
-            except AlreadyInitializedError: pass
-
-            try: register_ini_instance(IniMode.LOCAL_FILE, ini_file_name=self._get_file_ini_name(), application_name=self._get_application_name())
-            except AlreadyInitializedError:
-                if not get_registered_ini_instance(application_name=self._get_application_name()).get_ini_file_name() == self._get_file_ini_name():
-                    raise ValueError("The Oasys worspace can contain only 1 kind of analysis at a time")
-
-            self._process_manager = self._create_process_manager()
             self._init_widget     = self._draw_init_widget()
 
             self.controlArea.setFixedHeight(self._init_widget.height() + 145)
@@ -126,6 +106,47 @@ class WavePyInitWidget(WavePyWidget):
 
         gui.rubber(self.controlArea)
 
+    ##################################################################################
+    # INITIALIZATION
+
+    def initialize_business_logic(self):
+        self.initialize_logger()
+        self.initialize_plotter()
+        self.initialize_ini()
+        self.initialize_process_manager()
+
+    def initialize_ini(self):
+        try:
+            register_ini_instance(IniMode.LOCAL_FILE, ini_file_name=self._get_file_ini_name(), application_name=self._get_application_name())
+        except AlreadyInitializedError:
+            if not get_registered_ini_instance(application_name=self._get_application_name()).get_ini_file_name() == self._get_file_ini_name():
+                raise ValueError("The Oasys worspace can contain only 1 kind of analysis at a time")
+
+    def initialize_logger(self, replace=False):
+        try: register_log_stream_widget_instance(application_name=self._get_application_name())
+        except AlreadyInitializedError: pass
+
+        if not self.LOG_STDOUT:
+            try: register_logger_single_instance(logger_mode=QSettings().value("wavepy/logger_mode", LoggerMode.FULL, type=int),
+                                                 stream=get_registered_log_stream_instance(application_name=self._get_application_name()),
+                                                 application_name=self._get_application_name(), replace=replace)
+            except AlreadyInitializedError: pass
+        else:
+            try: register_logger_single_instance(logger_mode=QSettings().value("wavepy/logger_mode", LoggerMode.FULL, type=int),
+                                                 application_name=self._get_application_name(), replace=replace)
+            except AlreadyInitializedError: pass
+
+    def initialize_plotter(self, replace=False):
+        try: register_plotter_instance(plotter_mode=QSettings().value("wavepy/plotter_mode", PlotterMode.FULL, type=int),
+                                       application_name=self._get_application_name(), replace=replace)
+        except AlreadyInitializedError: pass
+
+    def initialize_process_manager(self):
+        self._process_manager = self._create_process_manager()
+
+    ##################################################################################
+    # ABSTRACT METHODS
+
     def _get_application_name(self):
         return None
 
@@ -137,6 +158,9 @@ class WavePyInitWidget(WavePyWidget):
 
     def _draw_init_widget(self):
         raise NotImplementedError()
+
+    ##################################################################################
+    # DEFAULT METHODS
 
     def _execute(self):
         if self._is_valid_widget:

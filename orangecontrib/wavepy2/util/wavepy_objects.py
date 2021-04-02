@@ -145,8 +145,8 @@ class __LogStreamRegistry(GenericRegistry):
         GenericRegistry.__init__(self, registry_name="Log Stream")
 
     @synchronized_method
-    def register_log_stream(self, log_stream, application_name=None):
-        super().register_instance(log_stream, application_name)
+    def register_log_stream(self, log_stream, application_name=None, replace=False):
+        super().register_instance(log_stream, application_name, replace)
 
     @synchronized_method
     def reset(self, application_name=None):
@@ -155,9 +155,9 @@ class __LogStreamRegistry(GenericRegistry):
     def get_log_stream_instance(self, application_name=None):
         return super().get_instance(application_name)
 
-def register_log_stream_widget_instance(application_name=None, reset=False):
+def register_log_stream_widget_instance(application_name=None, reset=False, replace=False):
     if reset: __LogStreamRegistry.Instance().reset(application_name)
-    __LogStreamRegistry.Instance().register_log_stream(LogStreamWidget(width=1095, height=450), application_name)
+    __LogStreamRegistry.Instance().register_log_stream(LogStreamWidget(width=1095, height=450), application_name, replace)
 
 def get_registered_log_stream_instance(application_name=None):
     return __LogStreamRegistry.Instance().get_log_stream_instance(application_name)

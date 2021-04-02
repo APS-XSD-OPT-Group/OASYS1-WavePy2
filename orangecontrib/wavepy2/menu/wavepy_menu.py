@@ -42,14 +42,16 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         #
 # POSSIBILITY OF SUCH DAMAGE.                                             #
 # #########################################################################
-from PyQt5 import QtWidgets
+from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtCore import QSettings
 
 from orangecanvas.scheme.link import SchemeLink
-
 from oasys.menus.menu import OMenu
+
 from wavepy2.util.plot.plotter import PlotterMode
 from wavepy2.util.log.logger import LoggerMode
+
+from orangecontrib.wavepy2.util.gui.ow_wavepy_init_widget import WavePyInitWidget
 
 base_tools_path = "orangecontrib.wavepy2.widgets.tools."
 base_imaging_path = "orangecontrib.wavepy2.widgets.imaging."
@@ -142,37 +144,6 @@ frl_analysis_widget_list_interactive = [
     [base_metrology_path + "ow_frl_do_fit.OWFRLDoFit", None, {"is_automatic_run": True}],
 ]
 
-def showInfoMessage(message):
-    msgBox = QtWidgets.QMessageBox()
-    msgBox.setIcon(QtWidgets.QMessageBox.Information)
-    msgBox.setText(message)
-    msgBox.setStandardButtons(QtWidgets.QMessageBox.Ok)
-    msgBox.exec_()
-
-def showConfirmMessage(text, message):
-    msgBox = QtWidgets.QMessageBox()
-    msgBox.setIcon(QtWidgets.QMessageBox.Question)
-    msgBox.setText(text)
-    msgBox.setInformativeText(message)
-    msgBox.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
-    msgBox.setDefaultButton(QtWidgets.QMessageBox.No)
-    ret = msgBox.exec_()
-    return ret
-
-def showWarningMessage(message):
-    msgBox = QtWidgets.QMessageBox()
-    msgBox.setIcon(QtWidgets.QMessageBox.Warning)
-    msgBox.setText(message)
-    msgBox.setStandardButtons(QtWidgets.QMessageBox.Ok)
-    msgBox.exec_()
-
-def showCriticalMessage(message):
-    msgBox = QtWidgets.QMessageBox()
-    msgBox.setIcon(QtWidgets.QMessageBox.Critical)
-    msgBox.setText(message)
-    msgBox.setStandardButtons(QtWidgets.QMessageBox.Ok)
-    msgBox.exec_()
-
 class WavePyMenu(OMenu):
 
     def __init__(self):
@@ -214,57 +185,56 @@ class WavePyMenu(OMenu):
         self.closeContainer()
 
     def executeAction_1(self, action):
-        if showConfirmMessage("Confirm Action", "Create Single Grating Talbot analysis (not interactive)?") == QtWidgets.QMessageBox.Yes:
-            self.create_analysis(sgt_analysis_widget_list_not_interactive)
+        if _showConfirmMessage("Confirm Action", "Create Single Grating Talbot analysis (not interactive)?") == QMessageBox.Yes:
+            self.__create_analysis(sgt_analysis_widget_list_not_interactive)
 
     def executeAction_2(self, action):
-        if showConfirmMessage("Confirm Action", "Create Single Grating Talbot analysis (interactive)?") == QtWidgets.QMessageBox.Yes:
-            self.create_analysis(sgt_analysis_widget_list_interactive)
+        if _showConfirmMessage("Confirm Action", "Create Single Grating Talbot analysis (interactive)?") == QMessageBox.Yes:
+            self.__create_analysis(sgt_analysis_widget_list_interactive)
 
     def executeAction_3(self, action):
-        if showConfirmMessage("Confirm Action", "Create Single Grating Z Scan analysis (not interactive)?") == QtWidgets.QMessageBox.Yes:
-            self.create_analysis(sgz_analysis_widget_list_not_interactive)
+        if _showConfirmMessage("Confirm Action", "Create Single Grating Z Scan analysis (not interactive)?") == QMessageBox.Yes:
+            self.__create_analysis(sgz_analysis_widget_list_not_interactive)
 
     def executeAction_4(self, action):
-        if showConfirmMessage("Confirm Action", "Create Single Grating Z Scan analysis (interactive)?") == QtWidgets.QMessageBox.Yes:
-            self.create_analysis(sgz_analysis_widget_list_interactive)
+        if _showConfirmMessage("Confirm Action", "Create Single Grating Z Scan analysis (interactive)?") == QMessageBox.Yes:
+            self.__create_analysis(sgz_analysis_widget_list_interactive)
 
     def executeAction_5(self, action):
-        if showConfirmMessage("Confirm Action", "Create Fit Residual Lenses analysis (not interactive)?") == QtWidgets.QMessageBox.Yes:
-            self.create_analysis(frl_analysis_widget_list_not_interactive)
+        if _showConfirmMessage("Confirm Action", "Create Fit Residual Lenses analysis (not interactive)?") == QMessageBox.Yes:
+            self.__create_analysis(frl_analysis_widget_list_not_interactive)
 
     def executeAction_6(self, action):
-        if showConfirmMessage("Confirm Action", "Create Fit Residual Lenses analysis (interactive)?") == QtWidgets.QMessageBox.Yes:
-            self.create_analysis(frl_analysis_widget_list_interactive)
+        if _showConfirmMessage("Confirm Action", "Create Fit Residual Lenses analysis (interactive)?") == QMessageBox.Yes:
+            self.__create_analysis(frl_analysis_widget_list_interactive)
 
     def executeAction_7(self, action):
-        QSettings().setValue("wavepy/plotter_mode", PlotterMode.FULL)
-        showInfoMessage("Plotter Mode set to: FULL\nReload the workspace to make it effective")
+        self.__switch_plotter_mode(PlotterMode.FULL, "FULL")
 
     def executeAction_8(self, action):
-        QSettings().setValue("wavepy/plotter_mode", PlotterMode.DISPLAY_ONLY)
-        showInfoMessage("Plotter Mode set to: DISPLAY ONLY\nReload the workspace to make it effective")
+        self.__switch_plotter_mode(PlotterMode.DISPLAY_ONLY, "DISPLAY ONLY")
 
     def executeAction_9(self, action):
-        QSettings().setValue("wavepy/logger_mode", LoggerMode.FULL)
-        showInfoMessage("Logger Mode set to: FULL\nReload the workspace to make it effective")
+        self.__switch_logger_mode(LoggerMode.FULL, "FULL")
 
     def executeAction_10(self, action):
-        QSettings().setValue("wavepy/logger_mode", LoggerMode.WARNING)
-        showInfoMessage("Logger Mode set to: WARNING\nReload the workspace to make it effective")
+        self.__switch_logger_mode(LoggerMode.WARNING, "WARNING")
 
     def executeAction_11(self, action):
-        QSettings().setValue("wavepy/logger_mode", LoggerMode.ERROR)
-        showInfoMessage("Logger Mode set to: ERROR\nReload the workspace to make it effective")
+        self.__switch_logger_mode(LoggerMode.ERROR, "ERROR")
 
     def executeAction_12(self, action):
-        QSettings().setValue("wavepy/logger_mode", LoggerMode.NONE)
-        showInfoMessage("Logger Mode set to: NONE\nReload the workspace to make it effective")
+        self.__switch_logger_mode(LoggerMode.NONE, "NONE")
 
+    #################################################################
+    #
+    # PRIVATE METHODS
+    #
+    #################################################################
 
-    def create_analysis(self, widgets_list):
+    def __create_analysis(self, widgets_list):
         nodes = []
-        lower_row_position = self.get_lower_row_position()
+        lower_row_position = self.__get_lower_row_position()
 
         for widget, position, attributes in widgets_list:
             if not position is None: position = (position[0], position[1] + lower_row_position)
@@ -274,11 +244,43 @@ class WavePyMenu(OMenu):
                                                      attributes=attributes))
         self.createLinks(nodes)
 
-    def get_lower_row_position(self):
+    def __get_lower_row_position(self):
         try:
             lower_row_position = max([link.sink_node.position[1] for link in self.canvas_main_window.current_document().scheme().links])
             if lower_row_position != 0.0: return 150.0 + lower_row_position
         except: return 0.0
+
+    def __switch_plotter_mode(self, plotter_mode, plotter_name):
+        existing_plotter_mode = QSettings().value("wavepy/plotter_mode", PlotterMode.FULL, type=int)
+        try:
+            QSettings().setValue("wavepy/plotter_mode", plotter_mode)
+
+            for node in self.canvas_main_window.current_document().scheme().nodes:
+                widget = self.canvas_main_window.current_document().scheme().widget_for_node(node)
+                if isinstance(widget, WavePyInitWidget):
+                    widget.initialize_plotter(replace=True)
+                    widget.initialize_process_manager()
+
+            _showInfoMessage("Plotter Mode set to: " + plotter_name + "\nRestart any analysis from Init widget to make it effective")
+        except Exception as exception:
+            QSettings().setValue("wavepy/plotter_mode", existing_plotter_mode)
+            QMessageBox.critical(None, "Error", exception.args[0], QMessageBox.Ok)
+
+    def __switch_logger_mode(self, logger_mode, logger_name):
+        existing_logger_mode = QSettings().value("wavepy/logger_mode", LoggerMode.FULL, type=int)
+        try:
+            QSettings().setValue("wavepy/logger_mode", logger_mode)
+
+            for node in self.canvas_main_window.current_document().scheme().nodes:
+                widget = self.canvas_main_window.current_document().scheme().widget_for_node(node)
+                if isinstance(widget, WavePyInitWidget):
+                    widget.initialize_logger(replace=True)
+                    widget.initialize_process_manager()
+
+            _showInfoMessage("Logger Mode set to: " + logger_name + "\nRestart any analysis from Init widget to make it effective")
+        except Exception as exception:
+            QSettings().setValue("wavepy/logger_mode", existing_logger_mode)
+            QMessageBox.critical(None, "Error", exception.args[0], QMessageBox.Ok)
 
     #################################################################
     #
@@ -312,3 +314,27 @@ class WavePyMenu(OMenu):
         for attribute in attributes.keys(): setattr(widget, attribute, attributes[attribute])
 
         return nodes
+
+
+def _showInfoMessage(message):
+    _create_message_box(QMessageBox.Information, message, QMessageBox.Ok).exec_()
+
+def _showWarningMessage(message):
+    _create_message_box(QMessageBox.Warning, message, QMessageBox.Ok).exec_()
+
+def _showCriticalMessage(message):
+    _create_message_box(QMessageBox.Critical, message, QMessageBox.Ok).exec_()
+
+def _showConfirmMessage(text, message):
+    msgBox = _create_message_box(QMessageBox.Question, message, QMessageBox.Yes | QMessageBox.No)
+    msgBox.setInformativeText(message)
+    msgBox.setDefaultButton(QMessageBox.No)
+
+    return msgBox.exec_()
+
+def _create_message_box(icon, message, std_buttons):
+    msgBox = QMessageBox()
+    msgBox.setIcon(icon)
+    msgBox.setText(message)
+    msgBox.setStandardButtons(std_buttons)
+    return msgBox
