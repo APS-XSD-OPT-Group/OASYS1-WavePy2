@@ -80,3 +80,6 @@ class OWSGTCropDPCForIntegration(WavePyInteractiveWidget):
 
     def _get_execute_button_label(self):
         return "Crop DPC for Integration"
+
+    def _get_input_message(self):
+        return "Crop DPC for Integration?"

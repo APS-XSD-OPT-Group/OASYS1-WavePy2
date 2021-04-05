@@ -80,3 +80,5 @@ class OWSGTCrop2ndOrderComponentOfThePhase1(WavePyInteractiveWidget):
     def _get_execute_button_label(self):
         return "Crop for 2nd order component of the phase"
 
+    def _get_input_message(self):
+        return "Crop for 2nd order component of the phase?"

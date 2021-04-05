@@ -77,6 +77,9 @@ class WavePyInteractiveWidget(WavePyWidget):
     def set_input(self, data):
         if not data is None:
             self.progressBarInit()
+            if not self.is_automatic_run:
+                self.information(self._get_input_message())
+                self.setFixedHeight(self.MAX_HEIGHT+40)
 
             data = data.duplicate()
 
@@ -102,6 +105,9 @@ class WavePyInteractiveWidget(WavePyWidget):
 
             if self.is_automatic_run: self._cancel()
 
+    def _get_input_message(self):
+        return "Waiting User Input"
+
     def _get_cancel_button_label(self):
         return "Initial Crop"
 
@@ -110,6 +116,10 @@ class WavePyInteractiveWidget(WavePyWidget):
 
     def __send_result(self, widget_output_data):
         if not self._interactive_widget is None:
+            if not self.is_automatic_run:
+                self.information("")
+                self.setFixedHeight(self.MAX_HEIGHT)
+
             output_calculation_parameters = self._get_output_parameters(widget_output_data)
 
             output = OasysWavePyData()

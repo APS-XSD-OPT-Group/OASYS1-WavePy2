@@ -98,3 +98,6 @@ class CropImageStoreParametersWidget(WavePyInteractiveWidget):
 
     def _get_window_text(self):
         return "Crop Image?"
+
+    def _get_input_message(self):
+        return "Crop Image?"

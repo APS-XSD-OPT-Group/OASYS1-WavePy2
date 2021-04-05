@@ -60,8 +60,6 @@ class OWSGZCropInitialImage(CropImageStoreParametersWidget):
     def __init__(self):
         super(OWSGZCropInitialImage, self).__init__()
 
-    def _get_window_text(self):
-        return "Crop Initial Image?"
 
     def _get_output_parameters(self, widget_output_data):
         wavepy_data_out = super(OWSGZCropInitialImage, self)._get_output_parameters(widget_output_data)
@@ -71,3 +69,9 @@ class OWSGZCropInitialImage(CropImageStoreParametersWidget):
 
     def _get_application_name(self):
         return APPLICATION_NAME
+
+    def _get_window_text(self):
+        return "Crop Initial Image?"
+
+    def _get_input_message(self):
+        return "Crop Initial Image?"

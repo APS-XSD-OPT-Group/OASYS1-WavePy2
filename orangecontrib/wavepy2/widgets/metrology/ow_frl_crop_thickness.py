@@ -76,3 +76,6 @@ class OWFRLCropThickness(WavePyInteractiveWidget):
 
     def _get_execute_button_label(self):
         return "Crop Thickness"
+
+    def _get_input_message(self):
+        return "Crop Thickness?"

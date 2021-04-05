@@ -87,3 +87,6 @@ class OWSGZCropDarkImage(CropImageWidget):
 
     def _get_application_name(self):
         return APPLICATION_NAME
+
+    def _get_input_message(self):
+        return "Crop Dark Image?"
