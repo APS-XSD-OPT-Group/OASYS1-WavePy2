@@ -88,7 +88,7 @@ SETUP_REQUIRES = (
 
 INSTALL_REQUIRES = (
     'oasys1>=1.2.72',
-    'wavepy2>=0.0.43',
+    'wavepy2>=0.0.44',
 )
 
 PACKAGES = find_packages(exclude=('*.tests', '*.tests.*', 'tests.*', 'tests'))
