@@ -48,8 +48,8 @@ from orangecontrib.wavepy2.util.gui.ow_wavepy_process_widget import WavePyProces
 
 class OWSGZFitVisibility(WavePyProcessWidget):
     name = "S.G.Z. - Sort Fit Visibility"
-    id = "sgz_sort_calculation_result"
-    description = "S.G.Z. - Sort Fit Visibility"
+    id = "sgz_fit_visibility"
+    description = "S.G.Z. - Fit Visibility"
     icon = "icons/sgz_fit_visibility.png"
     priority = 7
     category = ""
