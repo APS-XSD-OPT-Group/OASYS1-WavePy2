@@ -46,12 +46,12 @@ from wavepy2.util.plot.plot_tools import PlottingProperties
 
 from orangecontrib.wavepy2.util.gui.ow_wavepy_process_widget import WavePyProcessWidget
 
-class OWSGZFitCalculationResult(WavePyProcessWidget):
-    name = "S.G.Z. - Fit Calculation Result"
-    id = "sgz_fit_calculation_result"
-    description = "S.G.Z. - Fit Calculation Result"
-    icon = "icons/sgz_fit_calculation_result.png"
-    priority = 7
+class OWSGZFitPeriod(WavePyProcessWidget):
+    name = "S.G.Z. - Fit Period"
+    id = "sgz_fit_period"
+    description = "S.G.Z. - Fit Period"
+    icon = "icons/sgz_fit_period.png"
+    priority = 6
     category = ""
     keywords = ["wavepy", "tools", "calculate"]
 
@@ -60,14 +60,14 @@ class OWSGZFitCalculationResult(WavePyProcessWidget):
     MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
 
     def __init__(self):
-        super(OWSGZFitCalculationResult, self).__init__()
+        super(OWSGZFitPeriod, self).__init__()
 
     def _get_execute_button_label(self):
-        return "Fit Calculation Result"
+        return "Fit Period"
 
     def _get_output_parameters(self):
-        return self._process_manager.fit_calculation_result(sort_calculation_result=self._calculation_parameters,
-                                                            initialization_parameters=self._initialization_parameters,
-                                                            plotting_properties=self._get_default_plotting_properties(),
-                                                            figure_height=715, figure_width=990)
+        return self._process_manager.fit_period(run_calculation_result=self._calculation_parameters,
+                                                initialization_parameters=self._initialization_parameters,
+                                                plotting_properties=self._get_default_plotting_properties(),
+                                                figure_height=715, figure_width=990)
 

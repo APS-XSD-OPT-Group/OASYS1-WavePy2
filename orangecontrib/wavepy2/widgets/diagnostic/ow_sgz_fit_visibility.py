@@ -46,12 +46,12 @@ from wavepy2.util.plot.plot_tools import PlottingProperties
 
 from orangecontrib.wavepy2.util.gui.ow_wavepy_process_widget import WavePyProcessWidget
 
-class OWSGZSortCalculationResult(WavePyProcessWidget):
-    name = "S.G.Z. - Sort Calculation Result"
+class OWSGZFitVisibility(WavePyProcessWidget):
+    name = "S.G.Z. - Sort Fit Visibility"
     id = "sgz_sort_calculation_result"
-    description = "S.G.Z. - Sort Calculation Result"
-    icon = "icons/sgz_sort_calculation_result.png"
-    priority = 6
+    description = "S.G.Z. - Sort Fit Visibility"
+    icon = "icons/sgz_fit_visibility.png"
+    priority = 7
     category = ""
     keywords = ["wavepy", "tools", "calculate"]
 
@@ -60,14 +60,14 @@ class OWSGZSortCalculationResult(WavePyProcessWidget):
     MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
 
     def __init__(self):
-        super(OWSGZSortCalculationResult, self).__init__()
+        super(OWSGZFitVisibility, self).__init__()
 
     def _get_execute_button_label(self):
-        return "Sort Calculation Result"
+        return "Fit Visibility"
 
     def _get_output_parameters(self):
-        return self._process_manager.sort_calculation_result(run_calculation_result=self._calculation_parameters,
-                                                             initialization_parameters=self._initialization_parameters,
-                                                             plotting_properties=self._get_default_plotting_properties(),
-                                                             figure_height=650, figure_width=900)
+        return self._process_manager.fit_visibility(fit_period_result=self._calculation_parameters,
+                                                    initialization_parameters=self._initialization_parameters,
+                                                    plotting_properties=self._get_default_plotting_properties(),
+                                                    figure_height=715, figure_width=900)
 

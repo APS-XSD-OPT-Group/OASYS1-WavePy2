@@ -111,8 +111,8 @@ sgz_analysis_widget_list_not_interactive = [
     [base_diagnostic_path + "ow_sgz_crop_dark_image.OWSGZCropDarkImage", None, {"is_automatic_run": True}],
     [base_diagnostic_path + "ow_sgz_calculate_harmonic_periods.OWSGZCalculateHarmonicPeriods", (50.0, 200.0), {"is_automatic_run": True}],
     [base_diagnostic_path + "ow_sgz_run_calculation.OWSGZRunCalculation", None, {"is_automatic_run": True, "show_fourier" : 0}],
-    [base_diagnostic_path + "ow_sgz_sort_calculation_result.OWSGZSortCalculationResult", None, {"is_automatic_run": True}],
-    [base_diagnostic_path + "ow_sgz_fit_calculation_result.OWSGZFitCalculationResult", None, {"is_automatic_run": True}],
+    [base_diagnostic_path + "ow_sgz_fit_period.OWSGZFitPeriod", None, {"is_automatic_run": True}],
+    [base_diagnostic_path + "ow_sgz_fit_visibility.OWSGZFitVisibility", None, {"is_automatic_run": True}],
 ]
 
 sgz_analysis_widget_list_interactive = [
@@ -122,8 +122,8 @@ sgz_analysis_widget_list_interactive = [
     [base_diagnostic_path + "ow_sgz_crop_dark_image.OWSGZCropDarkImage", None, {"is_automatic_run": False}],
     [base_diagnostic_path + "ow_sgz_calculate_harmonic_periods.OWSGZCalculateHarmonicPeriods", (50.0, 200.0), {"is_automatic_run": True}],
     [base_diagnostic_path + "ow_sgz_run_calculation.OWSGZRunCalculation", None, {"is_automatic_run": True, "show_fourier" : 0}],
-    [base_diagnostic_path + "ow_sgz_sort_calculation_result.OWSGZSortCalculationResult", None, {"is_automatic_run": True}],
-    [base_diagnostic_path + "ow_sgz_fit_calculation_result.OWSGZFitCalculationResult", None, {"is_automatic_run": True}],
+    [base_diagnostic_path + "ow_sgz_fit_period.OWSGZFitPeriod", None, {"is_automatic_run": True}],
+    [base_diagnostic_path + "ow_sgz_fit_visibility.OWSGZFitVisibility", None, {"is_automatic_run": True}],
 ]
 
 sgz_analysis_logger_widget_props = [base_diagnostic_path + "ow_sgz_logger.OWSGZLogger", (0.0, 350.0), {}]
