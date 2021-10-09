@@ -55,7 +55,7 @@ class OWSGZFitVisibility(WavePyProcessWidget):
     category = ""
     keywords = ["wavepy", "tools", "calculate"]
 
-    CONTROL_AREA_WIDTH = 1030
+    CONTROL_AREA_WIDTH = 1220
 
     MAX_WIDTH_NO_MAIN = CONTROL_AREA_WIDTH + 10
 

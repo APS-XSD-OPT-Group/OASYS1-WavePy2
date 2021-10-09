@@ -104,6 +104,7 @@ class WavePyInteractiveWidget(WavePyWidget):
             self.progressBarFinished()
 
             if self.is_automatic_run: self._cancel()
+            else: self.show()
 
     def _get_input_message(self):
         return "Waiting User Input"
