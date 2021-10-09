@@ -66,13 +66,14 @@ class WavePyProcessWidget(WavePyWidget):
     must_clean_layout       = True
     show_results_when_ready = True
 
-    def __init__(self, show_general_option_box=True, show_automatic_box=True, show_results_when_ready=True):
+    def __init__(self, show_general_option_box=True, show_automatic_box=True, show_results_when_ready_box=True):
         super(WavePyProcessWidget, self).__init__(show_general_option_box=show_general_option_box, show_automatic_box=show_automatic_box)
 
         self.setFixedWidth(self.MAX_WIDTH_NO_MAIN)
         self.setFixedHeight(self.MAX_HEIGHT)
 
-        self.show_results_when_ready = show_results_when_ready
+        if show_results_when_ready_box : gui.checkBox(self._general_options_box, self, 'show_results_when_ready', 'Show results when ready')
+        else: self.show_results_when_ready = False
 
         gui.rubber(self.controlArea)
 
@@ -122,8 +123,8 @@ from wavepy2.util.plot.plot_tools import DefaultContextWidget
 
 class WavePyProcessWidgetWithOptions(WavePyProcessWidget):
 
-    def __init__(self, show_general_option_box=True, show_automatic_box=True, show_results_when_ready=False):
-        super(WavePyProcessWidgetWithOptions, self).__init__(show_general_option_box=show_general_option_box, show_automatic_box=show_automatic_box, show_results_when_ready=show_results_when_ready)
+    def __init__(self, show_general_option_box=True, show_automatic_box=True, show_results_when_ready_box=True):
+        super(WavePyProcessWidgetWithOptions, self).__init__(show_general_option_box=show_general_option_box, show_automatic_box=show_automatic_box, show_results_when_ready_box=show_results_when_ready_box)
 
         self._options_area               = oasysgui.widgetBox(self._wavepy_widget_area, "Options", addSpace=False, orientation="vertical",
                                                               width=self._get_option_area_width())

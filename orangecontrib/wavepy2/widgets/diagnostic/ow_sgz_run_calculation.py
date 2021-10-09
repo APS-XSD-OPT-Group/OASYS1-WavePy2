@@ -63,7 +63,7 @@ class OWSGZRunCalculation(WavePyProcessWidgetWithOptions):
     show_fourier = Setting(0)
 
     def __init__(self):
-        super(OWSGZRunCalculation, self).__init__(show_results_when_ready=False)
+        super(OWSGZRunCalculation, self).__init__(show_results_when_ready_box=False)
 
         gui.checkBox(self._options_area, self, "show_fourier", "Show Fourier Analysis")
 
@@ -71,7 +71,7 @@ class OWSGZRunCalculation(WavePyProcessWidgetWithOptions):
         return "Run Calculation"
 
     def _get_output_parameters(self):
-        self.show_results_when_ready = self.is_automatic_run==True and self.show_fourier==1
+        self.show_results_when_ready = self.is_automatic_run and self.show_fourier==1
 
         self._initialization_parameters.set_parameter("show_fourier", self.show_fourier==1)
 
