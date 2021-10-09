@@ -63,13 +63,16 @@ class WavePyProcessWidget(WavePyWidget):
                 "doc": "WavePy Data",
                 "id": "WavePy_Data"}]
 
-    must_clean_layout = True
+    must_clean_layout       = True
+    show_results_when_ready = True
 
-    def __init__(self, show_general_option_box=True, show_automatic_box=True):
+    def __init__(self, show_general_option_box=True, show_automatic_box=True, show_results_when_ready=True):
         super(WavePyProcessWidget, self).__init__(show_general_option_box=show_general_option_box, show_automatic_box=show_automatic_box)
 
         self.setFixedWidth(self.MAX_WIDTH_NO_MAIN)
         self.setFixedHeight(self.MAX_HEIGHT)
+
+        self.show_results_when_ready = show_results_when_ready
 
         gui.rubber(self.controlArea)
 
@@ -109,6 +112,8 @@ class WavePyProcessWidget(WavePyWidget):
 
         self.send("WavePy Data", output)
 
+        if self.show_results_when_ready: self.show()
+
     def _get_output_parameters(self):
         raise NotImplementedError()
 
@@ -117,8 +122,8 @@ from wavepy2.util.plot.plot_tools import DefaultContextWidget
 
 class WavePyProcessWidgetWithOptions(WavePyProcessWidget):
 
-    def __init__(self, show_general_option_box=True, show_automatic_box=True):
-        super(WavePyProcessWidgetWithOptions, self).__init__(show_general_option_box=show_general_option_box, show_automatic_box=show_automatic_box)
+    def __init__(self, show_general_option_box=True, show_automatic_box=True, show_results_when_ready=False):
+        super(WavePyProcessWidgetWithOptions, self).__init__(show_general_option_box=show_general_option_box, show_automatic_box=show_automatic_box, show_results_when_ready=show_results_when_ready)
 
         self._options_area               = oasysgui.widgetBox(self._wavepy_widget_area, "Options", addSpace=False, orientation="vertical",
                                                               width=self._get_option_area_width())

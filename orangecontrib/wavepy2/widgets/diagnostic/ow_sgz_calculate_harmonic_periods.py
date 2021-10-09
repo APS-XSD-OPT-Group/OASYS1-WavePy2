@@ -62,7 +62,7 @@ class OWSGZCalculateHarmonicPeriods(WavePyProcessWidget):
     MAX_HEIGHT = CONTROL_AREA_HEIGTH + 10
 
     def __init__(self):
-        super(OWSGZCalculateHarmonicPeriods, self).__init__()
+        super(OWSGZCalculateHarmonicPeriods, self).__init__(show_results_when_ready=False)
 
     def _get_execute_button_label(self):
         return "Calculate Harmonic Periods"

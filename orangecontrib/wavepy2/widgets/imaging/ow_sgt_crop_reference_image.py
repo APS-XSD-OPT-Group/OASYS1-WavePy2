@@ -60,7 +60,7 @@ class OWSGTCropReferenceImage(WavePyProcessWidget):
     MAX_HEIGHT = CONTROL_AREA_HEIGTH + 10
 
     def __init__(self):
-        super(OWSGTCropReferenceImage, self).__init__()
+        super(OWSGTCropReferenceImage, self).__init__(show_results_when_ready=False)
 
     def _get_execute_button_label(self):
         return "Crop Reference Image"
