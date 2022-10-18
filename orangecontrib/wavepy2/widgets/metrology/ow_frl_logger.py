@@ -44,7 +44,7 @@
 # #########################################################################
 from orangecontrib.wavepy2.util.gui.ow_wavepy_logger import WavePyLogger
 
-from aps.wavepy2.tools.metrology.lenses import APPLICATION_NAME
+from aps.wavepy2.tools.metrology.lenses.bl.fit_residual_lenses import APPLICATION_NAME
 
 class OWFRLLogger(WavePyLogger):
     name = "F.R.L. - Logger"

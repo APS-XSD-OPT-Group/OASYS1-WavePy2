@@ -44,7 +44,7 @@
 # #########################################################################
 from orangecontrib.wavepy2.util.gui.ow_wavepy_init_widget import WavePyInitWidget
 
-from aps.wavepy2.tools.metrology.lenses import create_fit_residual_lenses_manager, APPLICATION_NAME
+from aps.wavepy2.tools.metrology.lenses.bl.fit_residual_lenses import create_fit_residual_lenses_manager, APPLICATION_NAME
 
 class OWFRLInit(WavePyInitWidget):
     name = "F.R.L. - Initialization"

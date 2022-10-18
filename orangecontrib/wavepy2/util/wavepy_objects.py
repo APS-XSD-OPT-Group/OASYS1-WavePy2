@@ -135,8 +135,8 @@ class LogStreamWidget(LogStream):
     def get_widget(self):
         return self.__widget
 
-from aps.wavepy2.util import Singleton, synchronized_method
-from aps.wavepy2.util import GenericRegistry
+from aps.util.singleton import Singleton, synchronized_method
+from aps.util.registry import GenericRegistry
 
 @Singleton
 class __LogStreamRegistry(GenericRegistry):
