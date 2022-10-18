@@ -119,7 +119,7 @@ class WavePyProcessWidget(WavePyWidget):
         raise NotImplementedError()
 
 from orangecontrib.wavepy2.util.gui.ow_wavepy_widget import clear_layout
-from wavepy2.util.plot.plot_tools import DefaultContextWidget
+from aps.wavepy2.util import DefaultContextWidget
 
 class WavePyProcessWidgetWithOptions(WavePyProcessWidget):
 

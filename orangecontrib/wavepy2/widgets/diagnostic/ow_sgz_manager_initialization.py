@@ -46,7 +46,7 @@ from PyQt5.QtCore import QSettings
 
 from orangecontrib.wavepy2.util.gui.ow_wavepy_process_widget import WavePyProcessWidget
 
-from wavepy2.util.log.logger import LoggerMode
+from aps.util.logger import LoggerMode
 
 class OWSGZManagerInitialization(WavePyProcessWidget):
     name = "S.G.Z. Manager Initialization"

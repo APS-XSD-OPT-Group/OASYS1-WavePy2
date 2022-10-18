@@ -44,8 +44,8 @@
 # #########################################################################
 from orangecontrib.wavepy2.util.gui.ow_crop_image import CropImageWidget
 
-from wavepy2.tools.common.bl import crop_image
-from wavepy2.tools.diagnostic.coherence.bl.single_grating_coherence_z_scan import APPLICATION_NAME
+from aps.wavepy2.tools.common.bl import crop_image
+from aps.wavepy2.tools.diagnostic.coherence.bl.single_grating_coherence_z_scan import APPLICATION_NAME
 
 class OWSGZCropDarkImage(CropImageWidget):
     name = "S.G.Z. - Crop Dark Image"

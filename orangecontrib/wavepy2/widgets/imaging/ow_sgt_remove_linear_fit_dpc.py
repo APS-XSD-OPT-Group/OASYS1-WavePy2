@@ -44,7 +44,6 @@
 # #########################################################################
 from orangecontrib.wavepy2.util.gui.ow_wavepy_process_widget import WavePyProcessWidget
 
-from wavepy2.util.plot.plot_tools import PlottingProperties
 
 class OWSGTRemoveLinearFitDPC(WavePyProcessWidget):
     name = "S.G.T. - Remove Linear Fit DPC"

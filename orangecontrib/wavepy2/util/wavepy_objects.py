@@ -92,12 +92,11 @@ class OasysWavePyData(object):
 
         return duplicated
 
-from PyQt5.QtWidgets import QWidget, QHBoxLayout
-from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QWidget
 from PyQt5.Qt import QTextCursor
 
 
-from wavepy2.util.log.logger import LogStream
+from aps.util.logger import LogStream
 
 import oasys.widgets.gui as gui
 
@@ -136,8 +135,8 @@ class LogStreamWidget(LogStream):
     def get_widget(self):
         return self.__widget
 
-from wavepy2.util import Singleton, synchronized_method
-from wavepy2.util.common.common_tools import GenericRegistry
+from aps.wavepy2.util import Singleton, synchronized_method
+from aps.wavepy2.util import GenericRegistry
 
 @Singleton
 class __LogStreamRegistry(GenericRegistry):

@@ -50,7 +50,7 @@ from oasys.widgets import gui as oasysgui
 
 from orangecontrib.wavepy2.util.gui.ow_wavepy_init_widget import WavePyInitWidget
 
-from wavepy2.tools.diagnostic.coherence.bl.single_grating_coherence_z_scan import create_single_grating_coherence_z_scan_manager, SINGLE_THREAD, APPLICATION_NAME
+from aps.wavepy2.tools.diagnostic.coherence.bl.single_grating_coherence_z_scan import create_single_grating_coherence_z_scan_manager, SINGLE_THREAD, APPLICATION_NAME
 
 N_CPUS = cpu_count() - 2
 

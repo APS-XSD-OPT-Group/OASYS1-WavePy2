@@ -44,9 +44,7 @@
 # #########################################################################
 from orangecontrib.wavepy2.util.gui.ow_crop_image_store_parameters import CropImageStoreParametersWidget
 
-from wavepy2.tools.common.wavepy_data import WavePyData
-from wavepy2.tools.common.bl import crop_image
-from wavepy2.tools.diagnostic.coherence.bl.single_grating_coherence_z_scan import APPLICATION_NAME
+from aps.wavepy2.tools.diagnostic.coherence.bl.single_grating_coherence_z_scan import APPLICATION_NAME
 
 class OWSGZCropInitialImage(CropImageStoreParametersWidget):
     name = "S.G.Z. - Crop for All Images"

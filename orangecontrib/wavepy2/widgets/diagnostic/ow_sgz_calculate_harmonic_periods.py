@@ -42,7 +42,6 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         #
 # POSSIBILITY OF SUCH DAMAGE.                                             #
 # #########################################################################
-from wavepy2.util.plot.plot_tools import PlottingProperties
 
 from orangecontrib.wavepy2.util.gui.ow_wavepy_process_widget import WavePyProcessWidget
 

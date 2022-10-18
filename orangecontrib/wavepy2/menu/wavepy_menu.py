@@ -48,8 +48,8 @@ from PyQt5.QtCore import QSettings
 from orangecanvas.scheme.link import SchemeLink
 from oasys.menus.menu import OMenu
 
-from wavepy2.util.plot.plotter import PlotterMode
-from wavepy2.util.log.logger import LoggerMode
+from aps.wavepy2.util.plot.plotter import PlotterMode
+from aps.util.logger import LoggerMode
 
 from orangecontrib.wavepy2.util.gui.ow_wavepy_init_widget import WavePyInitWidget
 

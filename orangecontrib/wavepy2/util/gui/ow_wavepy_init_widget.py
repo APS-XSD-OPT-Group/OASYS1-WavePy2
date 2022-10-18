@@ -52,11 +52,11 @@ from orangewidget import gui
 from orangecontrib.wavepy2.util.gui.ow_wavepy_widget import WavePyWidget
 from orangecontrib.wavepy2.util.wavepy_objects import OasysWavePyData, register_log_stream_widget_instance, get_registered_log_stream_instance
 
-from wavepy2.util.common.common_tools import AlreadyInitializedError
-from wavepy2.util.log.logger import register_logger_single_instance, LoggerMode
-from wavepy2.util.plot.plotter import register_plotter_instance, PlotterMode
-from wavepy2.util.plot.plot_tools import PlottingProperties
-from wavepy2.util.ini.initializer import register_ini_instance, get_registered_ini_instance, IniMode
+from aps.wavepy2.util import AlreadyInitializedError
+from aps.util.logger import register_logger_single_instance, LoggerMode
+from aps.wavepy2.util import register_plotter_instance, PlotterMode
+from aps.wavepy2.util import PlottingProperties
+from aps.util.initializer import register_ini_instance, get_registered_ini_instance, IniMode
 
 class WavePyInitWidget(WavePyWidget):
     outputs = [{"name": "WavePy Data",

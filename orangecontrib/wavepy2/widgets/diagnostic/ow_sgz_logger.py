@@ -44,7 +44,7 @@
 # #########################################################################
 from orangecontrib.wavepy2.util.gui.ow_wavepy_logger import WavePyLogger
 
-from wavepy2.tools.diagnostic.coherence.bl.single_grating_coherence_z_scan import APPLICATION_NAME
+from aps.wavepy2.tools.diagnostic.coherence.bl.single_grating_coherence_z_scan import APPLICATION_NAME
 
 class OWSGZLogger(WavePyLogger):
     name = "S.G.Z. - Logger"

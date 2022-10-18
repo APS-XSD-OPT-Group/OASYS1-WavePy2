@@ -42,7 +42,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         #
 # POSSIBILITY OF SUCH DAMAGE.                                             #
 # #########################################################################
-from wavepy2.tools.common.wavepy_data import WavePyData
+from aps.wavepy2.tools.common.wavepy_data import WavePyData
 
 from orangecontrib.wavepy2.util.gui.ow_wavepy_interactive_widget import WavePyInteractiveWidget
 

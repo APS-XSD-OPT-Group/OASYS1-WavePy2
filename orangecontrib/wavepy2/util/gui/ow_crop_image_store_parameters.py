@@ -44,8 +44,9 @@
 # #########################################################################
 from orangecontrib.wavepy2.util.gui.ow_wavepy_interactive_widget import WavePyInteractiveWidget
 
-from wavepy2.tools.common.wavepy_data import WavePyData
-from wavepy2.tools.common.bl import crop_image
+from aps.wavepy2.tools.common.wavepy_data import WavePyData
+from aps.wavepy2.tools.common.bl import crop_image
+
 
 class CropImageStoreParametersWidget(WavePyInteractiveWidget):
     CONTROL_AREA_HEIGTH = 920

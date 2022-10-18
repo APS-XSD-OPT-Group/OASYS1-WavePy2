@@ -44,7 +44,7 @@
 # #########################################################################
 from orangecontrib.wavepy2.util.gui.ow_wavepy_logger import WavePyLogger
 
-from wavepy2.tools.imaging.single_grating.bl.single_grating_talbot import APPLICATION_NAME
+from aps.wavepy2.tools.imaging.single_grating.bl.single_grating_talbot import APPLICATION_NAME
 
 class OWSGTLogger(WavePyLogger):
     name = "S.G.T. - Logger"

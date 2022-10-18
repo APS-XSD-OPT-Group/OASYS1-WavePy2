@@ -44,7 +44,6 @@
 # #########################################################################
 from orangecontrib.wavepy2.util.gui.ow_wavepy_process_widget import WavePyProcessWidget
 
-from wavepy2.util.plot.plot_tools import PlottingProperties
 
 class OWFRLCenterImage(WavePyProcessWidget):
     name = "F.R.L. - Center Image"
