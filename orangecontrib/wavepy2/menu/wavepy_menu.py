@@ -49,7 +49,7 @@ from orangecanvas.scheme.link import SchemeLink
 from oasys.menus.menu import OMenu
 
 from aps.wavepy2.util.plot.plotter import PlotterMode
-from aps.util.logger import LoggerMode
+from aps.common.logger import LoggerMode
 
 from orangecontrib.wavepy2.util.gui.ow_wavepy_init_widget import WavePyInitWidget
 

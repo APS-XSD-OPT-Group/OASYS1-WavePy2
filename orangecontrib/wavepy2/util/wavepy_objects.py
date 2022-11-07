@@ -96,7 +96,7 @@ from PyQt5.QtWidgets import QWidget
 from PyQt5.Qt import QTextCursor
 
 
-from aps.util.logger import LogStream
+from aps.common.logger import LogStream
 
 import oasys.widgets.gui as gui
 
@@ -135,8 +135,8 @@ class LogStreamWidget(LogStream):
     def get_widget(self):
         return self.__widget
 
-from aps.util.singleton import Singleton, synchronized_method
-from aps.util.registry import GenericRegistry
+from aps.common.singleton import Singleton, synchronized_method
+from aps.common.registry import GenericRegistry
 
 @Singleton
 class __LogStreamRegistry(GenericRegistry):
