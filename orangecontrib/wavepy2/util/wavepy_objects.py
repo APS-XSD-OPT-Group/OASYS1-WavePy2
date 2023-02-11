@@ -95,46 +95,7 @@ class OasysWavePyData(object):
 from PyQt5.QtWidgets import QWidget
 from PyQt5.Qt import QTextCursor
 
-
-from aps.common.logger import LogStream
-
-import oasys.widgets.gui as gui
-
-class LogStreamWidget(LogStream):
-    class Widget(QWidget):
-        def __init__(self, width=850, height=400):
-            QWidget.__init__(self)
-
-            self.setFixedHeight(height)
-            self.setFixedWidth(width)
-
-            text_area_box = gui.widgetBox(self, "", orientation="vertical", height=height, width=width)
-
-            self.__text_area = gui.textArea(height=height-5, width=width-5, readOnly=True)
-            self.__text_area.setText("")
-
-            text_area_box.layout().addWidget(self.__text_area)
-
-        def write(self, text):
-            cursor = self.__text_area.textCursor()
-            cursor.movePosition(QTextCursor.End)
-            cursor.insertText(text)
-            self.__text_area.setTextCursor(cursor)
-            self.__text_area.ensureCursorVisible()
-
-        def clear_log(self):
-            self.__text_area.clear()
-
-    def __init__(self, width=850, height=400):
-        self.__widget = LogStreamWidget.Widget(width, height)
-
-    def close(self): pass
-    def write(self, text): self.__widget.write(text)
-    def flush(self, *args, **kwargs): pass
-
-    def get_widget(self):
-        return self.__widget
-
+from aps.common.widgets.log_stream_widget import LogStreamWidget
 from aps.common.singleton import Singleton, synchronized_method
 from aps.common.registry import GenericRegistry
 
