@@ -52,8 +52,8 @@ except AttributeError:
     from setuptools import find_packages, setup
 
 NAME = 'OASYS1-Wavepy2'
-VERSION = '0.0.25'
-ISRELEASED = False
+VERSION = '1.0.0'
+ISRELEASED = True
 
 DESCRIPTION = 'WavePy2, data analyses of coherence and wavefront measurements at synchrotron beamlines'
 README_FILE = os.path.join(os.path.dirname(__file__), 'README.md')
@@ -88,8 +88,8 @@ SETUP_REQUIRES = (
 
 INSTALL_REQUIRES = (
     'oasys1>=1.2.120',
-    'wavepy2>=0.0.52',
-    'aps_common_libraries'
+    'aps_common_libraries>=1.0.0',
+    'wavepy2>=1.0.0',
 )
 
 PACKAGES = find_packages(exclude=('*.tests', '*.tests.*', 'tests.*', 'tests'))
