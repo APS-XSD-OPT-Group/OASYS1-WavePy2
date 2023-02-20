@@ -48,7 +48,7 @@ from oasys.widgets import gui as oasysgui
 from orangewidget.widget import OWAction
 from orangewidget.settings import Setting
 
-from aps.wavepy2.util.plot.plot_tools import DefaultContextWidget, PlottingProperties
+from aps.common.widgets.context_widget import DefaultContextWidget, PlottingProperties
 
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import QRect

@@ -65,7 +65,7 @@ class OWSGZInit(WavePyInitWidget):
 
     parallel_mode = Setting(1)
 
-    MAX_HEIGHT = 700
+    MAX_HEIGHT = 720
 
     def __init__(self):
         super(OWSGZInit, self).__init__(show_general_option_box=True)
@@ -100,7 +100,7 @@ class OWSGZInit(WavePyInitWidget):
 
     def _draw_init_widget(self):
         return self._process_manager.draw_initialization_parameters_widget(plotting_properties=self._get_default_plotting_properties(),
-                                                                           widget_height=485,
+                                                                           widget_height=510,
                                                                            tab_widget_width=self.CONTROL_AREA_WIDTH-20)[0]
 
     def _execute(self):
